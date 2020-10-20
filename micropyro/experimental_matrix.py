@@ -1,3 +1,5 @@
+import warnings
+
 import pandas as pd
 
 
@@ -20,6 +22,8 @@ class ReadExperimentTable:
         # remove the mg from the name of the column, and removed any extra spaces
         experiment_df.columns = [col.replace("(mg)", "").strip() for col in experiment_df.columns]
 
+        experiment_df["temperature"] = experiment_df["T (C)"]
+
         return cls(experiment_df, use_is)
 
     @classmethod
@@ -31,6 +35,8 @@ class ReadExperimentTable:
         raise NotImplementedError
 
     def compute_is_amount(self, concentration):
+        if not self.used_is:
+            warnings.warn("Internal Standard is set to False, not sure if what you are doing is correct...")
         self.experiment_df["is_amount"] = self.experiment_df.apply(lambda row: row['is'] * concentration, axis=1)
 
     def compute_char(self):
@@ -58,4 +64,5 @@ class ReadExperimentTable:
                                           self.experiment_df["total after w/o holder"] - \
                                           self.experiment_df["total before w/o holder"]
 
-        self.experiment_df["% char"] = self.experiment_df["char mass"].values + self.experiment_df["sample"].values
+        self.experiment_df["% char"] = self.experiment_df["char mass"].values / self.experiment_df[
+            "sample"].values * 100

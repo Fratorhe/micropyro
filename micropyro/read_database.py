@@ -14,8 +14,12 @@ class ReadDatabaseMicropyro():
         self.database.index = self.database.index.str.lower()
         self.database.columns = self.database.columns.str.lower()
         self.database.formula = self.database.formula.str.lower()
+        self.database.index = [compound.strip() for compound in self.database.index.values]
 
         self.atoms = ['c', 'h', 'o', 'n']  # This could be extended if needed
+
+        self.process_chon()
+        self.process_ecn_mrf()
 
     @classmethod
     def from_excel(cls, filename):
@@ -26,7 +30,8 @@ class ReadDatabaseMicropyro():
         :param filename:
         :return:
         """
-        database = pd.read_excel(filename, index_col=0)  # reads the file and sets the first column as index
+        database = pd.read_excel(filename, index_col=0,
+                                 converters={'MW': float})  # reads the file and sets the first column as index
         database = database[database.index.notnull()]  # removes the extra rows with index NaN
         return cls(database)
 
@@ -41,7 +46,7 @@ class ReadDatabaseMicropyro():
         """
         raise NotImplementedError
 
-    def process_CHON(self):
+    def process_chon(self):
         for atom in self.atoms:
             self.database[atom] = self.database.apply(lambda row: self.extract_atoms(row['formula'], atom), axis=1)
 
@@ -51,18 +56,18 @@ class ReadDatabaseMicropyro():
 
     @staticmethod
     def _compute_ecn(row):
-        return row['c']
+        return int(row['c'])
 
     @staticmethod
     def _compute_mrf(row):
         combust = ReadDatabaseMicropyro._compute_combust(row['c'], row['h'], row['o'], row['n'])
         n_benz = row['n_benz']
         mrf = -0.071 + 0.000857 * combust + n_benz * 0.127
-        return mrf
+        return float(mrf)
 
     @staticmethod
-    def _compute_combust(C, H, O, N):
-        combust = 11.6 + 103.57 * C + 21.85 * H - 48.18 * O + 7.46 * N
+    def _compute_combust(c, h, o, n):
+        combust = 11.6 + 103.57 * c + 21.85 * h - 48.18 * o + 7.46 * n
         return combust
 
     @staticmethod
