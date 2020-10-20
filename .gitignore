@@ -80,3 +80,6 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# folder with experimental data
+data/
