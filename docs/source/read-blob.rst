@@ -30,10 +30,22 @@ We can also access properties of a specific compound using pandas:
 
     print(blob_file.volume["ethane"])
 
+Description of the blob read file function is described here:
+
+.. autofunction:: micropyro.read_blob_file
+
+
+Matching blob file with database
+--------------------------------
+
 However, the most important part is to match the compounds in the blob file with the database,
 thus grabbing the properties of interest from the database and passing them to the blob file. This is done using the
-function :code:`ReadDatabase`
+function :code:`perform_matching_database`:
 
 .. code-block:: python
 
     perform_matching_database(blob_df=blob_file, database_df=database_df, extra_columns=['c'])
+
+A description of this function is found below:
+
+.. autofunction:: micropyro.perform_matching_database
