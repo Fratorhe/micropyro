@@ -5,6 +5,11 @@ import pandas as pd
 
 class ReadExperimentTable:
     def __init__(self, experiment_df, used_is):
+        """
+
+        :param experiment_df:
+        :param used_is:
+        """
         self.experiment_df = experiment_df
 
         # set all column headers in lower case to ensure there is no mistake
@@ -16,6 +21,14 @@ class ReadExperimentTable:
 
     @classmethod
     def from_xls(cls, filename, sheet_name=0, use_is=True, **kwargs):
+        """
+
+        :param filename:
+        :param sheet_name:
+        :param use_is:
+        :param kwargs:
+        :return:
+        """
         experiment_df = pd.read_excel(filename, sheet_name, **kwargs)
         experiment_df = experiment_df[experiment_df['Filename'].notna()]
         experiment_df = experiment_df.set_index('Filename')
@@ -28,6 +41,9 @@ class ReadExperimentTable:
 
     @classmethod
     def from_json(cls):
+        """
+
+        """
         raise NotImplementedError
 
     @classmethod

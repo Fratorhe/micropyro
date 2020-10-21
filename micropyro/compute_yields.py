@@ -1,4 +1,11 @@
 def compute_yields_is(experiment_df_row, blob_df, internal_standard_name):
+    """
+
+    :param experiment_df_row:
+    :param blob_df:
+    :param internal_standard_name:
+    :return:
+    """
     sample_mass = experiment_df_row['sample']
 
     # get the internal standard compound and drop it from the original dataframe.
@@ -23,6 +30,13 @@ def compute_yields_is(experiment_df_row, blob_df, internal_standard_name):
 
 
 def define_internal_standard(experiment_df_row, blob_df, internal_standard_name):
+    """
+
+    :param experiment_df_row:
+    :param blob_df:
+    :param internal_standard_name:
+    :return:
+    """
     internal_standard = blob_df.loc[internal_standard_name].copy()
     mass_IS = experiment_df_row.is_amount
     internal_standard['moles'] = (mass_IS / 1000) / internal_standard.mw
@@ -30,4 +44,9 @@ def define_internal_standard(experiment_df_row, blob_df, internal_standard_name)
 
 
 def save_results_yields(blob_df, filename):
+    """
+
+    :param blob_df:
+    :param filename:
+    """
     blob_df.to_csv(filename)

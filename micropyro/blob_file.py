@@ -2,6 +2,11 @@ import pandas as pd
 
 
 def read_blob_file(filename):
+    """
+
+    :param filename:
+    :return:
+    """
     blob_file = pd.read_csv(filename, index_col=1)
     blob_file = blob_file[blob_file.Inclusion]
     blob_file.drop(['BlobID', 'Group Name', 'Inclusion', 'Internal Standard', "Retention I (min)", "Retention II (sec)",
@@ -12,16 +17,23 @@ def read_blob_file(filename):
     return blob_file
 
 
-def define_internal_standard(blob_dataframe):
-    pass
-
-
 def check_matches_database(blob_df, database_df):
+    """
+
+    :param blob_df:
+    :param database_df:
+    """
     for compound, _ in blob_df.iterrows():
         check_match_database(compound, database_df)
 
 
 def check_match_database(compound, database_df):
+    """
+
+    :param compound:
+    :param database_df:
+    :return:
+    """
     if compound not in database_df.index:
         print(f'{compound} not found in database')
         return False
@@ -30,6 +42,11 @@ def check_match_database(compound, database_df):
 
 
 def perform_matching_database(blob_df, database_df):
+    """
+
+    :param blob_df:
+    :param database_df:
+    """
     # get all the columns from the database that start with the word group
     columns_grouping = [group for group in list(database_df.columns.values) if group.startswith("group")]
 
