@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Read a Blob File &mdash; micropyro 0.post17+g85579f1 documentation</title>
+  <title>Read a Blob File &mdash; micropyro 0.post18+g35a09e8 documentation</title>
   
 
   
@@ -39,7 +39,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Release History" href="release-history.html" />
+    <link rel="next" title="Read experimental matrix" href="experiment-reader.html" />
     <link rel="prev" title="Read a Database" href="read-database.html" />
     <link href="_static/style.css" rel="stylesheet" type="text/css">
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.post17+g85579f1
+                0.post18+g35a09e8
               </div>
             
           
@@ -99,6 +99,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#matching-blob-file-with-database">Matching blob file with database</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="experiment-reader.html">Read experimental matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compute-yields.html">Compute yields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Requires</a></li>
 </ul>
@@ -197,16 +199,18 @@ To do so, we need to pass the database dataframe and the blob file dataframe. Th
 <dd><p>Reads a blob file (CSV) from GC Image software.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> – str
-blob file to be read.</p></li>
-<li><p><strong>drop_useless_columns</strong> – bool.
-drop some columns from the dataframe which are not used. TODO: revisit if some may be useful (retention time?)</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename: str</strong></dt><dd><p>blob file to be read.</p>
+</dd>
+<dt><strong>drop_useless_columns: bool.</strong></dt><dd><p>drop some columns from the dataframe which are not used. TODO: revisit if some may be useful (retention time?)</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>blob_file: df
-with the blob file.</p>
+<dd class="field-even"><dl class="simple">
+<dt>blob_file: df</dt><dd><p>with the blob file.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -222,20 +226,20 @@ function <code class="code docutils literal notranslate"><span class="pre">perfo
 <p>A description of this function is found below:</p>
 <dl class="py function">
 <dt id="micropyro.perform_matching_database">
-<code class="sig-prename descclassname">micropyro.</code><code class="sig-name descname">perform_matching_database</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">blob_df</span></em>, <em class="sig-param"><span class="n">database_df</span></em>, <em class="sig-param"><span class="n">extra_columns</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/blob_file.html#perform_matching_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.perform_matching_database" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">micropyro.</code><code class="sig-name descname">perform_matching_database</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">blob_df</span></em>, <em class="sig-param"><span class="n">database_df</span></em>, <em class="sig-param"><span class="n">extra_columns</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/blob_file.html#perform_matching_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.perform_matching_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to perform the matching with the database. If the match is correct,
 it will copy the required properties to the blob_df.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>blob_df</strong> – pandas dataframe
-Read using read_blob_file</p></li>
-<li><p><strong>database_df</strong> – pandas dataframe
-Dataframe with the different compounds.</p></li>
-<li><p><strong>extra_columns</strong> – list of str
-Extra columns to be copied from the database to the blob_df
-(maybe “c”, “h”, “o”, etc. if intending to do elemental balance)</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>blob_df: pandas dataframe</strong></dt><dd><p>Read using read_blob_file</p>
+</dd>
+<dt><strong>database_df: pandas dataframe</strong></dt><dd><p>Dataframe with the different compounds.</p>
+</dd>
+<dt><strong>extra_columns: list of str</strong></dt><dd><p>Extra columns to be copied from the database to the blob_df
+(maybe “c”, “h”, “o”, etc. if intending to do elemental balance)</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -251,7 +255,7 @@ Extra columns to be copied from the database to the blob_df
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="release-history.html" class="btn btn-neutral float-right" title="Release History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="experiment-reader.html" class="btn btn-neutral float-right" title="Read experimental matrix" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="read-database.html" class="btn btn-neutral float-left" title="Read a Database" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

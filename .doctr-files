@@ -1,6 +1,10 @@
 ./_modules/index.html
 ./_modules/micropyro/blob_file.html
+./_modules/micropyro/compute_yields.html
+./_modules/micropyro/experimental_matrix.html
 ./_modules/micropyro/read_database.html
+./_sources/compute-yields.rst.txt
+./_sources/experiment-reader.rst.txt
 ./_sources/index.rst.txt
 ./_sources/installation.rst.txt
 ./_sources/loading-module.rst.txt
@@ -97,6 +101,8 @@
 ./_static/style.css
 ./_static/underscore-1.3.1.js
 ./_static/underscore.js
+./compute-yields.html
+./experiment-reader.html
 ./genindex.html
 ./index.html
 ./installation.html

@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>micropyro.compute_yields &mdash; micropyro 0.post18+g35a09e8 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> micropyro
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.post18+g35a09e8
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../loading-module.html">Loading Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../read-database.html">Read a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../read-blob.html">Read a Blob File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../experiment-reader.html">Read experimental matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compute-yields.html">Compute yields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../min_versions.html">Requires</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">micropyro</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>micropyro.compute_yields</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for micropyro.compute_yields</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="compute_yields_is"><a class="viewcode-back" href="../../compute-yields.html#micropyro.compute_yields_is">[docs]</a><span></span><span class="k">def</span> <span class="nf">compute_yields_is</span><span class="p">(</span><span class="n">experiment_df_row</span><span class="p">,</span> <span class="n">blob_df</span><span class="p">,</span> <span class="n">internal_standard_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to compute the yields of an experiment from an internal standard.</span>
+<span class="sd">    Requires the experiment, the blob file and the name of the internal standard used.</span>
+<span class="sd">    Updates teh blob_df adding the following columns:</span>
+
+<span class="sd">    - **moles ecn**: moles of compound using the ecn method.</span>
+
+<span class="sd">    - **moles mrf**: moles of compound using the mrf method.</span>
+
+<span class="sd">    - **mass mrf**: mass (mg) of compound using mrf method.</span>
+
+<span class="sd">    - **yield mrf**: % wrt sample mass.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    experiment_df_row: row of a dataframe</span>
+<span class="sd">                with experiments from micropyrolysis. Created using ReadExperimentTable.</span>
+<span class="sd">    blob_df: df</span>
+<span class="sd">                with the blobs after performing the database matching.</span>
+<span class="sd">    internal_standard_name: str</span>
+<span class="sd">                name of the internal standard used.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    blob_df</span>
+<span class="sd">        with updated columns</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># extract the sample mass</span>
+    <span class="n">sample_mass</span> <span class="o">=</span> <span class="n">experiment_df_row</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">]</span>
+
+    <span class="c1"># get the internal standard compound and drop it from the original dataframe.</span>
+    <span class="c1"># it requires a different treatment</span>
+    <span class="n">internal_standard</span> <span class="o">=</span> <span class="n">define_internal_standard</span><span class="p">(</span><span class="n">experiment_df_row</span><span class="p">,</span> <span class="n">blob_df</span><span class="p">,</span> <span class="n">internal_standard_name</span><span class="p">)</span>
+    <span class="n">blob_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">internal_standard_name</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># compute the moles using the ecn for each compound and add it in a new column</span>
+    <span class="n">blob_df</span><span class="p">[</span><span class="s2">&quot;moles ecn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">volume</span> <span class="o">*</span> <span class="n">internal_standard</span><span class="o">.</span><span class="n">moles</span> <span class="o">/</span> <span class="n">internal_standard</span><span class="o">.</span><span class="n">volume</span> <span class="o">*</span> <span class="n">internal_standard</span><span class="o">.</span><span class="n">ecn</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">ecn</span><span class="p">),</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># compute the moles using the mrf for each compound and add it in a new column</span>
+    <span class="n">blob_df</span><span class="p">[</span><span class="s2">&quot;moles mrf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">volume</span> <span class="o">*</span> <span class="n">internal_standard</span><span class="o">.</span><span class="n">moles</span> <span class="o">/</span> <span class="n">internal_standard</span><span class="o">.</span><span class="n">volume</span> <span class="o">*</span> <span class="n">internal_standard</span><span class="o">.</span><span class="n">mrf</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">mrf</span><span class="p">),</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># compute the mass using the mrf for each compound and add it in a new column</span>
+    <span class="n">blob_df</span><span class="p">[</span><span class="s2">&quot;mass mrf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;moles mrf&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;mw&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># compute the yield using the mrf for each compound and add it in a new column in percent</span>
+    <span class="n">blob_df</span><span class="p">[</span><span class="s2">&quot;yield mrf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mass mrf&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">sample_mass</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">blob_df</span></div>
+
+
+<div class="viewcode-block" id="define_internal_standard"><a class="viewcode-back" href="../../compute-yields.html#micropyro.define_internal_standard">[docs]</a><span class="k">def</span> <span class="nf">define_internal_standard</span><span class="p">(</span><span class="n">experiment_df_row</span><span class="p">,</span> <span class="n">blob_df</span><span class="p">,</span> <span class="n">internal_standard_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Grabs the internal standard from the blob_df and from the experiment df to</span>
+<span class="sd">    combine them and have all the required data together.</span>
+<span class="sd">    This function is not usually used directly, but by compute_yields_is.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    experiment_df_row: df row.</span>
+<span class="sd">                of the experiment being analyzed.</span>
+<span class="sd">    blob_df: df</span>
+<span class="sd">                dataframe after being processed with.</span>
+<span class="sd">    internal_standard_name: str</span>
+<span class="sd">                Name of the internal standard compound.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    internal_standard: df row</span>
+<span class="sd">            Data of the internal standard in a pandas dataframe row.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">internal_standard</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">internal_standard_name</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">mass_IS</span> <span class="o">=</span> <span class="n">experiment_df_row</span><span class="o">.</span><span class="n">is_amount</span>
+    <span class="n">internal_standard</span><span class="p">[</span><span class="s1">&#39;moles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mass_IS</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">/</span> <span class="n">internal_standard</span><span class="o">.</span><span class="n">mw</span>
+    <span class="k">return</span> <span class="n">internal_standard</span></div>
+
+
+<div class="viewcode-block" id="save_results_yields"><a class="viewcode-back" href="../../compute-yields.html#micropyro.save_results_yields">[docs]</a><span class="k">def</span> <span class="nf">save_results_yields</span><span class="p">(</span><span class="n">blob_df</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Save the resulting blob_df to a new file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    blob_df: df</span>
+<span class="sd">    filename: str</span>
+<span class="sd">            name of the output file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">blob_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Francisco Torres
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
