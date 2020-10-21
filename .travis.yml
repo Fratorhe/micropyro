@@ -6,6 +6,15 @@ cache:
     - $HOME/.cache/pip
     - $HOME/.ccache  # https://github.com/travis-ci/travis-ci/issues/5853
 
+env:
+  global:
+    # Doctr deploy key for Fratorhe/micropyro
+    - secure: "VEpgCF17ioW3zPfojID2oDAI1GImqd4hFklSoRWNUblFbjlaqvQo8z+TAaQKL1riJc427ksRGUtE7ZYSCY1LhRCp+Jb9W9HWebuKp+6YyVdW4GLEykwdviWNSwIzk7pzATFdv5nhvLUeyaON84V79rc4EC7W+KSO6vwKNhroZfITF46DXCmPjiNS5bLmf
+2H2TiO9hGDkt2TcBezRNkggKqC4geb2UHaGR3iW07wAOF0Dv7BceRPQ6oaGvetI8SJbUIakFYPnKEAdE8B36qWckCVK5s2zMEiVdDxr1xLFSpfGZynVqFm7AiDEoT4CWQiW3zOrYx3SOUhJ8mv5U7Y3A41MQYj1K9mswZEvqhaikjaxAeD7vYP8XTnr1ZSCuFPfOJdjv3Re/scfx
+LOkzp84FVfZcQz0BaHsy+AZxjwLZEkmxVkUXcOkDCOOftfqsC/AEzriGjPXxbyj0ClH0UpulDwf7TcP9oVR3RWbRSGe4tg2pUcqzwv5jTSq+DxyAA8HXLc21V5J55ERqp1auqGMRG2h1S/Sywu9FDHWbi4BrRuJjeaL6oq/mPbjt57j+zvXmaoP4t/zo7wVfWWbllsH3I3A0ifMh
+hFQSDyVLsmaAUn1d6EdZdL6K4qWha06OLruWKXTG/Rg9cQsXINpvUTh67o/rDZyIMidvbtIpEYQnZE="
+
+
 install:
   # The versions of pip and numpy that come pre-installed are often too old and
   # can cause problems. Upgrade them.
@@ -19,5 +28,5 @@ script:
   - coverage run -m pytest  # Run the tests and check for test coverage.
   - coverage report -m  # Generate test coverage report.
   - codecov  # Upload the report to codecov.
-#  - flake8  # Enforce code style ('relaxed' line length limit is set in .flake8 config file).
+  #  - flake8  # Enforce code style ('relaxed' line length limit is set in .flake8 config file).
   - make -C docs html  # Build the documentation.
