@@ -35,4 +35,4 @@ Specific compound or columns can be accessed as follows:
 
 A description of the class is found here:
 
-.. autoclass:: micropyro.read_database.ReadDatabase
+.. autoclass:: micropyro.ReadDatabase
