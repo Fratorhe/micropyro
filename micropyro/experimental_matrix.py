@@ -4,6 +4,29 @@ import pandas as pd
 
 
 class ReadExperimentTable:
+    """
+    A class used to read experimental matrix typically done in micropyrolysis
+    The idea is to have different constructors to create the df (csv, json, xls, etc).
+    Each constructor should return the appropriate pandas dataframe as described in the test cases.
+    ...
+
+    Attributes
+    ----------
+    experiment_df : df
+        a pandas dataframe with the information on the various experiments performed.
+    used_is : bool
+        define if internal standard was used (True) or not (False)
+
+    Methods
+    -------
+    from_xls(cls, filename, sheet_name=0, use_is=True, **kwargs)
+        Class method to load a xls file
+    from_json(cls)
+        Class method to load a json file (not available yet)
+    from_dict(cls, filename, sheet_name=0, use_is=True, **kwargs)
+        Class method to load a dict
+    """
+
     def __init__(self, experiment_df, used_is):
         """
 
