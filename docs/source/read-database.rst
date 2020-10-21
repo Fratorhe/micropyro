@@ -1,16 +1,7 @@
-=====
-Usage
-=====
-
-Start by importing micropyro (use abbreviation :code:`mp` to look fancy).
-
-.. code-block:: python
-
-    import micropyro as mp
-
-
+====================
 Read a Database
-----------------
+====================
+
 Reading a database is usually the first task to be done when computing yields.
 This is done using the class :code:`ReadDatabase`
 If you are importing it from an excel file:

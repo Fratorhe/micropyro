@@ -113,10 +113,10 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_theme_options = {'body_max_width': 'auto',}
+# html_theme_options = {}
 
 # Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static fisdfles,
+# relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
@@ -200,7 +200,3 @@ intersphinx_mapping = {
     'pandas': ('https://pandas.pydata.org/pandas-docs/stable', None),
     'matplotlib': ('https://matplotlib.org', None),
 }
-
-
-# added to have the tables fit in the page.
-html_css_files  = '_static/default.css'

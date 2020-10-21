@@ -12,6 +12,8 @@ Package to analyse micropyrolysis data from GC Image software
    :maxdepth: 2
 
    installation
-   usage
+   loading-module
+   read-database
+   read-blob
    release-history
    min_versions

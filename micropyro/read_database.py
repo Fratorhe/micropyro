@@ -5,7 +5,7 @@ import pandas as pd
 
 class ReadDatabase:
     """
-    A class used to read database for micropyrolysis computations
+    A class used to read database for micropyrolysis computations.
     The idea is to have different constructors to create the df (csv, json, xls, google sheets, etc).
     Each constructor should return the appropriate pandas dataframe as described in the test cases.
     User should provide only the name of the compound, the empirical formula, the MW, and the number of benzene rings.
