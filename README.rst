@@ -12,9 +12,21 @@ micropyro
 Package to analyse micropyrolysis data from GC Image software
 
 * Free software: 3-clause BSD license
-* Documentation: (COMING SOON!) https://fratorhe.github.io/micropyro.
+* Documentation: (Partly) https://fratorhe.github.io/micropyro.
 
 Features
 --------
 
-* TODO
+* Read database of compounds.
+* Read experimental matrix.
+* Read blob files from GC Image.
+* Compute yields based on the previous.
+
+To Do
+--------
+
+* graphs and statistics
+* include gas and char yields
+* mass balance
+* elemental balance
+* etc.

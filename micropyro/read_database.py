@@ -3,7 +3,7 @@ import re
 import pandas as pd
 
 
-class ReadDatabaseMicropyro:
+class ReadDatabase:
     """
     A class used to read database for micropyrolysis computations
     The idea is to have different constructors to create the df (csv, json, xls, google sheets, etc).
@@ -12,6 +12,7 @@ class ReadDatabaseMicropyro:
     TODO: this could be improved further by crating a scrapper that adds the compounds to the database directly.
     ...
 
+
     Attributes
     ----------
     database : df
@@ -19,22 +20,17 @@ class ReadDatabaseMicropyro:
     atoms : tuple. Class attribute.
         atoms to be studied
 
-    Class Methods
-    -------------
-    from_xls(cls, filename, **kwargs)
-        Class method to load a xls file. Accepts **kwargs for pandas.read_excel().
-    from_csv(cls)
-        Class method to load a csv file (not available yet)
 
     Methods
     -------------
+    from_xls(cls, filename, **kwargs)
+        Class method to load a xls file. Accepts kwargs for pandas.read_excel.
+    from_csv(cls)
+        Class method to load a csv file (not available yet).
     process_chon(self)
         Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the database.
     process_ecn_mrf(self)
-        Computes the ecn and the mrf. Uses _compute_ecn and _compute_mrf
-
-    Static Methods
-    -------------
+        Computes the ecn and the mrf. Uses _compute_ecn and _compute_mrf.
     _compute_ecn(row)
         Computes the effective carbon number for a given row (compound)
     _compute_mrf(row)
@@ -101,8 +97,8 @@ class ReadDatabaseMicropyro:
         """
         Computes the ecn and mrf for each row in the database. Uses the static methods _compute_ecn and _compute_mrf.
         """
-        self.database['ecn'] = self.database.apply(lambda row: ReadDatabaseMicropyro._compute_ecn(row), axis=1)
-        self.database['mrf'] = self.database.apply(lambda row: ReadDatabaseMicropyro._compute_mrf(row), axis=1)
+        self.database['ecn'] = self.database.apply(lambda row: ReadDatabase._compute_ecn(row), axis=1)
+        self.database['mrf'] = self.database.apply(lambda row: ReadDatabase._compute_mrf(row), axis=1)
 
     @staticmethod
     def _compute_ecn(row):
@@ -125,7 +121,7 @@ class ReadDatabaseMicropyro:
         :return: float.
                 the value of the mrf.
         """
-        combust = ReadDatabaseMicropyro._compute_combust(row['c'], row['h'], row['o'], row['n'])
+        combust = ReadDatabase._compute_combust(row['c'], row['h'], row['o'], row['n'])
         n_benz = row['n_benz']
         mrf = -0.071 + 0.000857 * combust + n_benz * 0.127
         return float(mrf)

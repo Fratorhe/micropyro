@@ -28,7 +28,7 @@ def check_matches_database(blob_df, database_df):
     :param blob_df: dataframe
             Read using read_blob_file
     :param database_df: dataframe
-            Created with the class ReadDatabaseMicropyro
+            Created with the class ReadDatabase
     """
     for compound, _ in blob_df.iterrows():
         check_match_database(compound, database_df)

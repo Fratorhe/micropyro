@@ -2,3 +2,5 @@
 
 setuptools~=41.5.0
 pandas~=1.0.4
+matplotlib~=3.3.2
+pytest~=6.0.2
