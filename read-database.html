@@ -7,32 +7,13 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Usage &mdash; micropyro 0.post15+geb270a2 documentation</title>
+  <title>Read a Database &mdash; micropyro 0.post17+g85579f1 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
-  <link rel="stylesheet" href="_static/_" type="text/css" />
-  <link rel="stylesheet" href="_static/s" type="text/css" />
-  <link rel="stylesheet" href="_static/t" type="text/css" />
-  <link rel="stylesheet" href="_static/a" type="text/css" />
-  <link rel="stylesheet" href="_static/t" type="text/css" />
-  <link rel="stylesheet" href="_static/i" type="text/css" />
-  <link rel="stylesheet" href="_static/c" type="text/css" />
-  <link rel="stylesheet" href="/" type="text/css" />
-  <link rel="stylesheet" href="_static/d" type="text/css" />
-  <link rel="stylesheet" href="_static/e" type="text/css" />
-  <link rel="stylesheet" href="_static/f" type="text/css" />
-  <link rel="stylesheet" href="_static/a" type="text/css" />
-  <link rel="stylesheet" href="_static/u" type="text/css" />
-  <link rel="stylesheet" href="_static/l" type="text/css" />
-  <link rel="stylesheet" href="_static/t" type="text/css" />
-  <link rel="stylesheet" href="_static/." type="text/css" />
-  <link rel="stylesheet" href="_static/c" type="text/css" />
-  <link rel="stylesheet" href="_static/s" type="text/css" />
-  <link rel="stylesheet" href="_static/s" type="text/css" />
 
   
   
@@ -58,8 +39,10 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Release History" href="release-history.html" />
-    <link rel="prev" title="Installation" href="installation.html" /> 
+    <link rel="next" title="Read a Blob File" href="read-blob.html" />
+    <link rel="prev" title="Loading Module" href="loading-module.html" />
+    <link href="_static/style.css" rel="stylesheet" type="text/css">
+
 </head>
 
 <body class="wy-body-for-nav">
@@ -83,7 +66,7 @@
             
             
               <div class="version">
-                0.post15+geb270a2
+                0.post17+g85579f1
               </div>
             
           
@@ -110,10 +93,9 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#read-a-database">Read a Database</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="loading-module.html">Loading Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Read a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read-blob.html">Read a Blob File</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Requires</a></li>
 </ul>
@@ -162,13 +144,13 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Usage</li>
+      <li>Read a Database</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/read-database.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -181,14 +163,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<p>Start by importing micropyro (use abbreviation <code class="code docutils literal notranslate"><span class="pre">mp</span></code> to look fancy).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">micropyro</span> <span class="k">as</span> <span class="nn">mp</span>
-</pre></div>
-</div>
-<div class="section" id="read-a-database">
-<h2>Read a Database<a class="headerlink" href="#read-a-database" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="read-a-database">
+<h1>Read a Database<a class="headerlink" href="#read-a-database" title="Permalink to this headline">¶</a></h1>
 <p>Reading a database is usually the first task to be done when computing yields.
 This is done using the class <code class="code docutils literal notranslate"><span class="pre">ReadDatabase</span></code>
 If you are importing it from an excel file:</p>
@@ -211,7 +187,7 @@ Specific compound or columns can be accessed as follows:</p>
 <dl class="py class">
 <dt id="micropyro.ReadDatabase">
 <em class="property">class </em><code class="sig-prename descclassname">micropyro.</code><code class="sig-name descname">ReadDatabase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">database</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/read_database.html#ReadDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.ReadDatabase" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class used to read database for micropyrolysis computations
+<dd><p>A class used to read database for micropyrolysis computations.
 The idea is to have different constructors to create the df (csv, json, xls, google sheets, etc).
 Each constructor should return the appropriate pandas dataframe as described in the test cases.
 User should provide only the name of the compound, the empirical formula, the MW, and the number of benzene rings.
@@ -263,7 +239,6 @@ TODO: this could be improved further by crating a scrapper that adds the compoun
 </dd></dl>
 
 </div>
-</div>
 
 
            </div>
@@ -273,10 +248,10 @@ TODO: this could be improved further by crating a scrapper that adds the compoun
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="release-history.html" class="btn btn-neutral float-right" title="Release History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="read-blob.html" class="btn btn-neutral float-right" title="Read a Blob File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="loading-module.html" class="btn btn-neutral float-left" title="Loading Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
