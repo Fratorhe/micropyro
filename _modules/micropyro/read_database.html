@@ -1,0 +1,390 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>micropyro.read_database &mdash; micropyro 0.post14+gc009029 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/_" type="text/css" />
+  <link rel="stylesheet" href="../../_static/s" type="text/css" />
+  <link rel="stylesheet" href="../../_static/t" type="text/css" />
+  <link rel="stylesheet" href="../../_static/a" type="text/css" />
+  <link rel="stylesheet" href="../../_static/t" type="text/css" />
+  <link rel="stylesheet" href="../../_static/i" type="text/css" />
+  <link rel="stylesheet" href="../../_static/c" type="text/css" />
+  <link rel="stylesheet" href="/" type="text/css" />
+  <link rel="stylesheet" href="../../_static/d" type="text/css" />
+  <link rel="stylesheet" href="../../_static/e" type="text/css" />
+  <link rel="stylesheet" href="../../_static/f" type="text/css" />
+  <link rel="stylesheet" href="../../_static/a" type="text/css" />
+  <link rel="stylesheet" href="../../_static/u" type="text/css" />
+  <link rel="stylesheet" href="../../_static/l" type="text/css" />
+  <link rel="stylesheet" href="../../_static/t" type="text/css" />
+  <link rel="stylesheet" href="../../_static/." type="text/css" />
+  <link rel="stylesheet" href="../../_static/c" type="text/css" />
+  <link rel="stylesheet" href="../../_static/s" type="text/css" />
+  <link rel="stylesheet" href="../../_static/s" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> micropyro
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.post14+gc009029
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../min_versions.html">Requires</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">micropyro</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>micropyro.read_database</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for micropyro.read_database</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="ReadDatabase"><a class="viewcode-back" href="../../usage.html#micropyro.read_database.ReadDatabase">[docs]</a><span class="k">class</span> <span class="nc">ReadDatabase</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class used to read database for micropyrolysis computations</span>
+<span class="sd">    The idea is to have different constructors to create the df (csv, json, xls, google sheets, etc).</span>
+<span class="sd">    Each constructor should return the appropriate pandas dataframe as described in the test cases.</span>
+<span class="sd">    User should provide only the name of the compound, the empirical formula, the MW, and the number of benzene rings.</span>
+<span class="sd">    TODO: this could be improved further by crating a scrapper that adds the compounds to the database directly.</span>
+<span class="sd">    ...</span>
+
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    database : df</span>
+<span class="sd">        a pandas dataframe with the actual database</span>
+<span class="sd">    atoms : tuple. Class attribute.</span>
+<span class="sd">        atoms to be studied</span>
+
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------------</span>
+<span class="sd">    from_xls(cls, filename, **kwargs)</span>
+<span class="sd">        Class method to load a xls file. Accepts kwargs for pandas.read_excel.</span>
+<span class="sd">    from_csv(cls)</span>
+<span class="sd">        Class method to load a csv file (not available yet).</span>
+<span class="sd">    process_chon(self)</span>
+<span class="sd">        Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the database.</span>
+<span class="sd">    process_ecn_mrf(self)</span>
+<span class="sd">        Computes the ecn and the mrf. Uses _compute_ecn and _compute_mrf.</span>
+<span class="sd">    _compute_ecn(row)</span>
+<span class="sd">        Computes the effective carbon number for a given row (compound)</span>
+<span class="sd">    _compute_mrf(row)</span>
+<span class="sd">        Computes the mrf for a given row (compound), uses _compute_combust to perform the computations.</span>
+<span class="sd">    _compute_combust(c, h, o, n)</span>
+<span class="sd">        Computes the combustion for a given row (compound)</span>
+<span class="sd">    _extract_atoms(formula, atom)</span>
+<span class="sd">        Extracts atoms (c,h,o,n) from a given formula. Used by process_chon</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">atoms</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">)</span>  <span class="c1"># This could be extended if needed</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">database</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">database</span>
+
+        <span class="c1"># put everything in lower case to avoid problems</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">formula</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">formula</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">compound</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">compound</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_chon</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_ecn_mrf</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_xls</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This class method builds the database from an excel file.</span>
+<span class="sd">        Should contain Compound as first column. Remaining columns should be MW, Formula, N_Benz, and any grouping.</span>
+<span class="sd">        These columns do not have to be in any specific order, but to respect the name.</span>
+<span class="sd">        :param filename: str</span>
+<span class="sd">                filename (with path if needed) to the database file.</span>
+<span class="sd">        :return: constructor for the class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">database</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                 <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;MW&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">},</span>
+                                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># reads the file and sets the first column as index</span>
+        <span class="n">database</span> <span class="o">=</span> <span class="n">database</span><span class="p">[</span><span class="n">database</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>  <span class="c1"># removes the extra rows with index NaN</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_csv</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This class method builds the database from a csv file.</span>
+<span class="sd">        Should contain Compound as first column. Remaining columns should be MW, Formula, N_Benz, and any grouping.</span>
+<span class="sd">        These columns do not have to be in any specific order, but to respect the name.</span>
+<span class="sd">        :param filename:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">process_chon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For each atoms, extract the number from the empirical formula.</span>
+<span class="sd">        This is directly applied to all the rows in the dataframe and saved in new df columns with the name of the atom.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="n">atom</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_atoms</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;formula&#39;</span><span class="p">],</span> <span class="n">atom</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">process_ecn_mrf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the ecn and mrf for each row in the database. Uses the static methods _compute_ecn and _compute_mrf.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s1">&#39;ecn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">ReadDatabase</span><span class="o">.</span><span class="n">_compute_ecn</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">[</span><span class="s1">&#39;mrf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">ReadDatabase</span><span class="o">.</span><span class="n">_compute_mrf</span><span class="p">(</span><span class="n">row</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_compute_ecn</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computes the ecn (which actually is the number of carbons normally).</span>
+<span class="sd">        :param row: df row.</span>
+<span class="sd">                of a compound in database.</span>
+<span class="sd">        :return: int.</span>
+<span class="sd">                number of carbons in the compound.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">])</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_compute_mrf</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computes the mrf using an empirical formula.</span>
+<span class="sd">        TODO: see if this formula is always the same, or depends on the internal standard used.</span>
+<span class="sd">        :param row: df row.</span>
+<span class="sd">                of a compound in database.</span>
+<span class="sd">        :return: float.</span>
+<span class="sd">                the value of the mrf.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">combust</span> <span class="o">=</span> <span class="n">ReadDatabase</span><span class="o">.</span><span class="n">_compute_combust</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">])</span>
+        <span class="n">n_benz</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;n_benz&#39;</span><span class="p">]</span>
+        <span class="n">mrf</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.071</span> <span class="o">+</span> <span class="mf">0.000857</span> <span class="o">*</span> <span class="n">combust</span> <span class="o">+</span> <span class="n">n_benz</span> <span class="o">*</span> <span class="mf">0.127</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">mrf</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_compute_combust</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the heat of combustion.</span>
+<span class="sd">        :param c: number of carbons atoms</span>
+<span class="sd">        :param h: number of hydrogen atoms</span>
+<span class="sd">        :param o: number of oxygen atoms</span>
+<span class="sd">        :param n: number of nitrogen atoms</span>
+<span class="sd">        :return: heat of combustion for the given combination of atoms.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">combust</span> <span class="o">=</span> <span class="mf">11.6</span> <span class="o">+</span> <span class="mf">103.57</span> <span class="o">*</span> <span class="n">c</span> <span class="o">+</span> <span class="mf">21.85</span> <span class="o">*</span> <span class="n">h</span> <span class="o">-</span> <span class="mf">48.18</span> <span class="o">*</span> <span class="n">o</span> <span class="o">+</span> <span class="mf">7.46</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="k">return</span> <span class="n">combust</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_extract_atoms</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract the number of the specified atom in a given empirical formula.</span>
+<span class="sd">        :param formula: str</span>
+<span class="sd">                Formula of a compound (eg. CH4)</span>
+<span class="sd">        :param atom: str</span>
+<span class="sd">                Atom to search C, H, N, O.</span>
+<span class="sd">        :return: int</span>
+<span class="sd">                number of atoms of the given atom in the formula.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># ensure small caps for everything</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">atom</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="c1"># actual processing</span>
+        <span class="n">num_atoms</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">atom</span><span class="si">}</span><span class="s1">[0-9]+|</span><span class="si">{</span><span class="n">atom</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">formula</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">num_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">num_atoms</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="n">num_atoms</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">num_atoms</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Francisco Torres
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

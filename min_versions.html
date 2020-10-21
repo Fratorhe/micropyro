@@ -7,13 +7,32 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Minimum Version of Python and NumPy &mdash; micropyro 0.post13+g2b7dcf0 documentation</title>
+  <title>Requires &mdash; micropyro 0.post14+gc009029 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="_static/_" type="text/css" />
+  <link rel="stylesheet" href="_static/s" type="text/css" />
+  <link rel="stylesheet" href="_static/t" type="text/css" />
+  <link rel="stylesheet" href="_static/a" type="text/css" />
+  <link rel="stylesheet" href="_static/t" type="text/css" />
+  <link rel="stylesheet" href="_static/i" type="text/css" />
+  <link rel="stylesheet" href="_static/c" type="text/css" />
+  <link rel="stylesheet" href="/" type="text/css" />
+  <link rel="stylesheet" href="_static/d" type="text/css" />
+  <link rel="stylesheet" href="_static/e" type="text/css" />
+  <link rel="stylesheet" href="_static/f" type="text/css" />
+  <link rel="stylesheet" href="_static/a" type="text/css" />
+  <link rel="stylesheet" href="_static/u" type="text/css" />
+  <link rel="stylesheet" href="_static/l" type="text/css" />
+  <link rel="stylesheet" href="_static/t" type="text/css" />
+  <link rel="stylesheet" href="_static/." type="text/css" />
+  <link rel="stylesheet" href="_static/c" type="text/css" />
+  <link rel="stylesheet" href="_static/s" type="text/css" />
+  <link rel="stylesheet" href="_static/s" type="text/css" />
 
   
   
@@ -63,7 +82,7 @@
             
             
               <div class="version">
-                0.post13+g2b7dcf0
+                0.post14+gc009029
               </div>
             
           
@@ -92,7 +111,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Minimum Version of Python and NumPy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Requires</a></li>
 </ul>
 
             
@@ -139,7 +158,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Minimum Version of Python and NumPy</li>
+      <li>Requires</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -158,29 +177,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="minimum-version-of-python-and-numpy">
-<h1>Minimum Version of Python and NumPy<a class="headerlink" href="#minimum-version-of-python-and-numpy" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p>This project supports at least the minor versions of Python
-initially released 42 months prior to a planned project release
-date.</p></li>
-<li><p>The project will always support at least the 2 latest minor
-versions of Python.</p></li>
-<li><p>The project will support minor versions of <code class="docutils literal notranslate"><span class="pre">numpy</span></code> initially
-released in the 24 months prior to a planned project release date or
-the oldest version that supports the minimum Python version
-(whichever is higher).</p></li>
-<li><p>The project will always support at least the 3 latest minor
-versions of NumPy.</p></li>
-</ul>
+  <div class="section" id="requires">
+<h1>Requires<a class="headerlink" href="#requires" title="Permalink to this headline">¶</a></h1>
 <p>The minimum supported version of Python will be set to
 <code class="docutils literal notranslate"><span class="pre">python_requires</span></code> in <code class="docutils literal notranslate"><span class="pre">setup</span></code>.  All supported minor versions of
 Python will be in the test matrix and have binary artifacts built
 for releases.</p>
-<p>The project should adjust upward the minimum Python and NumPy
-version support on every minor and major release, but never on a
-patch release.</p>
-<p>This is consistent with NumPy <a class="reference external" href="https://numpy.org/neps/nep-0029-deprecation_policy.html">NEP 29</a>.</p>
+<p>The code uses <code class="docutils literal notranslate"><span class="pre">pandas</span></code> for reading/writing excel or csv files. Numpy is used in some processing.
+Regex allows to extract the number of atoms. Matplotlib is used for visualization.</p>
 </div>
 
 

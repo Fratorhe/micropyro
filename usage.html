@@ -7,13 +7,32 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Usage &mdash; micropyro 0.post13+g2b7dcf0 documentation</title>
+  <title>Usage &mdash; micropyro 0.post14+gc009029 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="_static/_" type="text/css" />
+  <link rel="stylesheet" href="_static/s" type="text/css" />
+  <link rel="stylesheet" href="_static/t" type="text/css" />
+  <link rel="stylesheet" href="_static/a" type="text/css" />
+  <link rel="stylesheet" href="_static/t" type="text/css" />
+  <link rel="stylesheet" href="_static/i" type="text/css" />
+  <link rel="stylesheet" href="_static/c" type="text/css" />
+  <link rel="stylesheet" href="/" type="text/css" />
+  <link rel="stylesheet" href="_static/d" type="text/css" />
+  <link rel="stylesheet" href="_static/e" type="text/css" />
+  <link rel="stylesheet" href="_static/f" type="text/css" />
+  <link rel="stylesheet" href="_static/a" type="text/css" />
+  <link rel="stylesheet" href="_static/u" type="text/css" />
+  <link rel="stylesheet" href="_static/l" type="text/css" />
+  <link rel="stylesheet" href="_static/t" type="text/css" />
+  <link rel="stylesheet" href="_static/." type="text/css" />
+  <link rel="stylesheet" href="_static/c" type="text/css" />
+  <link rel="stylesheet" href="_static/s" type="text/css" />
+  <link rel="stylesheet" href="_static/s" type="text/css" />
 
   
   
@@ -64,7 +83,7 @@
             
             
               <div class="version">
-                0.post13+g2b7dcf0
+                0.post14+gc009029
               </div>
             
           
@@ -91,9 +110,12 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#read-a-database">Read a Database</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="min_versions.html">Minimum Version of Python and NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min_versions.html">Requires</a></li>
 </ul>
 
             
@@ -161,9 +183,85 @@
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<p>Start by importing micropyro.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">micropyro</span>
+<p>Start by importing micropyro (use abbreviation <code class="code docutils literal notranslate"><span class="pre">mp</span></code> to look fancy).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">micropyro</span> <span class="k">as</span> <span class="nn">mp</span>
 </pre></div>
+</div>
+<div class="section" id="read-a-database">
+<h2>Read a Database<a class="headerlink" href="#read-a-database" title="Permalink to this headline">¶</a></h2>
+<p>Reading a database is usually the first task to be done when computing yields.
+This is done using the class <code class="code docutils literal notranslate"><span class="pre">ReadDatabase</span></code>
+If you are importing it from an excel file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">micropyro</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">ReadDatabase</span><span class="o">.</span><span class="n">from_xls</span><span class="p">(</span><span class="s1">&#39;Database_micropyro.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This internally computes also the number of atoms from each atom type, and the ECN and MRF for each compound.
+The actual database can be accessed by the attribute <code class="code docutils literal notranslate"><span class="pre">database</span></code>.asdf
+Specific compound or columns can be accessed as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;ethane&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">formula</span><span class="p">[</span><span class="s2">&quot;ethane&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">grouping</span><span class="p">[</span><span class="s2">&quot;ethane&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">mrf</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A description of the class is found here:</p>
+<dl class="py class">
+<dt id="micropyro.read_database.ReadDatabase">
+<em class="property">class </em><code class="sig-prename descclassname">micropyro.read_database.</code><code class="sig-name descname">ReadDatabase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">database</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/read_database.html#ReadDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.read_database.ReadDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class used to read database for micropyrolysis computations
+The idea is to have different constructors to create the df (csv, json, xls, google sheets, etc).
+Each constructor should return the appropriate pandas dataframe as described in the test cases.
+User should provide only the name of the compound, the empirical formula, the MW, and the number of benzene rings.
+TODO: this could be improved further by crating a scrapper that adds the compounds to the database directly.
+…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>database</strong><span class="classifier">df</span></dt><dd><p>a pandas dataframe with the actual database</p>
+</dd>
+<dt><strong>atoms</strong><span class="classifier">tuple. Class attribute.</span></dt><dd><p>atoms to be studied</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>from_xls(cls, filename, **kwargs)</strong></p></td>
+<td><p>Class method to load a xls file. Accepts kwargs for pandas.read_excel.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>from_csv(cls)</strong></p></td>
+<td><p>Class method to load a csv file (not available yet).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>process_chon(self)</strong></p></td>
+<td><p>Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>process_ecn_mrf(self)</strong></p></td>
+<td><p>Computes the ecn and the mrf. Uses _compute_ecn and _compute_mrf.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>_compute_ecn(row)</strong></p></td>
+<td><p>Computes the effective carbon number for a given row (compound)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>_compute_mrf(row)</strong></p></td>
+<td><p>Computes the mrf for a given row (compound), uses _compute_combust to perform the computations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>_compute_combust(c, h, o, n)</strong></p></td>
+<td><p>Computes the combustion for a given row (compound)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>_extract_atoms(formula, atom)</strong></p></td>
+<td><p>Extracts atoms (c,h,o,n) from a given formula. Used by process_chon</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 </div>
 

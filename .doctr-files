@@ -1,3 +1,5 @@
+./_modules/index.html
+./_modules/micropyro/read_database.html
 ./_sources/index.rst.txt
 ./_sources/installation.rst.txt
 ./_sources/min_versions.rst.txt
@@ -28,6 +30,7 @@
 ./_static/css/fonts/lato-normal.woff
 ./_static/css/fonts/lato-normal.woff2
 ./_static/css/theme.css
+./_static/default.css
 ./_static/doctools.js
 ./_static/documentation_options.js
 ./_static/file.png
