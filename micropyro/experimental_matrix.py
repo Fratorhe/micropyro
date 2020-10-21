@@ -32,6 +32,7 @@ class ReadExperimentTable:
         """
         Defines the dataframe of the experiments.
         Sets all the characters to lower case to avoid duplicity or mismatches with database.
+
         :param experiment_df: dataframe with the appropriate columns (see examples)
         :param used_is: bool internal standard used or not.
         """
@@ -93,6 +94,7 @@ class ReadExperimentTable:
         Typically, we use a mixture of a known standard and a non reacting material (Al2O3).
         This is done to have better precision when measuring mass of IS.
         If only the standard is used, set concentration to 1, and no problem.
+
         :param concentration: float
                 Concentration of the standard in the mixture.
         """

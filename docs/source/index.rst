@@ -15,5 +15,7 @@ Package to analyse micropyrolysis data from GC Image software
    loading-module
    read-database
    read-blob
+   experiment-reader
+   compute-yields
    release-history
    min_versions

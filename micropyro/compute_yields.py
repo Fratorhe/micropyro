@@ -3,17 +3,28 @@ def compute_yields_is(experiment_df_row, blob_df, internal_standard_name):
     Function to compute the yields of an experiment from an internal standard.
     Requires the experiment, the blob file and the name of the internal standard used.
     Updates teh blob_df adding the following columns:
-    - moles ecn: moles of compound using the ecn method.
-    - moles mrf: moles of compound using the mrf method.
-    - mass mrf: mass (mg) of compound using mrf method.
-    - yield mrf: % wrt sample mass.
-    :param experiment_df_row: row of a dataframe
+
+    - **moles ecn**: moles of compound using the ecn method.
+
+    - **moles mrf**: moles of compound using the mrf method.
+
+    - **mass mrf**: mass (mg) of compound using mrf method.
+
+    - **yield mrf**: % wrt sample mass.
+
+    Parameters
+    ----------
+    experiment_df_row: row of a dataframe
                 with experiments from micropyrolysis. Created using ReadExperimentTable.
-    :param blob_df: df
+    blob_df: df
                 with the blobs after performing the database matching.
-    :param internal_standard_name: str
+    internal_standard_name: str
                 name of the internal standard used.
-    :return: blob_df with updated columns
+
+    Returns
+    ----------
+    blob_df
+        with updated columns
     """
 
     # extract the sample mass
@@ -49,13 +60,20 @@ def define_internal_standard(experiment_df_row, blob_df, internal_standard_name)
     Grabs the internal standard from the blob_df and from the experiment df to
     combine them and have all the required data together.
     This function is not usually used directly, but by compute_yields_is.
-    :param experiment_df_row: df row.
+
+    Parameters
+    ----------
+    experiment_df_row: df row.
                 of the experiment being analyzed.
-    :param blob_df: df
+    blob_df: df
                 dataframe after being processed with.
-    :param internal_standard_name: str
+    internal_standard_name: str
                 Name of the internal standard compound.
-    :return:
+
+    Returns
+    ----------
+    internal_standard: df row
+            Data of the internal standard in a pandas dataframe row.
     """
     internal_standard = blob_df.loc[internal_standard_name].copy()
     mass_IS = experiment_df_row.is_amount
@@ -66,8 +84,11 @@ def define_internal_standard(experiment_df_row, blob_df, internal_standard_name)
 def save_results_yields(blob_df, filename):
     """
     Save the resulting blob_df to a new file.
-    :param blob_df: df
-    :param filename: str
+
+    Parameters
+    ----------
+    blob_df: df
+    filename: str
             name of the output file.
     """
     blob_df.to_csv(filename)
