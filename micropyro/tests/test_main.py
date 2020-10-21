@@ -14,5 +14,5 @@ test_data = (
 
 @pytest.mark.parametrize("formula,atom,expected", test_data)
 def test_extract_atoms(formula, atom, expected):
-    computed = ReadDatabaseMicropyro.extract_atoms(formula, atom)
+    computed = ReadDatabaseMicropyro._extract_atoms(formula, atom)
     assert computed == expected
