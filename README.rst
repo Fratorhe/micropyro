@@ -30,12 +30,13 @@ To Do
 * elemental balance
 * etc.
 
-To Do
+Install
 --------
 
-Clone the repository with the following
+Clone the repository and install in developer mode with the following:
 
 .. code-block:: shell-session
-    $ git clone https://github.com/SamTov/MDSuite.git
-    $ cd MDSuite
-    $ pip install .
+
+    $ git clone https://github.com/Fratorhe/micropyro
+    $ cd micropyro
+    $ pip install -e .
