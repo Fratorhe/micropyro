@@ -81,21 +81,22 @@ def perform_matching_database(blob_df, database_df, extra_columns=None):
                 Dataframe with the different compounds.
     extra_columns: list of str
                 Extra columns to be copied from the database to the blob_df
-                (maybe "c", "h", "o", etc. if intending to do elemental balance)
+                (maybe some gouping or "c", "h", "o", etc. if intending to do elemental balance)
 
     """
     # get all the columns from the database that start with the word group
     if extra_columns is None:
         extra_columns = []
-    columns_grouping = [group for group in list(database_df.columns.values) if group.startswith("group")]
+    # columns_grouping = [group for group in list(database_df.columns.values) if group.startswith("group")]
 
     # the columns to add to the blob_df will be the groups and teh other required data (MW, ECN, MRF).
-    columns_copy = ["mw", "ecn", "mrf"] + columns_grouping + extra_columns
+    columns_copy = ["mw", "ecn", "mrf"] + extra_columns
 
     # initialize the new columns to nans
     for column in columns_copy:
         blob_df[column] = "nan"
 
+    # for each compound, match with the database adding the corresponding values to the columns.
     for compound, _ in blob_df.iterrows():
         if check_match_database(compound, database_df):
             for column in columns_copy:

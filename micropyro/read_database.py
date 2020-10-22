@@ -1,7 +1,7 @@
 import re
 
 import pandas as pd
-
+import numpy as np
 
 class ReadDatabase:
     """
@@ -123,6 +123,8 @@ class ReadDatabase:
         """
         combust = ReadDatabase._compute_combust(row['c'], row['h'], row['o'], row['n'])
         n_benz = row['n_benz']
+        if np.isnan(n_benz):
+            n_benz = 0
         mrf = -0.071 + 0.000857 * combust + n_benz * 0.127
         return float(mrf)
 
