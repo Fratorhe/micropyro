@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Read a Database &mdash; micropyro 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Read a Blob File" href="read-blob.html" />
+    <link rel="prev" title="Loading Module" href="loading-module.html" />
+    <link href="_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> micropyro
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loading-module.html">Loading Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Read a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read-blob.html">Read a Blob File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiment-reader.html">Read experimental matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compute-yields.html">Compute yields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="external-calibration.html">External calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min_versions.html">Requires</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">micropyro</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Read a Database</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/read-database.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="read-a-database">
+<h1>Read a Database<a class="headerlink" href="#read-a-database" title="Permalink to this headline">¶</a></h1>
+<p>Reading a database is usually the first task to be done when computing yields.
+This is done using the class <code class="code docutils literal notranslate"><span class="pre">ReadDatabase</span></code>
+If you are importing it from an excel file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">micropyro</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">ReadDatabase</span><span class="o">.</span><span class="n">from_xls</span><span class="p">(</span><span class="s1">&#39;Database_micropyro.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This internally computes also the number of atoms from each atom type, and the ECN and MRF for each compound.
+The actual database can be accessed by the attribute <code class="code docutils literal notranslate"><span class="pre">database</span></code>.asdf
+Specific compound or columns can be accessed as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;ethane&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">formula</span><span class="p">[</span><span class="s2">&quot;ethane&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">grouping</span><span class="p">[</span><span class="s2">&quot;ethane&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">mrf</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A description of the class is found here:</p>
+<dl class="py class">
+<dt id="micropyro.ReadDatabase">
+<em class="property">class </em><code class="sig-prename descclassname">micropyro.</code><code class="sig-name descname">ReadDatabase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">database</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/read_database.html#ReadDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.ReadDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class used to read database for micropyrolysis computations.
+The idea is to have different constructors to create the df (csv, json, xls, google sheets, etc).
+Each constructor should return the appropriate pandas dataframe as described in the test cases.
+User should provide only the name of the compound, the empirical formula, the MW, and the number of benzene rings.
+TODO: this could be improved further by crating a scrapper that adds the compounds to the database directly.
+…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>database</strong><span class="classifier">df</span></dt><dd><p>a pandas dataframe with the actual database</p>
+</dd>
+<dt><strong>atoms</strong><span class="classifier">tuple. Class attribute.</span></dt><dd><p>atoms to be studied</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>from_xls(cls, filename, **kwargs)</strong></p></td>
+<td><p>Class method to load a xls file. Accepts kwargs for pandas.read_excel.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>from_csv(cls)</strong></p></td>
+<td><p>Class method to load a csv file (not available yet).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>process_chon(self)</strong></p></td>
+<td><p>Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>process_ecn_mrf(self)</strong></p></td>
+<td><p>Computes the ecn and the mrf. Uses _compute_ecn and _compute_mrf.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>_compute_ecn(row)</strong></p></td>
+<td><p>Computes the effective carbon number for a given row (compound)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>_compute_mrf(row)</strong></p></td>
+<td><p>Computes the mrf for a given row (compound), uses _compute_combust to perform the computations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>_compute_combust(c, h, o, n)</strong></p></td>
+<td><p>Computes the combustion for a given row (compound)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>_extract_atoms(formula, atom)</strong></p></td>
+<td><p>Extracts atoms (c,h,o,n) from a given formula. Used by process_chon</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="read-blob.html" class="btn btn-neutral float-right" title="Read a Blob File" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="loading-module.html" class="btn btn-neutral float-left" title="Loading Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Francisco Torres
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
