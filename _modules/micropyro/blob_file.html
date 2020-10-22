@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.blob_file &mdash; micropyro 0.1 documentation</title>
+  <title>micropyro.blob_file &mdash; micropyro 0.1.post1+g96ccc73 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1
+                0.1.post1+g96ccc73
               </div>
             
           
@@ -97,6 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../experiment-reader.html">Read experimental matrix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../compute-yields.html">Compute yields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../external-calibration.html">External calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../post-processing.html">Post processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../min_versions.html">Requires</a></li>
 </ul>
@@ -166,7 +167,7 @@
 <span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 
-<div class="viewcode-block" id="read_blob_file"><a class="viewcode-back" href="../../read-blob.html#micropyro.read_blob_file">[docs]</a><span class="k">def</span> <span class="nf">read_blob_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">drop_useless_columns</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="read_blob_file"><a class="viewcode-back" href="../../read-blob.html#micropyro.read_blob_file">[docs]</a><span class="k">def</span> <span class="nf">read_blob_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">drop_useless_columns</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reads a blob file (CSV) from GC Image software.</span>
 
@@ -176,18 +177,30 @@
 <span class="sd">            blob file to be read.</span>
 <span class="sd">    drop_useless_columns: bool.</span>
 <span class="sd">            drop some columns from the dataframe which are not used. TODO: revisit if some may be useful (retention time?)</span>
+<span class="sd">    index_col: int</span>
+<span class="sd">            Column number to be used as index. Defaults to 1 because GC Image gives the ID as first column,</span>
+<span class="sd">            but for postprocessing we need the 0.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    ---------</span>
 <span class="sd">    blob_file: df</span>
 <span class="sd">            with the blob file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">blob_file</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">blob_file</span> <span class="o">=</span> <span class="n">blob_file</span><span class="p">[</span><span class="n">blob_file</span><span class="o">.</span><span class="n">Inclusion</span><span class="p">]</span>
+    <span class="n">blob_file</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="n">index_col</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">blob_file</span> <span class="o">=</span> <span class="n">blob_file</span><span class="p">[</span><span class="n">blob_file</span><span class="o">.</span><span class="n">Inclusion</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
     <span class="k">if</span> <span class="n">drop_useless_columns</span><span class="p">:</span>
-        <span class="n">blob_file</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
-            <span class="p">[</span><span class="s1">&#39;BlobID&#39;</span><span class="p">,</span> <span class="s1">&#39;Group Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Inclusion&#39;</span><span class="p">,</span> <span class="s1">&#39;Internal Standard&#39;</span><span class="p">,</span> <span class="s2">&quot;Retention I (min)&quot;</span><span class="p">,</span> <span class="s2">&quot;Retention II (sec)&quot;</span><span class="p">,</span>
-             <span class="s2">&quot;Peak Value&quot;</span><span class="p">,</span> <span class="s2">&quot;Area (pixel count)&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># try to remove the columns, otherwise just leave them..either they don&#39;t exist, or we don&#39;t care anyway.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">blob_file</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
+                <span class="p">[</span><span class="s1">&#39;BlobID&#39;</span><span class="p">,</span> <span class="s1">&#39;Group Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Inclusion&#39;</span><span class="p">,</span> <span class="s1">&#39;Internal Standard&#39;</span><span class="p">,</span> <span class="s2">&quot;Retention I (min)&quot;</span><span class="p">,</span> <span class="s2">&quot;Retention II (sec)&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;Peak Value&quot;</span><span class="p">,</span> <span class="s2">&quot;Area (pixel count)&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
     <span class="n">blob_file</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">blob_file</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>  <span class="c1"># puts everything in lower case to avoid repetitions and missmatching</span>
     <span class="n">blob_file</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">compound</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">compound</span> <span class="ow">in</span> <span class="n">blob_file</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
     <span class="n">blob_file</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">blob_file</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>

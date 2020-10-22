@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Loading Module &mdash; micropyro 0.1.post1+g96ccc73 documentation</title>
+  <title>Post processing &mdash; micropyro 0.1.post1+g96ccc73 documentation</title>
   
 
   
@@ -39,8 +39,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Read a Database" href="read-database.html" />
-    <link rel="prev" title="Installation" href="installation.html" />
+    <link rel="next" title="Release History" href="release-history.html" />
+    <link rel="prev" title="External calibration" href="external-calibration.html" />
     <link href="_static/style.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -93,13 +93,16 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Loading Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loading-module.html">Loading Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="read-database.html">Read a Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="read-blob.html">Read a Blob File</a></li>
 <li class="toctree-l1"><a class="reference internal" href="experiment-reader.html">Read experimental matrix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compute-yields.html">Compute yields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="external-calibration.html">External calibration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="post-processing.html">Post processing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Post processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#single-file">Single file</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Requires</a></li>
 </ul>
@@ -148,13 +151,13 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Loading Module</li>
+      <li>Post processing</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/loading-module.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/post-processing.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -167,11 +170,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="loading-module">
-<h1>Loading Module<a class="headerlink" href="#loading-module" title="Permalink to this headline">¶</a></h1>
-<p>Start by importing micropyro (use abbreviation <code class="code docutils literal notranslate"><span class="pre">mp</span></code> to look fancy).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">micropyro</span> <span class="k">as</span> <span class="nn">mp</span>
-</pre></div>
+  <div class="section" id="post-processing">
+<h1>Post processing<a class="headerlink" href="#post-processing" title="Permalink to this headline">¶</a></h1>
+<p>Here, we show several tools to perform postprocessing on the yield data.
+To read the results file, we can use the reader <a class="reference internal" href="read-blob.html#micropyro.read_blob_file" title="micropyro.read_blob_file"><code class="xref py py-meth docutils literal notranslate"><span class="pre">micropyro.read_blob_file()</span></code></a>.</p>
+<div class="section" id="single-file">
+<h2>Single file<a class="headerlink" href="#single-file" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -183,10 +187,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="read-database.html" class="btn btn-neutral float-right" title="Read a Database" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="release-history.html" class="btn btn-neutral float-right" title="Release History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="external-calibration.html" class="btn btn-neutral float-left" title="External calibration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -11,6 +11,7 @@
 ./_sources/installation.rst.txt
 ./_sources/loading-module.rst.txt
 ./_sources/min_versions.rst.txt
+./_sources/post-processing.rst.txt
 ./_sources/read-blob.rst.txt
 ./_sources/read-database.rst.txt
 ./_sources/release-history.rst.txt
@@ -112,6 +113,7 @@
 ./loading-module.html
 ./min_versions.html
 ./objects.inv
+./post-processing.html
 ./read-blob.html
 ./read-database.html
 ./release-history.html

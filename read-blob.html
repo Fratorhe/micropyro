@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Read a Blob File &mdash; micropyro 0.1 documentation</title>
+  <title>Read a Blob File &mdash; micropyro 0.1.post1+g96ccc73 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1
+                0.1.post1+g96ccc73
               </div>
             
           
@@ -102,6 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="experiment-reader.html">Read experimental matrix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="compute-yields.html">Compute yields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="external-calibration.html">External calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post-processing.html">Post processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Requires</a></li>
 </ul>
@@ -196,7 +197,7 @@ To do so, we need to pass the database dataframe and the blob file dataframe. Th
 <p>Description of the blob read file function is described here:</p>
 <dl class="py function">
 <dt id="micropyro.read_blob_file">
-<code class="sig-prename descclassname">micropyro.</code><code class="sig-name descname">read_blob_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">drop_useless_columns</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/blob_file.html#read_blob_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.read_blob_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">micropyro.</code><code class="sig-name descname">read_blob_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">drop_useless_columns</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">index_col</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/blob_file.html#read_blob_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.read_blob_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a blob file (CSV) from GC Image software.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -204,6 +205,9 @@ To do so, we need to pass the database dataframe and the blob file dataframe. Th
 <dt><strong>filename: str</strong></dt><dd><p>blob file to be read.</p>
 </dd>
 <dt><strong>drop_useless_columns: bool.</strong></dt><dd><p>drop some columns from the dataframe which are not used. TODO: revisit if some may be useful (retention time?)</p>
+</dd>
+<dt><strong>index_col: int</strong></dt><dd><p>Column number to be used as index. Defaults to 1 because GC Image gives the ID as first column,
+but for postprocessing we need the 0.</p>
 </dd>
 </dl>
 </dd>
