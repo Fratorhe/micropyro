@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.postprocessing_tools &mdash; micropyro 0.1.post2+gde77158 documentation</title>
+  <title>micropyro.postprocessing_tools_multiple_files &mdash; micropyro 0.1.post6+g0414109 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post2+gde77158
+                0.1.post6+g0414109
               </div>
             
           
@@ -148,7 +148,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>micropyro.postprocessing_tools</li>
+      <li>micropyro.postprocessing_tools_multiple_files</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -163,40 +163,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for micropyro.postprocessing_tools</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">textwrap</span>
-
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+  <h1>Source code for micropyro.postprocessing_tools_multiple_files</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
-
-<div class="viewcode-block" id="plot_n_highest_yields"><a class="viewcode-back" href="../../post-processing.html#micropyro.plot_n_highest_yields">[docs]</a><span class="k">def</span> <span class="nf">plot_n_highest_yields</span><span class="p">(</span><span class="n">blob_df</span><span class="p">,</span> <span class="n">ncompounds</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This utility plots the n compounds with the highest mrf yield.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    blob_df: df</span>
-<span class="sd">            Dataframe with the results</span>
-<span class="sd">    ncompounds: int</span>
-<span class="sd">            Number of compounds to be plotted</span>
-<span class="sd">    save_plot: str</span>
-<span class="sd">            Name of the output file</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n_largest</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">ncompounds</span><span class="p">,</span> <span class="s1">&#39;yield mrf&#39;</span><span class="p">)</span>
-
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;yield mrf&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">n_largest</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
-
-    <span class="n">max_width</span> <span class="o">=</span> <span class="mi">16</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_text</span><span class="p">(),</span> <span class="n">max_width</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">())</span>
-
-    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;compound&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;yield mrf, </span><span class="se">\\</span><span class="s1">%&#39;</span><span class="p">)</span>
-
-    <span class="c1"># if you save in a file, I won&#39;t show it.</span>
-    <span class="k">if</span> <span class="n">save_plot</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_plot</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="compare_yields"><a class="viewcode-back" href="../../post-processing.html#micropyro.compare_yields">[docs]</a><span class="k">def</span> <span class="nf">compare_yields</span><span class="p">(</span><span class="n">blob_dfs</span><span class="p">,</span> <span class="n">compounds</span><span class="p">,</span> <span class="n">x_axis</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -232,6 +202,10 @@
             <span class="n">yield_mrf</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">compound</span><span class="p">]</span><span class="o">.</span><span class="n">mrf</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">[</span><span class="n">i_df</span><span class="p">],</span> <span class="n">yield_mrf</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
 
+    <span class="k">for</span> <span class="n">i_comp</span><span class="p">,</span> <span class="n">compound</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">compounds</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">i_comp</span><span class="p">)[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">compound</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">save_plot</span><span class="p">:</span>
         <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_plot</span><span class="p">)</span>
 
