@@ -35,7 +35,7 @@ To Do
 
 Clone the repository with the following
 
-.. code-block:: console
+.. code-block:: shell-session
     $ git clone https://github.com/SamTov/MDSuite.git
     $ cd MDSuite
     $ pip install .
