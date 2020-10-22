@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def read_blob_file(filename, drop_useless_columns=True):
+def read_blob_file(filename, drop_useless_columns=True, index_col=1):
     """
     Reads a blob file (CSV) from GC Image software.
 
@@ -11,18 +11,30 @@ def read_blob_file(filename, drop_useless_columns=True):
             blob file to be read.
     drop_useless_columns: bool.
             drop some columns from the dataframe which are not used. TODO: revisit if some may be useful (retention time?)
+    index_col: int
+            Column number to be used as index. Defaults to 1 because GC Image gives the ID as first column,
+            but for postprocessing we need the 0.
 
     Returns
     ---------
     blob_file: df
             with the blob file.
     """
-    blob_file = pd.read_csv(filename, index_col=1)
-    blob_file = blob_file[blob_file.Inclusion]
+    blob_file = pd.read_csv(filename, index_col=index_col)
+    try:
+        blob_file = blob_file[blob_file.Inclusion]
+    except AttributeError:
+        pass
+
     if drop_useless_columns:
-        blob_file.drop(
-            ['BlobID', 'Group Name', 'Inclusion', 'Internal Standard', "Retention I (min)", "Retention II (sec)",
-             "Peak Value", "Area (pixel count)"], axis=1, inplace=True)
+        # try to remove the columns, otherwise just leave them..either they don't exist, or we don't care anyway.
+        try:
+            blob_file.drop(
+                ['BlobID', 'Group Name', 'Inclusion', 'Internal Standard', "Retention I (min)", "Retention II (sec)",
+                 "Peak Value", "Area (pixel count)"], axis=1, inplace=True)
+        except KeyError:
+            pass
+
     blob_file.index = blob_file.index.str.lower()  # puts everything in lower case to avoid repetitions and missmatching
     blob_file.index = [compound.strip() for compound in blob_file.index.values]
     blob_file.columns = blob_file.columns.str.lower()
