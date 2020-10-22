@@ -109,6 +109,17 @@ def compute_yields(experiment_df_row, blob_df, internal_standard_name, calibrati
     # compute the yield using the mrf for each compound and add it in a new column in percent
     blob_df["yield mrf"] = blob_df.apply(lambda row: row["mass mrf"] / sample_mass * 100, axis=1)
 
+    # process duplicates
+    all_columns = set(blob_df.columns)
+    colums_to_sum = set(['volume', 'moles ecn', 'moles mrf', 'mass mrf','yield mrf'])
+    columns_stay_same = all_columns-colums_to_sum
+
+    dict_to_sum = {key: sum for key in colums_to_sum}
+    dict_stay_same = {key: 'first' for key in columns_stay_same}
+    dict_aggregate = {**dict_to_sum, **dict_stay_same}
+
+    blob_df = blob_df.groupby(blob_df.index).agg(dict_aggregate)
+
     return blob_df
 
 
