@@ -25,8 +25,16 @@ Features
 To Do
 --------
 
-* graphs and statistics
 * include gas and char yields
 * mass balance
 * elemental balance
 * etc.
+
+To Do
+--------
+
+Clone the repository with the following
+ .. code-block:: console
+    $ git clone https://github.com/SamTov/MDSuite.git
+    $ cd MDSuite
+    $ pip install .

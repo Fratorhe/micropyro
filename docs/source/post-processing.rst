@@ -21,6 +21,20 @@ As example, we can do:
     results_df = mp.read_blob_file("100 ug Py_600C.results.csv", index_col=0)
     mp.plot_n_highest_yields(results_df, 5)
 
+The yields can be analyzed using groupings. To add new groupings, add it as new columns in the database,
+and remember to include those extra columns in :meth:`perform_matching_database`.
+In a single line, this can be analyzed. If specified, results are exported to json for further processing.
+
+.. code-block:: python
+
+    sum_groups, total = mp.get_yields_summary(results_df, "grouping", to_file='100 ug Py_600C.totals.csv')
+    print(f'The different groups are: {sum_groups}')
+    print(f'The total FID yield is: {total}')
+
+.. autofunction:: micropyro.get_yields_summary
+
+
+
 
 Multiple files tools
 ---------------------
