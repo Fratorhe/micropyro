@@ -25,7 +25,16 @@ class ExternalCalibration:
     -------
     from_xls(cls, filename, sheet_name=0, use_is=True, **kwargs)
         Class method to load a xls file
-
+    remove_incomplete(self)
+        remove incomplete points in the dataset
+    linear_calibration(self, outliers=[], to_file="calibration.json", recursive=True)
+        perform linear regression on the data.
+    plot_calibration(self, save_plot=None)
+        plot the calibration dataset, the regression and the uncertainties.
+    drop_point(self, index_name)
+        Method to drop points, barely used.
+    _save_calibration(self, to_file)
+        save to a json file
     """
 
     def __init__(self, calibration_df):
@@ -33,8 +42,10 @@ class ExternalCalibration:
         Defines the dataframe of the experiments.
         Sets all the characters to lower case to avoid duplicity or mismatches with database.
 
-        :param calibration_df: dataframe with the appropriate columns (see examples)
-        :param used_is: bool internal standard used or not.
+        Params
+        -------
+        calibration_df: dataframe with the appropriate columns (see examples)
+        used_is: bool internal standard used or not.
         """
         self.calibration_df = calibration_df
 
@@ -110,14 +121,22 @@ class ExternalCalibration:
         Performs a linear calibration of the type y = a*x between the sample mass and the volume from GC Image.
         It is a recursive function which deletes outliers at every step. The recursivity can be controlled setting the
         recursive parameter to False.
-        :param recursive: bool
+
+        Parameters
+        -----------
+        recursive: bool
                 Sets the recursivity of the function.
-        :param outliers: list
+        outliers: list
                 of outliers found after each iteration of the calibration.
-        :param to_file: str
+        to_file: str
                 Filename of the output of the calibration file.
-        :return:
+
+        Returns
+        --------
+        self.regression: statmodel object
+                With the results of the linear calibration
         """
+
         # get the x and y values (sample mass and volume from GC image)
         x = np.array(self.calibration_df["sample"].values)
         y = np.array(self.calibration_df["volume"].values)
@@ -149,7 +168,10 @@ class ExternalCalibration:
     def _save_calibration(self, to_file):
         """
         Saves the calibration to a json file
-        :param to_file: str
+
+        Parameters
+        -----------
+        to_file: str
                 Filename of the file to be saved
         """
         params = self.regression.params
@@ -160,6 +182,12 @@ class ExternalCalibration:
             json.dump(dict_params, fp, indent=4, sort_keys=True)
 
     def plot_calibration(self, save_plot=None):
+        """
+        Plots the calibration. If save_plot is a filename, it will save it, otherwise, it will show it.
+
+        :param save_plot: str
+                Filename of the plot to be saved.
+        """
         # get the x and y values (sample mass and volume from GC image) to make it easier
         x = np.array(self.calibration_df["sample"].values)
         y = np.array(self.calibration_df["volume"].values)

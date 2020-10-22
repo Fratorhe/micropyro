@@ -1,6 +1,7 @@
 import json
 
-def _define_internal_standard(experiment_df_row, blob_df, internal_standard_name, calibration_file=None):
+
+def define_internal_standard(experiment_df_row, blob_df, internal_standard_name, calibration_file=None):
     """
     Grabs the internal standard from the blob_df and from the experiment df to
     combine them and have all the required data together.
@@ -23,14 +24,14 @@ def _define_internal_standard(experiment_df_row, blob_df, internal_standard_name
     internal_standard = blob_df.loc[internal_standard_name].copy()
     volume_blob_is = internal_standard.volume
     if calibration_file:
-        mass_IS = _get_mass_calibration(calibration_file, volume_blob_is)
+        mass_IS = get_mass_calibration(calibration_file, volume_blob_is)
     else:
         mass_IS = experiment_df_row.is_amount
     internal_standard['moles'] = (mass_IS / 1000) / internal_standard.mw
     return internal_standard
 
 
-def _get_mass_calibration(calibration_file, volume):
+def get_mass_calibration(calibration_file, volume):
     """
     This function computes the mass given a calibration curve: mass = a / vol.
 
@@ -88,7 +89,7 @@ def compute_yields(experiment_df_row, blob_df, internal_standard_name, calibrati
 
     # get the internal standard compound and drop it from the original dataframe.
     # it requires a different treatment
-    internal_standard = _define_internal_standard(experiment_df_row, blob_df, internal_standard_name, calibration_file)
+    internal_standard = define_internal_standard(experiment_df_row, blob_df, internal_standard_name, calibration_file)
     blob_df.drop(compound_drop, inplace=True)
 
     # compute the moles using the ecn for each compound and add it in a new column
@@ -123,14 +124,14 @@ def compute_yields_is(experiment_df_row, blob_df, internal_standard_name):
         Dataframe with the blobs, with the extra column of yields
     """
     blob_df = compute_yields(experiment_df_row, blob_df, internal_standard_name, calibration_file=None,
-                   compound_drop=internal_standard_name)
+                             compound_drop=internal_standard_name)
     return blob_df
 
 
 def compute_yields_calibration(experiment_df_row, blob_df, reference_compound, calibration_file, compound_drop):
     """
     Particular function to compute the yields using a calibration curve of a reference compound.
-    In this case, the mass of reference compound is computed using an the auxiliary function _get_mass_calibration.
+    In this case, the mass of reference compound is computed using an the auxiliary function get_mass_calibration.
     User can still define compound_drop since in many cases, one uses both an external calibration and an Internal Standard.
     For the implementation, see compute_yields.
 
@@ -139,8 +140,9 @@ def compute_yields_calibration(experiment_df_row, blob_df, reference_compound, c
     blob_df: df
         Dataframe with the blobs, with the extra column of yields
     """
-    blob_df = compute_yields(experiment_df_row, blob_df, internal_standard_name=reference_compound, calibration_file=calibration_file,
-                   compound_drop=compound_drop)
+    blob_df = compute_yields(experiment_df_row, blob_df, internal_standard_name=reference_compound,
+                             calibration_file=calibration_file,
+                             compound_drop=compound_drop)
     return blob_df
 
 

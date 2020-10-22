@@ -25,13 +25,10 @@ To save the results, we export them to a csv file:
 
     save_results_yields(blob_df, filename)
 
-.. autofunction:: micropyro.save_results_yields
-
-
 Internally, :code:`compute_yields_is` uses a support function to define the IS.
 Normally, the user does not need to access it.
 
-.. autofunction:: micropyro._define_internal_standard
+.. autofunction:: micropyro.define_internal_standard
 
 Using a reference compound
 ----------------------------
@@ -60,7 +57,7 @@ To save the results, we export them to a csv file:
 Internally, :code:`compute_yields_is` uses a support function to compute the mass from the calibration curve.
 Normally, the user does not need to access it.
 
-.. autofunction:: micropyro._get_mass_calibration
+.. autofunction:: micropyro.get_mass_calibration
 
 
 Internal logic

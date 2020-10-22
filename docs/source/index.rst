@@ -17,5 +17,6 @@ Package to analyse micropyrolysis data from GC Image software
    read-blob
    experiment-reader
    compute-yields
+   external-calibration
    release-history
    min_versions
