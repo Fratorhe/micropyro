@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Post processing &mdash; micropyro 0.1.post1+g96ccc73 documentation</title>
+  <title>Post processing &mdash; micropyro 0.1.post2+gde77158 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1.post1+g96ccc73
+                0.1.post2+gde77158
               </div>
             
           
@@ -100,7 +100,8 @@
 <li class="toctree-l1"><a class="reference internal" href="compute-yields.html">Compute yields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="external-calibration.html">External calibration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Post processing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#single-file">Single file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#single-file-tools">Single file tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiple-files-tools">Multiple files tools</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
@@ -173,9 +174,70 @@
   <div class="section" id="post-processing">
 <h1>Post processing<a class="headerlink" href="#post-processing" title="Permalink to this headline">¶</a></h1>
 <p>Here, we show several tools to perform postprocessing on the yield data.
-To read the results file, we can use the reader <a class="reference internal" href="read-blob.html#micropyro.read_blob_file" title="micropyro.read_blob_file"><code class="xref py py-meth docutils literal notranslate"><span class="pre">micropyro.read_blob_file()</span></code></a>.</p>
-<div class="section" id="single-file">
-<h2>Single file<a class="headerlink" href="#single-file" title="Permalink to this headline">¶</a></h2>
+To read the results file(s), we can use the reader <a class="reference internal" href="read-blob.html#micropyro.read_blob_file" title="micropyro.read_blob_file"><code class="xref py py-meth docutils literal notranslate"><span class="pre">micropyro.read_blob_file()</span></code></a>.</p>
+<div class="section" id="single-file-tools">
+<h2>Single file tools<a class="headerlink" href="#single-file-tools" title="Permalink to this headline">¶</a></h2>
+<p>We can plot the <em>n</em> compounds with highest yield. We use the function <a class="reference internal" href="#micropyro.plot_n_highest_yields" title="micropyro.plot_n_highest_yields"><code class="xref py py-meth docutils literal notranslate"><span class="pre">micropyro.plot_n_highest_yields()</span></code></a>:</p>
+<dl class="py function">
+<dt id="micropyro.plot_n_highest_yields">
+<code class="sig-prename descclassname">micropyro.</code><code class="sig-name descname">plot_n_highest_yields</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">blob_df</span></em>, <em class="sig-param"><span class="n">ncompounds</span></em>, <em class="sig-param"><span class="n">save_plot</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/postprocessing_tools.html#plot_n_highest_yields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.plot_n_highest_yields" title="Permalink to this definition">¶</a></dt>
+<dd><p>This utility plots the n compounds with the highest mrf yield.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>blob_df: df</strong></dt><dd><p>Dataframe with the results</p>
+</dd>
+<dt><strong>ncompounds: int</strong></dt><dd><p>Number of compounds to be plotted</p>
+</dd>
+<dt><strong>save_plot: str</strong></dt><dd><p>Name of the output file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<p>As example, we can do:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">micropyro</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="n">results_df</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">read_blob_file</span><span class="p">(</span><span class="s2">&quot;100 ug Py_600C.results.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">plot_n_highest_yields</span><span class="p">(</span><span class="n">results_df</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="multiple-files-tools">
+<h2>Multiple files tools<a class="headerlink" href="#multiple-files-tools" title="Permalink to this headline">¶</a></h2>
+<p>We can process several files at the same time to study trends, etc.
+A utility <a class="reference internal" href="#micropyro.compare_yields" title="micropyro.compare_yields"><code class="xref py py-meth docutils literal notranslate"><span class="pre">micropyro.compare_yields()</span></code></a> can be used.</p>
+<dl class="py function">
+<dt id="micropyro.compare_yields">
+<code class="sig-prename descclassname">micropyro.</code><code class="sig-name descname">compare_yields</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">blob_dfs</span></em>, <em class="sig-param"><span class="n">compounds</span></em>, <em class="sig-param"><span class="n">x_axis</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save_plot</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/postprocessing_tools.html#compare_yields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.compare_yields" title="Permalink to this definition">¶</a></dt>
+<dd><p>This utility compares the yields of different files (repetitions, temperatures, etc) .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>blob_dfs: list of dfs</strong></dt><dd><p>List of Dataframes with the results</p>
+</dd>
+<dt><strong>compounds: list of strings</strong></dt><dd><p>Compounds to be plotted</p>
+</dd>
+<dt><strong>x_axis: list</strong></dt><dd><p>what to plot in the x axis, could be temperature, or whatever.</p>
+</dd>
+<dt><strong>save_plot: str</strong></dt><dd><p>Name of the output file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<p>As example, we can do:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">micropyro</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="n">results_df1</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">read_blob_file</span><span class="p">(</span><span class="s2">&quot;241 ug Py_850C.results.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">results_df2</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">read_blob_file</span><span class="p">(</span><span class="s2">&quot;100 ug Py_600C.results.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">compare_yields</span><span class="p">([</span><span class="n">results_df1</span><span class="p">,</span> <span class="n">results_df2</span><span class="p">],</span> <span class="n">compounds</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;phenol&#39;</span><span class="p">,</span> <span class="s1">&#39;methane&#39;</span><span class="p">],</span>
+                            <span class="n">save_plot</span><span class="o">=</span><span class="s1">&#39;comparison.pdf&#39;</span><span class="p">,</span> <span class="n">x_axis</span> <span class="o">=</span> <span class="p">[</span><span class="mi">350</span><span class="p">,</span> <span class="mi">300</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;2nd Reactor Temperature, C&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Yield, %&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 </div>
 

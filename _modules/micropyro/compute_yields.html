@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.compute_yields &mdash; micropyro 0.1.post1+g96ccc73 documentation</title>
+  <title>micropyro.compute_yields &mdash; micropyro 0.1.post2+gde77158 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post1+g96ccc73
+                0.1.post2+gde77158
               </div>
             
           
@@ -274,6 +274,17 @@
     <span class="n">blob_df</span><span class="p">[</span><span class="s2">&quot;mass mrf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;moles mrf&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;mw&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="c1"># compute the yield using the mrf for each compound and add it in a new column in percent</span>
     <span class="n">blob_df</span><span class="p">[</span><span class="s2">&quot;yield mrf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mass mrf&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">sample_mass</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># process duplicates</span>
+    <span class="n">all_columns</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">blob_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">colums_to_sum</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;volume&#39;</span><span class="p">,</span> <span class="s1">&#39;moles ecn&#39;</span><span class="p">,</span> <span class="s1">&#39;moles mrf&#39;</span><span class="p">,</span> <span class="s1">&#39;mass mrf&#39;</span><span class="p">,</span><span class="s1">&#39;yield mrf&#39;</span><span class="p">])</span>
+    <span class="n">columns_stay_same</span> <span class="o">=</span> <span class="n">all_columns</span><span class="o">-</span><span class="n">colums_to_sum</span>
+
+    <span class="n">dict_to_sum</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">sum</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">colums_to_sum</span><span class="p">}</span>
+    <span class="n">dict_stay_same</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;first&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">columns_stay_same</span><span class="p">}</span>
+    <span class="n">dict_aggregate</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">dict_to_sum</span><span class="p">,</span> <span class="o">**</span><span class="n">dict_stay_same</span><span class="p">}</span>
+
+    <span class="n">blob_df</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">blob_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">dict_aggregate</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">blob_df</span></div>
 

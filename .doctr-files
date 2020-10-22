@@ -3,6 +3,7 @@
 ./_modules/micropyro/compute_yields.html
 ./_modules/micropyro/experimental_matrix.html
 ./_modules/micropyro/external_calibration.html
+./_modules/micropyro/postprocessing_tools.html
 ./_modules/micropyro/read_database.html
 ./_sources/compute-yields.rst.txt
 ./_sources/experiment-reader.rst.txt
