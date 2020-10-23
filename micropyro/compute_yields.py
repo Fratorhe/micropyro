@@ -74,7 +74,7 @@ def compute_yields(experiment_df_row, blob_df, internal_standard_name, calibrati
     experiment_df_row: row of a dataframe
                 with experiments from micropyrolysis. Created using ReadExperimentTable.
     blob_df: df
-                with the blobs after performing the database matching.
+                with the blobs after performing the df matching.
     internal_standard_name: str
                 name of the internal standard used.
 

@@ -5,18 +5,18 @@ import numpy as np
 
 class ReadDatabase:
     """
-    A class used to read database for micropyrolysis computations.
+    A class used to read df for micropyrolysis computations.
     The idea is to have different constructors to create the df (csv, json, xls, google sheets, etc).
     Each constructor should return the appropriate pandas dataframe as described in the test cases.
     User should provide only the name of the compound, the empirical formula, the MW, and the number of benzene rings.
-    TODO: this could be improved further by crating a scrapper that adds the compounds to the database directly.
+    TODO: this could be improved further by crating a scrapper that adds the compounds to the df directly.
     ...
 
 
     Attributes
     ----------
     database : df
-        a pandas dataframe with the actual database
+        a pandas dataframe with the actual df
     atoms : tuple. Class attribute.
         atoms to be studied
 
@@ -28,7 +28,7 @@ class ReadDatabase:
     from_csv(cls)
         Class method to load a csv file (not available yet).
     process_chon(self)
-        Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the database.
+        Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the df.
     process_ecn_mrf(self)
         Computes the ecn and the mrf. Uses _compute_ecn and _compute_mrf.
     _compute_ecn(row)
@@ -45,15 +45,22 @@ class ReadDatabase:
 
     def __init__(self, database=None):
         if database is None:
-            self.database = pd.DataFrame()
+            self.df = pd.DataFrame()
         else:
-            self.database = database
+            self.df = database
 
         # put everything in lower case to avoid problems
-        self.database.index = self.database.index.str.lower()
-        self.database.columns = self.database.columns.str.lower()
-        self.database.formula = self.database.formula.str.lower()
-        self.database.index = [compound.strip() for compound in self.database.index.values]
+        self.df.index = self.df.index.str.lower()
+        self.df.columns = self.df.columns.str.lower()
+        self.df.formula = self.df.formula.str.lower()
+
+        # drop extra rows with nans
+        self.df = self.df[self.df.index.notnull()]  # removes the extra rows with index NaN
+        self.df = self.df[self.df.formula.notnull()]  # removes the extra rows with index NaN
+
+        # remove any extra trailing spaces
+        self.df.index = [compound.strip() for compound in self.df.index.values]
+
 
         self.process_chon()
         self.process_ecn_mrf()
@@ -61,29 +68,32 @@ class ReadDatabase:
     @classmethod
     def from_xls(cls, filename, **kwargs):
         """
-        This class method builds the database from an excel file.
+        This class method builds the df from an excel file.
         Should contain Compound as first column. Remaining columns should be MW, Formula, N_Benz, and any grouping.
         These columns do not have to be in any specific order, but to respect the name.
         :param filename: str
-                filename (with path if needed) to the database file.
+                filename (with path if needed) to the df file.
         :return: constructor for the class.
         """
         database = pd.read_excel(filename, index_col=0,
                                  converters={'MW': float},
                                  **kwargs)  # reads the file and sets the first column as index
-        database = database[database.index.notnull()]  # removes the extra rows with index NaN
         return cls(database)
 
     @classmethod
-    def from_csv(cls, filename):
+    def from_csv(cls, filename, **kwargs):
         """
-        This class method builds the database from a csv file.
+        This class method builds the df from a csv file.
         Should contain Compound as first column. Remaining columns should be MW, Formula, N_Benz, and any grouping.
         These columns do not have to be in any specific order, but to respect the name.
         :param filename:
-        :return:
+        :return: constructor for the class.
         """
-        raise NotImplementedError
+        database = pd.read_csv(filename, index_col=0,
+                                 converters={'MW': float},
+                                 **kwargs)  # reads the file and sets the first column as index
+        return cls(database)
+
 
     def process_chon(self):
         """
@@ -91,21 +101,21 @@ class ReadDatabase:
         This is directly applied to all the rows in the dataframe and saved in new df columns with the name of the atom.
         """
         for atom in self.atoms:
-            self.database[atom] = self.database.apply(lambda row: self._extract_atoms(row['formula'], atom), axis=1)
+            self.df[atom] = self.df.apply(lambda row: self._extract_atoms(row['formula'], atom), axis=1)
 
     def process_ecn_mrf(self):
         """
-        Computes the ecn and mrf for each row in the database. Uses the static methods _compute_ecn and _compute_mrf.
+        Computes the ecn and mrf for each row in the df. Uses the static methods _compute_ecn and _compute_mrf.
         """
-        self.database['ecn'] = self.database.apply(lambda row: ReadDatabase._compute_ecn(row), axis=1)
-        self.database['mrf'] = self.database.apply(lambda row: ReadDatabase._compute_mrf(row), axis=1)
+        self.df['ecn'] = self.df.apply(lambda row: ReadDatabase._compute_ecn(row), axis=1)
+        self.df['mrf'] = self.df.apply(lambda row: ReadDatabase._compute_mrf(row), axis=1)
 
     @staticmethod
     def _compute_ecn(row):
         """
         computes the ecn (which actually is the number of carbons normally).
         :param row: df row.
-                of a compound in database.
+                of a compound in df.
         :return: int.
                 number of carbons in the compound.
         """
@@ -117,7 +127,7 @@ class ReadDatabase:
         computes the mrf using an empirical formula.
         TODO: see if this formula is always the same, or depends on the internal standard used.
         :param row: df row.
-                of a compound in database.
+                of a compound in df.
         :return: float.
                 the value of the mrf.
         """

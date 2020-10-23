@@ -31,7 +31,7 @@ class ReadExperimentTable:
     def __init__(self, experiment_df, used_is):
         """
         Defines the dataframe of the experiments.
-        Sets all the characters to lower case to avoid duplicity or mismatches with database.
+        Sets all the characters to lower case to avoid duplicity or mismatches with df.
 
         :param experiment_df: dataframe with the appropriate columns (see examples)
         :param used_is: bool internal standard used or not.
@@ -72,6 +72,24 @@ class ReadExperimentTable:
         # create a copy of the temperature T (C) column for easier access through the code.
         experiment_df["temperature"] = experiment_df["T (C)"]
 
+        return cls(experiment_df, use_is)
+
+    @classmethod
+    def from_csv(cls, filename, use_is=True, **kwargs):
+        """
+        read from json
+        """
+        # reads the file
+        experiment_df = pd.read_csv(filename, **kwargs)
+        # removes the rows with nans in the filename.
+        experiment_df = experiment_df[experiment_df['Filename'].notna()]
+        # sets the index filename, so it is easier to refer to a specific experiment.
+        experiment_df = experiment_df.set_index('Filename')
+        # remove the mg from the name of the column, and removed any extra spaces
+        experiment_df.columns = [col.replace("(mg)", "").strip() for col in experiment_df.columns]
+
+        # create a copy of the temperature T (C) column for easier access through the code.
+        experiment_df["temperature"] = experiment_df["T (C)"]
         return cls(experiment_df, use_is)
 
     @classmethod

@@ -40,7 +40,7 @@ class ExternalCalibration:
     def __init__(self, calibration_df):
         """
         Defines the dataframe of the experiments.
-        Sets all the characters to lower case to avoid duplicity or mismatches with database.
+        Sets all the characters to lower case to avoid duplicity or mismatches with df.
 
         Params
         -------

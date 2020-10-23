@@ -43,7 +43,7 @@ def read_blob_file(filename, drop_useless_columns=True, index_col=1):
 
 def check_matches_database(blob_df, database_df):
     """
-    Function to check matches with the database. Only provides the name of **not found compounds**.
+    Function to check matches with the df. Only provides the name of **not found compounds**.
     Can be used when new files are introduced.
 
     Parameters
@@ -59,7 +59,7 @@ def check_matches_database(blob_df, database_df):
 
 def check_match_database(compound, database_df):
     """
-    Function to check if a compound is in the database.
+    Function to check if a compound is in the df.
 
     Parameters
     ----------
@@ -74,7 +74,7 @@ def check_match_database(compound, database_df):
         Exists or not
     """
     if compound not in database_df.index:
-        print(f'{compound} not found in database')
+        print(f'{compound} not found in df')
         return False
     else:
         return True
@@ -82,7 +82,7 @@ def check_match_database(compound, database_df):
 
 def perform_matching_database(blob_df, database_df, extra_columns=None):
     """
-    Function to perform the matching with the database. If the match is correct,
+    Function to perform the matching with the df. If the match is correct,
     it will copy the required properties to the blob_df.
 
     Parameters
@@ -92,11 +92,11 @@ def perform_matching_database(blob_df, database_df, extra_columns=None):
     database_df: pandas dataframe
                 Dataframe with the different compounds.
     extra_columns: list of str
-                Extra columns to be copied from the database to the blob_df
+                Extra columns to be copied from the df to the blob_df
                 (maybe some gouping or "c", "h", "o", etc. if intending to do elemental balance)
 
     """
-    # get all the columns from the database that start with the word group
+    # get all the columns from the df that start with the word group
     if extra_columns is None:
         extra_columns = []
     # columns_grouping = [group for group in list(database_df.columns.values) if group.startswith("group")]
@@ -108,7 +108,7 @@ def perform_matching_database(blob_df, database_df, extra_columns=None):
     for column in columns_copy:
         blob_df[column] = "nan"
 
-    # for each compound, match with the database adding the corresponding values to the columns.
+    # for each compound, match with the df adding the corresponding values to the columns.
     for compound, _ in blob_df.iterrows():
         if check_match_database(compound, database_df):
             for column in columns_copy:
