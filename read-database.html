@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Read a Database &mdash; micropyro 0.1.post11+gc80e0b4 documentation</title>
+  <title>Read a Database &mdash; micropyro 0.1.post13+ged1fbcd documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1.post11+gc80e0b4
+                0.1.post13+ged1fbcd
               </div>
             
           
@@ -219,24 +219,27 @@ TODO: this could be improved further by crating a scrapper that adds the compoun
 <td><p>Class method to load a xls file. Accepts kwargs for pandas.read_excel.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>from_csv(cls)</strong></p></td>
-<td><p>Class method to load a csv file (not available yet).</p></td>
+<td><p>Class method to load a csv file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>process_chon(self)</strong></p></td>
+<tr class="row-odd"><td><p><strong>from_internal(cls)</strong></p></td>
+<td><p>Class method to load an internal database located in “package_folder”/data/Database_micropyro.csv.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>process_chon(self)</strong></p></td>
 <td><p>Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the df.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>process_ecn_mrf(self)</strong></p></td>
+<tr class="row-odd"><td><p><strong>process_ecn_mrf(self)</strong></p></td>
 <td><p>Computes the ecn and the mrf. Uses _compute_ecn and _compute_mrf.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>_compute_ecn(row)</strong></p></td>
+<tr class="row-even"><td><p><strong>_compute_ecn(row)</strong></p></td>
 <td><p>Computes the effective carbon number for a given row (compound)</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>_compute_mrf(row)</strong></p></td>
+<tr class="row-odd"><td><p><strong>_compute_mrf(row)</strong></p></td>
 <td><p>Computes the mrf for a given row (compound), uses _compute_combust to perform the computations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>_compute_combust(c, h, o, n)</strong></p></td>
+<tr class="row-even"><td><p><strong>_compute_combust(c, h, o, n)</strong></p></td>
 <td><p>Computes the combustion for a given row (compound)</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>_extract_atoms(formula, atom)</strong></p></td>
+<tr class="row-odd"><td><p><strong>_extract_atoms(formula, atom)</strong></p></td>
 <td><p>Extracts atoms (c,h,o,n) from a given formula. Used by process_chon</p></td>
 </tr>
 </tbody>

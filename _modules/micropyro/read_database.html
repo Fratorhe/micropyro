@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.read_database &mdash; micropyro 0.1.post11+gc80e0b4 documentation</title>
+  <title>micropyro.read_database &mdash; micropyro 0.1.post13+ged1fbcd documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post11+gc80e0b4
+                0.1.post13+ged1fbcd
               </div>
             
           
@@ -169,6 +169,7 @@
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
 
 <div class="viewcode-block" id="ReadDatabase"><a class="viewcode-back" href="../../read-database.html#micropyro.ReadDatabase">[docs]</a><span class="k">class</span> <span class="nc">ReadDatabase</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -193,7 +194,9 @@
 <span class="sd">    from_xls(cls, filename, **kwargs)</span>
 <span class="sd">        Class method to load a xls file. Accepts kwargs for pandas.read_excel.</span>
 <span class="sd">    from_csv(cls)</span>
-<span class="sd">        Class method to load a csv file (not available yet).</span>
+<span class="sd">        Class method to load a csv file.</span>
+<span class="sd">    from_internal(cls)</span>
+<span class="sd">        Class method to load an internal database located in &quot;package_folder&quot;/data/Database_micropyro.csv.</span>
 <span class="sd">    process_chon(self)</span>
 <span class="sd">        Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the df.</span>
 <span class="sd">    process_ecn_mrf(self)</span>
@@ -259,6 +262,18 @@
         <span class="n">database</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                                  <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;MW&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">},</span>
                                  <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># reads the file and sets the first column as index</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_internal</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This class method builds the df from the internal database.</span>
+<span class="sd">        :return: constructor for the class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">DATA_PATH</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;micropyro&#39;</span><span class="p">,</span> <span class="s1">&#39;databases/Database_micropyro.csv&#39;</span><span class="p">)</span>
+
+        <span class="n">database</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                 <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;MW&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">})</span>  <span class="c1"># reads the file and sets the first column as index</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
 
 
