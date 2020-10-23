@@ -1,23 +1,22 @@
-import math
-import re
 from shutil import copyfile
 
 import pandas as pd
-import numpy as np
 import pubchempy
-from tqdm import tqdm
 from openbabel import openbabel
+from tqdm import tqdm
+
 
 class GenerateDatabase:
     """
     A class used to generate a database for micropyrolysis computations from a file with compound names.
     ...
 
-
     Attributes
     ----------
-    database : df
+    df : df
         a pandas dataframe with the actual df
+    filename : str
+        filename of the database
 
     Methods
     -------------
@@ -25,8 +24,20 @@ class GenerateDatabase:
         Class method to load a xls file. Accepts kwargs for pandas.read_excel.
     from_csv(cls)
         Class method to load a csv file (not available yet).
-    process_chon(self)
-        Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the df.
+    get_formula_mw(self)
+        Retrieves the MW, formula and smiles for the different compounds in the df.
+    get_benzene_rings(self)
+        Retrieves the number of rings for the different compounds in the df.
+    to_csv(self, backup=True)
+        Exports the resulting df to a csv
+    to_xls(self, backup=True)
+        Exports the resulting df to a xls
+    _get_compound_pubchem(compound_name)
+        Actual compound finder from pubchempy
+    _obtain_n_benz(compound_smiles)
+        Actual ring counter
+    _create_backup(self)
+        Auxiliary function to create backup of files
     """
 
     def __init__(self, database, filename):
@@ -52,7 +63,7 @@ class GenerateDatabase:
                 filename (with path if needed) to the df file.
         :return: constructor for the class.
         """
-        database = pd.read_excel(filename, index_col=0,**kwargs)  # reads the file and sets the first column as index
+        database = pd.read_excel(filename, index_col=0, **kwargs)  # reads the file and sets the first column as index
         database = database[database.index.notnull()]  # removes the extra rows with index NaN
         return cls(database, filename)
 
@@ -65,23 +76,36 @@ class GenerateDatabase:
         :param filename:
         :return: constructor for the class.
         """
-        database = pd.read_csv(filename, index_col=0,**kwargs)  # reads the file and sets the first column as index
+        database = pd.read_csv(filename, index_col=0, **kwargs)  # reads the file and sets the first column as index
         database = database[database.index.notnull()]  # removes the extra rows with index NaN
         return cls(database, filename)
 
     def get_formula_mw(self):
+        """
+        Get the formula, the molecular weight, and the smiles
+        """
         for compound, _ in tqdm(self.df.iterrows(), total=self.df.shape[0]):
             ## get the compound from pubchempy
-            compound_pubchem = self.get_compound_pubchem(compound)
+            compound_pubchem = self._get_compound_pubchem(compound)
 
             if compound_pubchem is not None:
-                self.df.loc[compound,'mw'] = compound_pubchem.molecular_weight
-                self.df.loc[compound,'formula'] = compound_pubchem.molecular_formula
-                self.df.loc[compound,'smiles'] = compound_pubchem.isomeric_smiles
-
+                self.df.loc[compound, 'mw'] = compound_pubchem.molecular_weight
+                self.df.loc[compound, 'formula'] = compound_pubchem.molecular_formula
+                self.df.loc[compound, 'smiles'] = compound_pubchem.isomeric_smiles
 
     @staticmethod
-    def get_compound_pubchem(compound_name):
+    def _get_compound_pubchem(compound_name):
+        """
+        Gets the compound from pubchempy
+
+        Parameters
+        -----------
+        compound_name: str
+            name of the compound
+
+        Return
+        ------
+        """
         ## get the compound from pubchempy
         compound_pubchem = pubchempy.get_compounds(compound_name, 'name')
         # we take the first index, hopefully we are right in most cases because we are giving the specific name
@@ -96,28 +120,45 @@ class GenerateDatabase:
 
         return object_compound
 
-
     def get_benzene_rings(self):
+        """
+        Gets the number of benzene rings for each compound.
+
+        """
         for compound, row in tqdm(self.df.iterrows(), total=self.df.shape[0]):
             ## get the compound from pubchempy
             smiles = row['smiles']
             try:
-                n_Benz = self.obtain_n_benz(smiles)
+                n_Benz = self._obtain_n_benz(smiles)
             except TypeError:
                 n_Benz = -1
 
-            self.df.loc[compound,'n_benz'] = n_Benz
+            self.df.loc[compound, 'n_benz'] = n_Benz
 
     @staticmethod
-    def obtain_n_benz(compound_smiles):
+    def _obtain_n_benz(compound_smiles):
+        """
+        Gets the number of benzene rings from the smiles. Only added for benzene aromatic rings.
+
+        Parameters
+        -----------
+        compound_smiles: str
+            smiles of the compound
+
+        Return
+        ------
+        n_aromatic_rings: int
+            Number of aromatic rings
+        """
+
         mol = openbabel.OBMol()
         obConversion = openbabel.OBConversion()
         obConversion.SetInAndOutFormats("smi", "mdl")
         obConversion.ReadString(mol, compound_smiles)
         n_aromatic_rings = 0
         for ring in mol.GetSSSR():
-            if ring.IsAromatic() and ring.Size()>5:
-                n_aromatic_rings +=1
+            if ring.IsAromatic() and ring.Size() > 5:
+                n_aromatic_rings += 1
             # print(ring.Size(), ring.IsAromatic(), ring.GetType())
         return n_aromatic_rings
 
@@ -130,7 +171,6 @@ class GenerateDatabase:
         if backup:
             self._create_backup()
         self.df.to_excel(self.filename, index_label="compound")
-
 
     def _create_backup(self):
         copyfile(self.filename, f'{self.filename}.bak')

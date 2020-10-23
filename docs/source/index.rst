@@ -6,7 +6,7 @@
 Micropyro Documentation
 =======================
 
-Package to analyse micropyrolysis data from GC Image software
+Package to analyse micropyrolysis data from GC Image software.
 
 .. toctree::
    :maxdepth: 2
@@ -19,5 +19,6 @@ Package to analyse micropyrolysis data from GC Image software
    compute-yields
    external-calibration
    post-processing
+   generate-database
    release-history
    min_versions
