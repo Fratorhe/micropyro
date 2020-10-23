@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.blob_file &mdash; micropyro 0.1.post6+g0414109 documentation</title>
+  <title>micropyro.blob_file &mdash; micropyro 0.1.post8+g65e0479 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post6+g0414109
+                0.1.post8+g65e0479
               </div>
             
           
@@ -209,7 +209,7 @@
 
 <span class="k">def</span> <span class="nf">check_matches_database</span><span class="p">(</span><span class="n">blob_df</span><span class="p">,</span> <span class="n">database_df</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to check matches with the database. Only provides the name of **not found compounds**.</span>
+<span class="sd">    Function to check matches with the df. Only provides the name of **not found compounds**.</span>
 <span class="sd">    Can be used when new files are introduced.</span>
 
 <span class="sd">    Parameters</span>
@@ -225,7 +225,7 @@
 
 <span class="k">def</span> <span class="nf">check_match_database</span><span class="p">(</span><span class="n">compound</span><span class="p">,</span> <span class="n">database_df</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to check if a compound is in the database.</span>
+<span class="sd">    Function to check if a compound is in the df.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -240,7 +240,7 @@
 <span class="sd">        Exists or not</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">compound</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">database_df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">compound</span><span class="si">}</span><span class="s1"> not found in database&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">compound</span><span class="si">}</span><span class="s1"> not found in df&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
@@ -248,7 +248,7 @@
 
 <div class="viewcode-block" id="perform_matching_database"><a class="viewcode-back" href="../../read-blob.html#micropyro.perform_matching_database">[docs]</a><span class="k">def</span> <span class="nf">perform_matching_database</span><span class="p">(</span><span class="n">blob_df</span><span class="p">,</span> <span class="n">database_df</span><span class="p">,</span> <span class="n">extra_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to perform the matching with the database. If the match is correct,</span>
+<span class="sd">    Function to perform the matching with the df. If the match is correct,</span>
 <span class="sd">    it will copy the required properties to the blob_df.</span>
 
 <span class="sd">    Parameters</span>
@@ -258,11 +258,11 @@
 <span class="sd">    database_df: pandas dataframe</span>
 <span class="sd">                Dataframe with the different compounds.</span>
 <span class="sd">    extra_columns: list of str</span>
-<span class="sd">                Extra columns to be copied from the database to the blob_df</span>
+<span class="sd">                Extra columns to be copied from the df to the blob_df</span>
 <span class="sd">                (maybe some gouping or &quot;c&quot;, &quot;h&quot;, &quot;o&quot;, etc. if intending to do elemental balance)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># get all the columns from the database that start with the word group</span>
+    <span class="c1"># get all the columns from the df that start with the word group</span>
     <span class="k">if</span> <span class="n">extra_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">extra_columns</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># columns_grouping = [group for group in list(database_df.columns.values) if group.startswith(&quot;group&quot;)]</span>
@@ -274,7 +274,7 @@
     <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns_copy</span><span class="p">:</span>
         <span class="n">blob_df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nan&quot;</span>
 
-    <span class="c1"># for each compound, match with the database adding the corresponding values to the columns.</span>
+    <span class="c1"># for each compound, match with the df adding the corresponding values to the columns.</span>
     <span class="k">for</span> <span class="n">compound</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">check_match_database</span><span class="p">(</span><span class="n">compound</span><span class="p">,</span> <span class="n">database_df</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns_copy</span><span class="p">:</span>

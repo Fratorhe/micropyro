@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Read a Database &mdash; micropyro 0.1.post6+g0414109 documentation</title>
+  <title>Read a Database &mdash; micropyro 0.1.post8+g65e0479 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1.post6+g0414109
+                0.1.post8+g65e0479
               </div>
             
           
@@ -191,16 +191,16 @@ Specific compound or columns can be accessed as follows:</p>
 <dl class="py class">
 <dt id="micropyro.ReadDatabase">
 <em class="property">class </em><code class="sig-prename descclassname">micropyro.</code><code class="sig-name descname">ReadDatabase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">database</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/read_database.html#ReadDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.ReadDatabase" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class used to read database for micropyrolysis computations.
+<dd><p>A class used to read df for micropyrolysis computations.
 The idea is to have different constructors to create the df (csv, json, xls, google sheets, etc).
 Each constructor should return the appropriate pandas dataframe as described in the test cases.
 User should provide only the name of the compound, the empirical formula, the MW, and the number of benzene rings.
-TODO: this could be improved further by crating a scrapper that adds the compounds to the database directly.
+TODO: this could be improved further by crating a scrapper that adds the compounds to the df directly.
 …</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>database</strong><span class="classifier">df</span></dt><dd><p>a pandas dataframe with the actual database</p>
+<dt><strong>database</strong><span class="classifier">df</span></dt><dd><p>a pandas dataframe with the actual df</p>
 </dd>
 <dt><strong>atoms</strong><span class="classifier">tuple. Class attribute.</span></dt><dd><p>atoms to be studied</p>
 </dd>
@@ -210,8 +210,8 @@ TODO: this could be improved further by crating a scrapper that adds the compoun
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 26%" />
-<col style="width: 74%" />
+<col style="width: 27%" />
+<col style="width: 73%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>from_xls(cls, filename, **kwargs)</strong></p></td>
@@ -221,7 +221,7 @@ TODO: this could be improved further by crating a scrapper that adds the compoun
 <td><p>Class method to load a csv file (not available yet).</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>process_chon(self)</strong></p></td>
-<td><p>Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the database.</p></td>
+<td><p>Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the df.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>process_ecn_mrf(self)</strong></p></td>
 <td><p>Computes the ecn and the mrf. Uses _compute_ecn and _compute_mrf.</p></td>

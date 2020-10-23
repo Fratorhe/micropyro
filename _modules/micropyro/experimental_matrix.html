@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.experimental_matrix &mdash; micropyro 0.1.post6+g0414109 documentation</title>
+  <title>micropyro.experimental_matrix &mdash; micropyro 0.1.post8+g65e0479 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post6+g0414109
+                0.1.post8+g65e0479
               </div>
             
           
@@ -197,17 +197,17 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment_df</span><span class="p">,</span> <span class="n">used_is</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Defines the dataframe of the experiments.</span>
-<span class="sd">        Sets all the characters to lower case to avoid duplicity or mismatches with database.</span>
+<span class="sd">        Sets all the characters to lower case to avoid duplicity or mismatches with df.</span>
 
 <span class="sd">        :param experiment_df: dataframe with the appropriate columns (see examples)</span>
 <span class="sd">        :param used_is: bool internal standard used or not.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span> <span class="o">=</span> <span class="n">experiment_df</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">experiment_df</span>
 
         <span class="c1"># set all column headers in lower case to ensure there is no mistake</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">used_is</span> <span class="o">=</span> <span class="n">used_is</span>
 
@@ -241,6 +241,24 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">experiment_df</span><span class="p">,</span> <span class="n">use_is</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_csv</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">use_is</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        read from json</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># reads the file</span>
+        <span class="n">experiment_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># removes the rows with nans in the filename.</span>
+        <span class="n">experiment_df</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="p">[</span><span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;Filename&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
+        <span class="c1"># sets the index filename, so it is easier to refer to a specific experiment.</span>
+        <span class="n">experiment_df</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Filename&#39;</span><span class="p">)</span>
+        <span class="c1"># remove the mg from the name of the column, and removed any extra spaces</span>
+        <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(mg)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+
+        <span class="c1"># create a copy of the temperature T (C) column for easier access through the code.</span>
+        <span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;T (C)&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">experiment_df</span><span class="p">,</span> <span class="n">use_is</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        read from json</span>
@@ -266,7 +284,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">used_is</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Internal Standard is set to False, not sure if what you are doing is correct...&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;is_amount&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;is&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">concentration</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;is_amount&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;is&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">concentration</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">compute_char</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -275,29 +293,29 @@
 
         <span class="c1"># delete the columns they already exist</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;total before w/o holder&quot;</span><span class="p">,</span> <span class="s1">&#39;char mass&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">% c</span><span class="s1">har&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;total before w/o holder&quot;</span><span class="p">,</span> <span class="s1">&#39;char mass&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">% c</span><span class="s1">har&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="c1"># maybe the wool was not added, if so, we set it to 0</span>
-        <span class="k">if</span> <span class="s1">&#39;wool&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;wool&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="s1">&#39;wool&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;wool&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="c1"># maybe the is was not used</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">used_is</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;is&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;is_amount&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;is&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;is_amount&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># compute the mass before without using the holder</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;total before w/o holder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;cup&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;sample&quot;</span><span class="p">]</span> <span class="o">+</span> \
-                                                        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;wool&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;hook&quot;</span><span class="p">]</span> <span class="o">+</span> \
-                                                        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;is&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;total before w/o holder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;cup&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;sample&quot;</span><span class="p">]</span> <span class="o">+</span> \
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;wool&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;hook&quot;</span><span class="p">]</span> <span class="o">+</span> \
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;is&quot;</span><span class="p">]</span>
 
         <span class="c1"># compute the mass of the char</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;char mass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;sample&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;is_amount&quot;</span><span class="p">]</span> <span class="o">+</span> \
-                                          <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;total after w/o holder&quot;</span><span class="p">]</span> <span class="o">-</span> \
-                                          <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;total before w/o holder&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;char mass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;sample&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;is_amount&quot;</span><span class="p">]</span> <span class="o">+</span> \
+                               <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;total after w/o holder&quot;</span><span class="p">]</span> <span class="o">-</span> \
+                               <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;total before w/o holder&quot;</span><span class="p">]</span>
 
         <span class="c1"># express it as % of the initial sample mass.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">% c</span><span class="s2">har&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;char mass&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment_df</span><span class="p">[</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">% c</span><span class="s2">har&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;char mass&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span>
             <span class="s2">&quot;sample&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="mi">100</span></div>
 </pre></div>
 

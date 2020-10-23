@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Read a Blob File &mdash; micropyro 0.1.post6+g0414109 documentation</title>
+  <title>Read a Blob File &mdash; micropyro 0.1.post8+g65e0479 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1.post6+g0414109
+                0.1.post8+g65e0479
               </div>
             
           
@@ -232,7 +232,7 @@ function <code class="code docutils literal notranslate"><span class="pre">perfo
 <dl class="py function">
 <dt id="micropyro.perform_matching_database">
 <code class="sig-prename descclassname">micropyro.</code><code class="sig-name descname">perform_matching_database</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">blob_df</span></em>, <em class="sig-param"><span class="n">database_df</span></em>, <em class="sig-param"><span class="n">extra_columns</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/blob_file.html#perform_matching_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.perform_matching_database" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to perform the matching with the database. If the match is correct,
+<dd><p>Function to perform the matching with the df. If the match is correct,
 it will copy the required properties to the blob_df.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -241,7 +241,7 @@ it will copy the required properties to the blob_df.</p>
 </dd>
 <dt><strong>database_df: pandas dataframe</strong></dt><dd><p>Dataframe with the different compounds.</p>
 </dd>
-<dt><strong>extra_columns: list of str</strong></dt><dd><p>Extra columns to be copied from the database to the blob_df
+<dt><strong>extra_columns: list of str</strong></dt><dd><p>Extra columns to be copied from the df to the blob_df
 (maybe some gouping or “c”, “h”, “o”, etc. if intending to do elemental balance)</p>
 </dd>
 </dl>
