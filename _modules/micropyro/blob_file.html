@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.blob_file &mdash; micropyro 0.1.post10+gecc4b27 documentation</title>
+  <title>micropyro.blob_file &mdash; micropyro 0.1.post11+gc80e0b4 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post10+gecc4b27
+                0.1.post11+gc80e0b4
               </div>
             
           
@@ -203,6 +203,9 @@
             <span class="k">pass</span>
 
     <span class="n">blob_file</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">blob_file</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>  <span class="c1"># puts everything in lower case to avoid repetitions and missmatching</span>
+
+    <span class="n">blob_file</span> <span class="o">=</span> <span class="n">blob_file</span><span class="p">[</span><span class="n">blob_file</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>  <span class="c1"># removes the extra rows with index NaN</span>
+
     <span class="n">blob_file</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">compound</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">compound</span> <span class="ow">in</span> <span class="n">blob_file</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
     <span class="n">blob_file</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">blob_file</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">blob_file</span></div>
