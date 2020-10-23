@@ -36,12 +36,12 @@ class ReadExperimentTable:
         :param experiment_df: dataframe with the appropriate columns (see examples)
         :param used_is: bool internal standard used or not.
         """
-        self.experiment_df = experiment_df
+        self.df = experiment_df
 
         # set all column headers in lower case to ensure there is no mistake
-        self.experiment_df.index = self.experiment_df.index.str.lower()
-        self.experiment_df.columns = self.experiment_df.columns.str.lower()
-        self.experiment_df.index.name = self.experiment_df.index.name.lower()
+        self.df.index = self.df.index.str.lower()
+        self.df.columns = self.df.columns.str.lower()
+        self.df.index.name = self.df.index.name.lower()
 
         self.used_is = used_is
 
@@ -118,7 +118,7 @@ class ReadExperimentTable:
         """
         if not self.used_is:
             warnings.warn("Internal Standard is set to False, not sure if what you are doing is correct...")
-        self.experiment_df["is_amount"] = self.experiment_df.apply(lambda row: row['is'] * concentration, axis=1)
+        self.df["is_amount"] = self.df.apply(lambda row: row['is'] * concentration, axis=1)
 
     def compute_char(self):
         """
@@ -127,27 +127,27 @@ class ReadExperimentTable:
 
         # delete the columns they already exist
         try:
-            self.experiment_df.drop(["total before w/o holder", 'char mass', '% char'], inplace=True)
+            self.df.drop(["total before w/o holder", 'char mass', '% char'], inplace=True)
         except KeyError:
             pass
         # maybe the wool was not added, if so, we set it to 0
-        if 'wool' not in self.experiment_df:
-            self.experiment_df["wool"] = 0
+        if 'wool' not in self.df:
+            self.df["wool"] = 0
         # maybe the is was not used
         if not self.used_is:
-            self.experiment_df["is"] = 0
-            self.experiment_df["is_amount"] = 0
+            self.df["is"] = 0
+            self.df["is_amount"] = 0
 
         # compute the mass before without using the holder
-        self.experiment_df["total before w/o holder"] = self.experiment_df["cup"] + self.experiment_df["sample"] + \
-                                                        self.experiment_df["wool"] + self.experiment_df["hook"] + \
-                                                        self.experiment_df["is"]
+        self.df["total before w/o holder"] = self.df["cup"] + self.df["sample"] + \
+                                             self.df["wool"] + self.df["hook"] + \
+                                             self.df["is"]
 
         # compute the mass of the char
-        self.experiment_df["char mass"] = self.experiment_df["sample"] + self.experiment_df["is_amount"] + \
-                                          self.experiment_df["total after w/o holder"] - \
-                                          self.experiment_df["total before w/o holder"]
+        self.df["char mass"] = self.df["sample"] + self.df["is_amount"] + \
+                               self.df["total after w/o holder"] - \
+                               self.df["total before w/o holder"]
 
         # express it as % of the initial sample mass.
-        self.experiment_df["% char"] = self.experiment_df["char mass"].values / self.experiment_df[
+        self.df["% char"] = self.df["char mass"].values / self.df[
             "sample"].values * 100

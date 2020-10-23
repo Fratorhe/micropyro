@@ -1,0 +1,7 @@
+BlobID,Compound Name,Group Name,Inclusion,Internal Standard,Retention I (min),Retention II (sec),Peak Value,Area (pixel count),Volume
+1,Fluoranthene,,TRUE,0,50.4,5.4,651.0,5852,154962.3
+2,"Benzene",,TRUE,0,40.6,3.7,6.7,312,898.7
+3,"phenol",,TRUE,0,32.4,3.0,10.9,880,933.5
+4,p-cresol,,TRUE,0,30.5,3.0,25.9,1150,5484.7
+5,p-Isopropenylphenol,,TRUE,0,39.8,3.4,336.1,2322,85408.0
+6,2-pentanone,,TRUE,0,11.2,1.9,11.2,1609,1885.2

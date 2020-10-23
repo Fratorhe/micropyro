@@ -1,0 +1,14 @@
+compound,mw,formula,smiles,n_benz,group
+1-decene,140.27,C10H20,CCCCCCCCC=C,0.0,0rings
+1-dodecene,168.32,C12H24,CCCCCCCCCCC=C,0.0,0rings
+1-heptene,98.19,C7H14,CCCCCC=C,0.0,0rings
+1-hexene,84.16,C6H12,CCCCC=C,0.0,0rings
+2-pentadecanone,226.4,C15H30O,CCCCCCCCCCCCCC(=O)C,0.0,0rings
+2-pentanone,86.13,C5H10O,CCCC(=O)C,0.0,0rings
+diphenylmethane,168.23,C13H12,C1=CC=C(C=C1)CC2=CC=CC=C2,2.0,2rings
+diphenylsulfone,218.27,C12H10O2S,C1=CC=C(C=C1)S(=O)(=O)C2=CC=CC=C2,2.0,2rings
+p-cresol,108.14,C7H8O,CC1=CC=C(C=C1)O,1.0,1rings
+p-isopropenylphenol,134.17,C9H10O,CC(=C)C1=CC=C(C=C1)O,1.0,1rings
+benzene,78.11,C6H6,C1=CC=CC=C1,1.0,1rings
+phenol,94.11,C6H6O,C1=CC=C(C=C1)O,1.0,1rings
+fluoranthene,202.25,C16H10,C1=CC=C2C(=C1)C3=CC=CC4=C3C2=CC=C4,3.0,3rings
