@@ -5,6 +5,7 @@ filename = '100 ug Py_600C-R_350C'
 
 # read the database
 database = mp.ReadDatabase.from_csv('database_example.csv')
+## database = mp.ReadDatabase.from_internal() # use the internal database
 print(database.df)
 
 # read the blob file
