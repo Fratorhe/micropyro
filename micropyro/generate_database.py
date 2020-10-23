@@ -84,6 +84,7 @@ class GenerateDatabase:
         """
         Get the formula, the molecular weight, and the smiles
         """
+        not_founds = []
         for compound, _ in tqdm(self.df.iterrows(), total=self.df.shape[0]):
             ## get the compound from pubchempy
             compound_pubchem = self._get_compound_pubchem(compound)
@@ -92,6 +93,12 @@ class GenerateDatabase:
                 self.df.loc[compound, 'mw'] = compound_pubchem.molecular_weight
                 self.df.loc[compound, 'formula'] = compound_pubchem.molecular_formula
                 self.df.loc[compound, 'smiles'] = compound_pubchem.isomeric_smiles
+            else:
+                not_founds.append(compound)
+
+        if not_founds:
+            with open("not_founds.txt", 'w') as f:
+                f.write("\n".join(map(str, not_founds)))
 
     @staticmethod
     def _get_compound_pubchem(compound_name):

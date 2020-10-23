@@ -56,5 +56,3 @@ Once this is done, creating the database is easy:
 
 The database to be generated requires a column with the header **Compound** and the different compounds below.
 
-.. autoclass:: micropyro.GenerateDatabase
-
