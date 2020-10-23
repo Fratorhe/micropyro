@@ -36,6 +36,9 @@ def read_blob_file(filename, drop_useless_columns=True, index_col=1):
             pass
 
     blob_file.index = blob_file.index.str.lower()  # puts everything in lower case to avoid repetitions and missmatching
+
+    blob_file = blob_file[blob_file.index.notnull()]  # removes the extra rows with index NaN
+
     blob_file.index = [compound.strip() for compound in blob_file.index.values]
     blob_file.columns = blob_file.columns.str.lower()
     return blob_file
