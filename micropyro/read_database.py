@@ -2,6 +2,7 @@ import re
 
 import pandas as pd
 import numpy as np
+import pkg_resources
 
 class ReadDatabase:
     """
@@ -26,7 +27,9 @@ class ReadDatabase:
     from_xls(cls, filename, **kwargs)
         Class method to load a xls file. Accepts kwargs for pandas.read_excel.
     from_csv(cls)
-        Class method to load a csv file (not available yet).
+        Class method to load a csv file.
+    from_internal(cls)
+        Class method to load an internal database located in "package_folder"/data/Database_micropyro.csv.
     process_chon(self)
         Retrieves the number of carbons, hydrogen, oxygen and nitrogen for the different compounds in the df.
     process_ecn_mrf(self)
@@ -92,6 +95,18 @@ class ReadDatabase:
         database = pd.read_csv(filename, index_col=0,
                                  converters={'MW': float},
                                  **kwargs)  # reads the file and sets the first column as index
+        return cls(database)
+
+    @classmethod
+    def from_internal(cls):
+        """
+        This class method builds the df from the internal database.
+        :return: constructor for the class.
+        """
+        DATA_PATH = pkg_resources.resource_filename('micropyro', 'databases/Database_micropyro.csv')
+
+        database = pd.read_csv(DATA_PATH, index_col=0,
+                                 converters={'MW': float})  # reads the file and sets the first column as index
         return cls(database)
 
 
