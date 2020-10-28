@@ -1093,3 +1093,13 @@ ethane,30.07,C2H6,0,1,,CC
 "benzene, 1,4-bis(1-methylethyl)-",162.27,C12H18,1,1,,CC(C)C1=CC=C(C=C1)C(C)C
 cycloheptane,98.19,C7H14,0,1,,C1CCCCCC1
 c7h12,98.1861,C7H14,-1,1,,
+"2,4,7-trimethyl-10h-benzo[b][1,8]naphthyridin-5-one",238.28,C15H14N2O,3,1,,CC1=CC2=C(C=C1)NC3=C(C2=O)C(=CC(=N3)C)C
+"2,4,8,9-tetramethyl-7h-pyrrolo[2,3-h]quinoline",224.3,C15H16N2,2,1,,CC1=CC(=C2C=CC3=NC(=C(C3=C2N1)C)C)C
+"4-amino-4'-(n,n-dimethylamino)stilbene",238.33,C16H18N2,2,1,,CN(C)C1=CC=C(C=C1)/C=C/C2=CC=C(C=C2)N
+c14h22o,206.32,c14h22o,1,1,,CC(C)(C)C1=CC(=C(C=C1)O)C(C)(C)C
+c15h23no2,249.35,c15h23no2,1,1,,"C15H23NO2,CC(C)(C)OC(=O)CCC1=CC=C(C=C1)CCN"
+c16h28n2,248.41,c16h28n2,1,1,,CC1CCN(CC1)CCCCN2CC=C(C=C2)C
+c16h32o,240.42,c16h32o,0,1,,"C16H32O,CCCC/C=C\CCCCCCCCCCO"
+c17h31n,249.4,c17h31n,0,1,,
+c19h23no,281.4,c19h23no,2,1,,
+c9h18o,142.24,c9h18o,0,1,,CC1CCC(C(C1)C)CO
