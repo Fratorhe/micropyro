@@ -110,3 +110,120 @@ def plot_ranges_MW(blob_dfs, ranges, x_axis=None, save_plot=None, filenames=None
         fig.savefig(save_plot)
 
     return fig, ax
+
+
+def compare_quantites_totals(list_totals_dict, quantity, subgroups=None, x_axis=None, save_plot=None):
+    """
+    This utility compares the a given quantity from the total files for different files (repetitions, temperatures, etc).
+
+    Parameters
+    ----------
+    list_totals_dict: list of dfs
+            List of dicts with the totals.
+    quantity: str
+            Quantity to compare (atoms, total, grouping, etc)
+    subgroup: list of str
+            subgroup to plot (if quantity is atoms, subgroup will be c, h, o, n.)
+            if not provided, it will try to guess it.
+    x_axis: list
+            what to plot in the x axis, could be temperature, or whatever.
+    save_plot: str
+            Name of the output file
+
+    Return
+    ----------
+    fig: plt.figure
+        matplolib figure for further modifications/saving
+    ax: plt.axis
+        matplotlib axis for further modifications/saving
+    """
+
+    cmap = cm.get_cmap('tab10', 10)  # PiYG
+
+    if not subgroups:
+        subgroups = list_totals_dict[0][quantity].keys() # if subgroup not given, guess it from the first file.
+
+
+    fig, ax = plt.subplots()
+
+    for i_group, group in enumerate(subgroups):
+        color = cmap(i_group)[:3]
+        for i_dict_totals, dict_totals in enumerate(list_totals_dict):
+            try:
+                quantity_group = dict_totals[quantity][group]
+                ax.plot(x_axis[i_dict_totals], quantity_group, 'o', color=color)
+            except KeyError:
+                print(f'{group} not found in {i_dict_totals}-th dictionary')
+
+    for i_group, group in enumerate(subgroups):
+        ax.plot([], [], color=cmap(i_group)[:3], linestyle='-', label=group)
+
+    ax.legend(loc='best')
+    if save_plot:
+        fig.savefig(save_plot)
+
+    return fig, ax
+
+def compare_elements_totals(list_totals_dict, elements=['c','o','h','n'], x_axis=None, save_plot=None):
+    """
+        This utility compares the elements for given results files (repetitions, temperatures, etc).
+        Basically particularizes compare_quantites_totals
+
+        Parameters
+        ----------
+        list_totals_dict: list of dfs
+                List of dicts with the totals.
+        elements: list of str
+                list of atoms to plot, if not provided, use the list by default
+        x_axis: list
+                what to plot in the x axis, could be temperature, or whatever.
+        save_plot: str
+                Name of the output file
+
+        Return
+        ----------
+        fig: plt.figure
+            matplolib figure for further modifications/saving
+        ax: plt.axis
+            matplotlib axis for further modifications/saving
+        """
+    fig, ax = compare_quantites_totals(list_totals_dict, 'atoms', elements, x_axis, save_plot=False)
+    ax.set_ylabel('Mass Yield, \\%')
+    ax.set_xlabel('Temperature, C')
+
+    if save_plot:
+        fig.savefig(save_plot)
+
+    return fig, ax
+
+def compare_group_totals(list_totals_dict, group_name, x_axis=None, save_plot=None):
+    """
+        This utility compares the groups for given results files (repetitions, temperatures, etc).
+        Basically particularizes compare_quantites_totals
+
+        Parameters
+        ----------
+        list_totals_dict: list of dfs
+                List of dicts with the totals.
+        elements: list of str
+                list of atoms to plot, if not provided, use the list by default
+        x_axis: list
+                what to plot in the x axis, could be temperature, or whatever.
+        save_plot: str
+                Name of the output file
+
+        Return
+        ----------
+        fig: plt.figure
+            matplolib figure for further modifications/saving
+        ax: plt.axis
+            matplotlib axis for further modifications/saving
+        """
+    fig, ax = compare_quantites_totals(list_totals_dict, quantity=group_name, x_axis=x_axis, save_plot=False)
+    ax.set_ylabel('Mass Yield, \\%')
+    ax.set_xlabel('Temperature, C')
+
+    if save_plot:
+        fig.savefig(save_plot)
+
+    return fig, ax
