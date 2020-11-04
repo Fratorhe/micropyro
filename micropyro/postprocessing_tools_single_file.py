@@ -2,8 +2,11 @@ import json
 import textwrap
 
 import matplotlib.pyplot as plt
+import pkg_resources
 import seaborn as sns
-from matplotlib import cm
+
+import micropyro as mp
+
 
 def plot_n_highest_yields(blob_df, ncompounds, save_plot=None):
     """
@@ -33,14 +36,73 @@ def plot_n_highest_yields(blob_df, ncompounds, save_plot=None):
     else:
         plt.show()
 
-def get_yields_summary(blob_df, grouping, to_file=None):
-    sum_groups = blob_df.groupby(grouping)['yield mrf'].sum()
-    total = sum_groups.sum()
+
+def get_yields_summary(blob_df, grouping=None, to_file=None):
+    """
+    This utility computes the yields for the atoms based on the grouping.
+    In addition provides the total FID yield, and the yield per atom if requested.
+    Sum of elemental and total may slightly differ due to isotopes.
+
+    Parameters
+    ----------
+    blob_df: df
+            Dataframe with the results
+    grouping: str
+            Name of the grouping to be used
+    to_file: str
+            Name of the output file
+
+    Returns
+    ---------
+    dict_data: dict
+            Dictionary with the grouping, the total and the elemental composition.
+    """
+
+    if grouping:
+        sum_groups = blob_df.groupby(grouping)['yield mrf'].sum()
+    else:
+        sum_groups = {}
+
+    total = blob_df['yield mrf'].sum()
     sum_groups = sum_groups.to_dict()
 
-    if to_file:
-        dict_data = {**sum_groups, "total":total}
-        with open(to_file, 'w') as fp:
-            json.dump(dict_data, fp,indent=4)
+    dict_per_atom = compute_elemental_composition(blob_df)
 
-    return sum_groups, total
+    dict_data = {grouping: sum_groups, "total": total, "atoms": dict_per_atom}
+    if to_file:
+        with open(to_file, 'w') as fp:
+            json.dump(dict_data, fp, indent=4)
+
+    return dict_data
+
+
+def compute_elemental_composition(blob_df):
+    """
+    This function computes the elemental compositon per atom of the blob_df.
+    To do so, of course, you will have to add the extra columns to the df when performing the database matching.
+
+    Parameters
+    -----------
+    blob_df: df
+        dataframe with results
+
+    Returns
+    -----------
+    data_per_atom: dict
+        dictionary with mass yield per atom for the given blob_df
+    """
+
+    # gets the atoms from the database
+    data_atoms = mp.get_atom_mw_dict()
+    data_per_atom = {}
+
+    for atom in data_atoms.keys():
+        try:
+            MW_atom = data_atoms[atom]["mw"]
+            blob_df[f'%{atom}'] = blob_df.apply(lambda row: row["yield mrf"] / float(row["mw"]) * float(row[atom]) * MW_atom, axis=1)
+            data_per_atom[atom] = blob_df[f'%{atom}'].sum()
+        except KeyError:
+            print(f"Compounds with {atom.upper()} not found.")
+            pass
+
+    return data_per_atom

@@ -9,6 +9,7 @@ from .compute_yields import *
 from .external_calibration import *
 from .postprocessing_tools_single_file import *
 from .postprocessing_tools_multiple_files import *
+from .utilities import *
 
 try:
     from .generate_database import *
