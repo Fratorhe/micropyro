@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.compute_yields &mdash; micropyro 0.1.post18+g6dd9895 documentation</title>
+  <title>micropyro.compute_yields &mdash; micropyro 0.1.post19+gf27570b documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post18+g6dd9895
+                0.1.post19+gf27570b
               </div>
             
           
@@ -257,7 +257,10 @@
     <span class="c1"># get the internal standard compound and drop it from the original dataframe.</span>
     <span class="c1"># it requires a different treatment</span>
     <span class="n">internal_standard</span> <span class="o">=</span> <span class="n">define_internal_standard</span><span class="p">(</span><span class="n">experiment_df_row</span><span class="p">,</span> <span class="n">blob_df</span><span class="p">,</span> <span class="n">internal_standard_name</span><span class="p">,</span> <span class="n">calibration_file</span><span class="p">)</span>
-    <span class="n">blob_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">compound_drop</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">blob_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">compound_drop</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">compound_drop</span><span class="si">}</span><span class="s1"> not found to drop&#39;</span><span class="p">)</span>
 
     <span class="c1"># compute the moles using the ecn for each compound and add it in a new column</span>
     <span class="n">blob_df</span><span class="p">[</span><span class="s2">&quot;moles ecn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
