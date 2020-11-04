@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.postprocessing_tools_single_file &mdash; micropyro 0.1.post15+g64bb770 documentation</title>
+  <title>micropyro.postprocessing_tools_single_file &mdash; micropyro 0.1.post18+g6dd9895 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post15+g64bb770
+                0.1.post18+g6dd9895
               </div>
             
           
@@ -169,8 +169,11 @@
 <span class="kn">import</span> <span class="nn">textwrap</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+
+<span class="kn">import</span> <span class="nn">micropyro</span> <span class="k">as</span> <span class="nn">mp</span>
+
 
 <div class="viewcode-block" id="plot_n_highest_yields"><a class="viewcode-back" href="../../post-processing.html#micropyro.plot_n_highest_yields">[docs]</a><span class="k">def</span> <span class="nf">plot_n_highest_yields</span><span class="p">(</span><span class="n">blob_df</span><span class="p">,</span> <span class="n">ncompounds</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -200,17 +203,76 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="get_yields_summary"><a class="viewcode-back" href="../../post-processing.html#micropyro.get_yields_summary">[docs]</a><span class="k">def</span> <span class="nf">get_yields_summary</span><span class="p">(</span><span class="n">blob_df</span><span class="p">,</span> <span class="n">grouping</span><span class="p">,</span> <span class="n">to_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">sum_groups</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">grouping</span><span class="p">)[</span><span class="s1">&#39;yield mrf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="n">total</span> <span class="o">=</span> <span class="n">sum_groups</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<div class="viewcode-block" id="get_yields_summary"><a class="viewcode-back" href="../../post-processing.html#micropyro.get_yields_summary">[docs]</a><span class="k">def</span> <span class="nf">get_yields_summary</span><span class="p">(</span><span class="n">blob_df</span><span class="p">,</span> <span class="n">grouping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This utility computes the yields for the atoms based on the grouping.</span>
+<span class="sd">    In addition provides the total FID yield, and the yield per atom if requested.</span>
+<span class="sd">    Sum of elemental and total may slightly differ due to isotopes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    blob_df: df</span>
+<span class="sd">            Dataframe with the results</span>
+<span class="sd">    grouping: str</span>
+<span class="sd">            Name of the grouping to be used</span>
+<span class="sd">    to_file: str</span>
+<span class="sd">            Name of the output file</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    dict_data: dict</span>
+<span class="sd">            Dictionary with the grouping, the total and the elemental composition.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">grouping</span><span class="p">:</span>
+        <span class="n">sum_groups</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">grouping</span><span class="p">)[</span><span class="s1">&#39;yield mrf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sum_groups</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">total</span> <span class="o">=</span> <span class="n">blob_df</span><span class="p">[</span><span class="s1">&#39;yield mrf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
     <span class="n">sum_groups</span> <span class="o">=</span> <span class="n">sum_groups</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">to_file</span><span class="p">:</span>
-        <span class="n">dict_data</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">sum_groups</span><span class="p">,</span> <span class="s2">&quot;total&quot;</span><span class="p">:</span><span class="n">total</span><span class="p">}</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">to_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">dict_per_atom</span> <span class="o">=</span> <span class="n">compute_elemental_composition</span><span class="p">(</span><span class="n">blob_df</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">sum_groups</span><span class="p">,</span> <span class="n">total</span></div>
+    <span class="n">dict_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">grouping</span><span class="p">:</span> <span class="n">sum_groups</span><span class="p">,</span> <span class="s2">&quot;total&quot;</span><span class="p">:</span> <span class="n">total</span><span class="p">,</span> <span class="s2">&quot;atoms&quot;</span><span class="p">:</span> <span class="n">dict_per_atom</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">to_file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">to_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dict_data</span></div>
+
+
+<div class="viewcode-block" id="compute_elemental_composition"><a class="viewcode-back" href="../../post-processing.html#micropyro.compute_elemental_composition">[docs]</a><span class="k">def</span> <span class="nf">compute_elemental_composition</span><span class="p">(</span><span class="n">blob_df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function computes the elemental compositon per atom of the blob_df.</span>
+<span class="sd">    To do so, of course, you will have to add the extra columns to the df when performing the database matching.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    blob_df: df</span>
+<span class="sd">        dataframe with results</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -----------</span>
+<span class="sd">    data_per_atom: dict</span>
+<span class="sd">        dictionary with mass yield per atom for the given blob_df</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># gets the atoms from the database</span>
+    <span class="n">data_atoms</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">get_atom_mw_dict</span><span class="p">()</span>
+    <span class="n">data_per_atom</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">data_atoms</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">MW_atom</span> <span class="o">=</span> <span class="n">data_atoms</span><span class="p">[</span><span class="n">atom</span><span class="p">][</span><span class="s2">&quot;mw&quot;</span><span class="p">]</span>
+            <span class="n">blob_df</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;%</span><span class="si">{</span><span class="n">atom</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;yield mrf&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;mw&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">atom</span><span class="p">])</span> <span class="o">*</span> <span class="n">MW_atom</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">data_per_atom</span><span class="p">[</span><span class="n">atom</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_df</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;%</span><span class="si">{</span><span class="n">atom</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Compounds with </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> not found.&quot;</span><span class="p">)</span>
+            <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">data_per_atom</span></div>
 </pre></div>
 
            </div>
