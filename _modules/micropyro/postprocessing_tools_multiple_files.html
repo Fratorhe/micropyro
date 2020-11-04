@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.postprocessing_tools_multiple_files &mdash; micropyro 0.1.post19+gf27570b documentation</title>
+  <title>micropyro.postprocessing_tools_multiple_files &mdash; micropyro 0.1.post20+g1811f35 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post19+gf27570b
+                0.1.post20+g1811f35
               </div>
             
           
@@ -273,6 +273,123 @@
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Total&#39;</span><span class="p">)</span>
 
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">save_plot</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_plot</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+
+<span class="k">def</span> <span class="nf">compare_quantites_totals</span><span class="p">(</span><span class="n">list_totals_dict</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">subgroups</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This utility compares the a given quantity from the total files for different files (repetitions, temperatures, etc).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    list_totals_dict: list of dfs</span>
+<span class="sd">            List of dicts with the totals.</span>
+<span class="sd">    quantity: str</span>
+<span class="sd">            Quantity to compare (atoms, total, grouping, etc)</span>
+<span class="sd">    subgroup: list of str</span>
+<span class="sd">            subgroup to plot (if quantity is atoms, subgroup will be c, h, o, n.)</span>
+<span class="sd">            if not provided, it will try to guess it.</span>
+<span class="sd">    x_axis: list</span>
+<span class="sd">            what to plot in the x axis, could be temperature, or whatever.</span>
+<span class="sd">    save_plot: str</span>
+<span class="sd">            Name of the output file</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fig: plt.figure</span>
+<span class="sd">        matplolib figure for further modifications/saving</span>
+<span class="sd">    ax: plt.axis</span>
+<span class="sd">        matplotlib axis for further modifications/saving</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;tab10&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># PiYG</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">subgroups</span><span class="p">:</span>
+        <span class="n">subgroups</span> <span class="o">=</span> <span class="n">list_totals_dict</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">quantity</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="c1"># if subgroup not given, guess it from the first file.</span>
+
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i_group</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subgroups</span><span class="p">):</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">i_group</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i_dict_totals</span><span class="p">,</span> <span class="n">dict_totals</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">list_totals_dict</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">quantity_group</span> <span class="o">=</span> <span class="n">dict_totals</span><span class="p">[</span><span class="n">quantity</span><span class="p">][</span><span class="n">group</span><span class="p">]</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">[</span><span class="n">i_dict_totals</span><span class="p">],</span> <span class="n">quantity_group</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">group</span><span class="si">}</span><span class="s1"> not found in </span><span class="si">{</span><span class="n">i_dict_totals</span><span class="si">}</span><span class="s1">-th dictionary&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i_group</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subgroups</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">i_group</span><span class="p">)[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">save_plot</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_plot</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+<span class="k">def</span> <span class="nf">compare_elements_totals</span><span class="p">(</span><span class="n">list_totals_dict</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="s1">&#39;h&#39;</span><span class="p">,</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This utility compares the elements for given results files (repetitions, temperatures, etc).</span>
+<span class="sd">        Basically particularizes compare_quantites_totals</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        list_totals_dict: list of dfs</span>
+<span class="sd">                List of dicts with the totals.</span>
+<span class="sd">        elements: list of str</span>
+<span class="sd">                list of atoms to plot, if not provided, use the list by default</span>
+<span class="sd">        x_axis: list</span>
+<span class="sd">                what to plot in the x axis, could be temperature, or whatever.</span>
+<span class="sd">        save_plot: str</span>
+<span class="sd">                Name of the output file</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fig: plt.figure</span>
+<span class="sd">            matplolib figure for further modifications/saving</span>
+<span class="sd">        ax: plt.axis</span>
+<span class="sd">            matplotlib axis for further modifications/saving</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">compare_quantites_totals</span><span class="p">(</span><span class="n">list_totals_dict</span><span class="p">,</span> <span class="s1">&#39;atoms&#39;</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="n">x_axis</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Mass Yield, </span><span class="se">\\</span><span class="s1">%&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Temperature, C&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">save_plot</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_plot</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+<span class="k">def</span> <span class="nf">compare_group_totals</span><span class="p">(</span><span class="n">list_totals_dict</span><span class="p">,</span> <span class="n">group_name</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This utility compares the groups for given results files (repetitions, temperatures, etc).</span>
+<span class="sd">        Basically particularizes compare_quantites_totals</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        list_totals_dict: list of dfs</span>
+<span class="sd">                List of dicts with the totals.</span>
+<span class="sd">        elements: list of str</span>
+<span class="sd">                list of atoms to plot, if not provided, use the list by default</span>
+<span class="sd">        x_axis: list</span>
+<span class="sd">                what to plot in the x axis, could be temperature, or whatever.</span>
+<span class="sd">        save_plot: str</span>
+<span class="sd">                Name of the output file</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fig: plt.figure</span>
+<span class="sd">            matplolib figure for further modifications/saving</span>
+<span class="sd">        ax: plt.axis</span>
+<span class="sd">            matplotlib axis for further modifications/saving</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">compare_quantites_totals</span><span class="p">(</span><span class="n">list_totals_dict</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="n">group_name</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Mass Yield, </span><span class="se">\\</span><span class="s1">%&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Temperature, C&#39;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">save_plot</span><span class="p">:</span>
         <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_plot</span><span class="p">)</span>
 
