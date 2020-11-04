@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation &mdash; micropyro 0.1.post21+g35e12a5 documentation</title>
+  <title>Utilities &mdash; micropyro 0.1.post21+g35e12a5 documentation</title>
   
 
   
@@ -39,8 +39,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Loading Module" href="loading-module.html" />
-    <link rel="prev" title="Micropyro Documentation" href="index.html" />
+    <link rel="next" title="Release History" href="release-history.html" />
+    <link rel="prev" title="Generate Database" href="generate-database.html" />
     <link href="_static/style.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -92,7 +92,7 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loading-module.html">Loading Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="read-database.html">Read a Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="read-blob.html">Read a Blob File</a></li>
@@ -101,7 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="external-calibration.html">External calibration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="post-processing.html">Post processing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generate-database.html">Generate Database</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utilities-docs.html">Utilities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Requires</a></li>
 </ul>
@@ -150,13 +150,13 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Installation</li>
+      <li>Utilities</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/utilities-docs.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -169,24 +169,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>Clone the repository from <a class="reference external" href="https://github.com/Fratorhe/micropyro">Github</a>, in terminal:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/Fratorhe/micropyro
-</pre></div>
-</div>
-<p>Move in the cloned repository:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd micropyro
-</pre></div>
-</div>
-<p>Install the package:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install .
-</pre></div>
-</div>
-<p>Or in development mode (recommended if modifications are going to be done):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -e .
-</pre></div>
-</div>
+  <div class="section" id="module-utilities">
+<span id="utilities"></span><h1>Utilities<a class="headerlink" href="#module-utilities" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="utilities.get_atom_mw_dict">
+<code class="sig-prename descclassname">utilities.</code><code class="sig-name descname">get_atom_mw_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#get_atom_mw_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.get_atom_mw_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>This returns a dict with the atoms and their molecular weight.
+Reads from the database located in databases/atom_properties.json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>dict_atoms_mw: dict</dt><dd><p>dictionary with atoms and mw: {‘c’:12, “h”:1, etc}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="utilities.reader_json_totals">
+<code class="sig-prename descclassname">utilities.</code><code class="sig-name descname">reader_json_totals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list_filenames</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utilities.html#reader_json_totals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utilities.reader_json_totals" title="Permalink to this definition">¶</a></dt>
+<dd><p>This reads the json files with totals and returns them as a list of dicts.
+It will verify that the name of the file starts with totals.json to read it.
+This way, we can just send to the function all the files in the directory and it will take care
+of selecting the appropriate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>list_totals_dict: list dicts</dt><dd><p>list of dictionaries with the totals</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
@@ -197,10 +213,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="loading-module.html" class="btn btn-neutral float-right" title="Loading Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="release-history.html" class="btn btn-neutral float-right" title="Release History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="Micropyro Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="generate-database.html" class="btn btn-neutral float-left" title="Generate Database" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -6,6 +6,7 @@
 ./_modules/micropyro/postprocessing_tools_multiple_files.html
 ./_modules/micropyro/postprocessing_tools_single_file.html
 ./_modules/micropyro/read_database.html
+./_modules/utilities.html
 ./_sources/compute-yields.rst.txt
 ./_sources/experiment-reader.rst.txt
 ./_sources/external-calibration.rst.txt
@@ -18,6 +19,7 @@
 ./_sources/read-blob.rst.txt
 ./_sources/read-database.rst.txt
 ./_sources/release-history.rst.txt
+./_sources/utilities-docs.rst.txt
 ./_static/basic.css
 ./_static/clipboard.min.js
 ./_static/copy-button.svg
@@ -118,8 +120,10 @@
 ./min_versions.html
 ./objects.inv
 ./post-processing.html
+./py-modindex.html
 ./read-blob.html
 ./read-database.html
 ./release-history.html
 ./search.html
 ./searchindex.js
+./utilities-docs.html
