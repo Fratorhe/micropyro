@@ -9,6 +9,9 @@ To read the results file(s), we can use the reader :meth:`micropyro.read_blob_fi
 Single file tools
 ------------------
 
+Plots
+^^^^^^^
+
 We can plot the *n* compounds with highest yield. We use the function :meth:`micropyro.plot_n_highest_yields`:
 
 .. autofunction:: micropyro.plot_n_highest_yields
@@ -22,6 +25,8 @@ As example, we can do:
     mp.plot_n_highest_yields(results_df, 5)
 
 
+Yields
+^^^^^^^
 
 You may also be interested on computing the yields based on the elements.
 Remember to add the appropriate elements to the columns in :meth:`perform_matching_database`
