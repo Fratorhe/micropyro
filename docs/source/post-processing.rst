@@ -58,6 +58,8 @@ If specified, results are exported to json for further processing.
 Multiple files tools
 ---------------------
 
+Plots some compounds
+^^^^^^^^^^^^^^^^^^^^^^
 We can process several files at the same time to study trends, etc.
 A utility :meth:`micropyro.compare_yields` can be used.
 
@@ -75,3 +77,16 @@ As example, we can do:
     ax.set_xlabel('2nd Reactor Temperature, C')
     ax.set_ylabel('Yield, %')
     plt.show()
+
+
+Plots totals
+^^^^^^^^^^^^^^
+
+We can plot the totals by elements or by grouping.
+A main function for this is implemented :meth:`micropyro.compare_quantites_totals`, which is then particularized by
+the different implementations for elements or grouping. Requires to provide the totals in a list of json files.
+
+.. code-block:: python
+
+    import micropyro as mp
+    mp.compare_quantites_totals(list_totals_dict, 'atoms', x_axis=temps_first_reactor, save_plot='elemental.pdf')
