@@ -90,7 +90,10 @@ def compute_yields(experiment_df_row, blob_df, internal_standard_name, calibrati
     # get the internal standard compound and drop it from the original dataframe.
     # it requires a different treatment
     internal_standard = define_internal_standard(experiment_df_row, blob_df, internal_standard_name, calibration_file)
-    blob_df.drop(compound_drop, inplace=True)
+    try:
+        blob_df.drop(compound_drop, inplace=True)
+    except KeyError:
+        print(f'{compound_drop} not found to drop')
 
     # compute the moles using the ecn for each compound and add it in a new column
     blob_df["moles ecn"] = blob_df.apply(
