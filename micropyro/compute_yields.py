@@ -21,7 +21,11 @@ def define_internal_standard(experiment_df_row, blob_df, internal_standard_name,
     internal_standard: df row
             Data of the internal standard in a pandas dataframe row.
     """
-    internal_standard = blob_df.loc[internal_standard_name].copy()
+    try:
+        internal_standard = blob_df.loc[internal_standard_name].copy()
+    except KeyError:
+        raise Exception(f'Internal Standard "{internal_standard_name}" not found in this blob table')
+
     volume_blob_is = internal_standard.volume
     if calibration_file:
         mass_IS = get_mass_calibration(calibration_file, volume_blob_is)
