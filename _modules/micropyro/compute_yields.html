@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.compute_yields &mdash; micropyro 0.1.post21+g35e12a5 documentation</title>
+  <title>micropyro.compute_yields &mdash; micropyro 0.1.post22+g08b3185 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post21+g35e12a5
+                0.1.post22+g08b3185
               </div>
             
           
@@ -189,7 +189,11 @@
 <span class="sd">    internal_standard: df row</span>
 <span class="sd">            Data of the internal standard in a pandas dataframe row.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">internal_standard</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">internal_standard_name</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">internal_standard</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">internal_standard_name</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Internal Standard &quot;</span><span class="si">{</span><span class="n">internal_standard_name</span><span class="si">}</span><span class="s1">&quot; not found in this blob table&#39;</span><span class="p">)</span>
+
     <span class="n">volume_blob_is</span> <span class="o">=</span> <span class="n">internal_standard</span><span class="o">.</span><span class="n">volume</span>
     <span class="k">if</span> <span class="n">calibration_file</span><span class="p">:</span>
         <span class="n">mass_IS</span> <span class="o">=</span> <span class="n">get_mass_calibration</span><span class="p">(</span><span class="n">calibration_file</span><span class="p">,</span> <span class="n">volume_blob_is</span><span class="p">)</span>
