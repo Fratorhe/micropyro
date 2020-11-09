@@ -100,7 +100,7 @@ def plot_ranges_MW(blob_dfs, ranges, x_axis=None, save_plot=None, filenames=None
     for i_range, range_data in enumerate(ranges):
         if i_range == 0:
             continue
-        ax.plot([], [], color=cmap(i_range)[:3], linestyle='-', label=f'MW<{range_data}')
+        ax.plot([], [], color=cmap(i_range)[:3], linestyle='-', label=f'{ranges[i_range-1]}$<$MW$<${range_data}')
 
     if plot_total:
         ax.plot([], [], color='k', linestyle='-', label=f'Total')
