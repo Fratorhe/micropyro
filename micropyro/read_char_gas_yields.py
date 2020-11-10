@@ -1,5 +1,3 @@
-import warnings
-
 import micropyro as mp
 
 
@@ -31,27 +29,26 @@ def read_yields_excel(filename, sheet_name=0, **kwargs):
                                                  use_is=False, **kwargs)
 
     data = experiment.df
-
-    data = data.select_dtypes(include='number').clip(lower=0)  # kills all negative numbers
+    data.update(data.select_dtypes(include='number').clip(lower=0))  # kills all negative numbers
     return data
 
 
-def add_gas_yield_to_totals_json(gas_or_char_matrix):
+def add_gas_yield_to_totals_json(gas_yield_matrix):
     """
     Add the totals from the gas yields to the json file with the results.
     Adds the total, the different gases, and their elemental composition.
 
     Parameters
     ----------
-    gas_or_char_matrix
+    gas_yield_matrix
     """
     # we do it for each experiment
-    cols_to_remove = ('t py', 'temperature')
-    gas_or_char_matrix = gas_or_char_matrix.drop(cols_to_remove, errors='ignore', axis=1)
+    cols_to_remove = ['t py', 'temperature']
+    gas_yield_matrix = gas_yield_matrix.drop(cols_to_remove, errors='ignore', axis=1)
 
     # get all the json files
 
-    for experiment, row in gas_or_char_matrix.iterrows():
+    for experiment, row in gas_yield_matrix.iterrows():
         total_gases = row.sum()
 
         atoms_gases = compute_elemental_composition_gases(row)
@@ -62,22 +59,23 @@ def add_gas_yield_to_totals_json(gas_or_char_matrix):
 
         if filename is not None:
             mp.append_json(filename, dict_data_yields)
+            print(f'Added data to {experiment}')
 
 
-# def add_char_yield_to_totals_json(gas_or_char_matrix):
+# def add_char_yield_to_totals_json(gas_yield_matrix):
 #     cols_to_add = '% char'
-#     add_yields_to_totals_json(gas_or_char_matrix, cols_to_add)
+#     add_yields_to_totals_json(gas_yield_matrix, cols_to_add)
 #
 #
-# def add_gas_yield_to_totals_json(gas_or_char_matrix, extra_cols_to_remove=()):
-#     col_names = gas_or_char_matrix.columns
+# def add_gas_yield_to_totals_json(gas_yield_matrix, extra_cols_to_remove=()):
+#     col_names = gas_yield_matrix.columns
 #
 #     cols_to_remove = ('t py', 'temperature') + extra_cols_to_remove
 #
 #     cols_to_add = set(col_names) - set(cols_to_remove)
 #     print(cols_to_add)
 #
-#     add_yields_to_totals_json(gas_or_char_matrix, cols_to_add)
+#     add_yields_to_totals_json(gas_yield_matrix, cols_to_add)
 
 
 def compute_elemental_composition_gases(row_experiment):
@@ -103,7 +101,7 @@ def compute_elemental_composition_gases(row_experiment):
     yield_atoms = {}
     for atom in data_atoms.keys():
         if atom in database_cols:
-            yield_atom = 0 # we set it to 0 when we start
+            yield_atom = 0  # we set it to 0 when we start
             for gas in gases:
                 # find the gas the database
                 n_atoms = database.loc[gas, atom]
