@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; micropyro 0.1.post25+g0210a7c documentation</title>
+  <title>Gas and Char yields &mdash; micropyro 0.1.post25+g0210a7c documentation</title>
   
 
   
@@ -21,7 +21,6 @@
   
 
   
-    
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -38,9 +37,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-    <script type="text/javascript" src="_static/searchtools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Generate Database" href="generate-database.html" />
+    <link rel="prev" title="Post processing" href="post-processing.html" />
     <link href="_static/style.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -73,7 +73,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -91,7 +91,7 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="loading-module.html">Loading Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="read-database.html">Read a Database</a></li>
@@ -100,7 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="compute-yields.html">Compute yields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="external-calibration.html">External calibration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="post-processing.html">Post processing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="char-gas-yields.html">Gas and Char yields</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Gas and Char yields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generate-database.html">Generate Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities-docs.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
@@ -151,12 +151,14 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Search</li>
+      <li>Gas and Char yields</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/char-gas-yields.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -168,23 +170,59 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="gas-and-char-yields">
+<h1>Gas and Char yields<a class="headerlink" href="#gas-and-char-yields" title="Permalink to this headline">¶</a></h1>
+<p>In addition to the FID yields, we also have to include the gas and char yields to our mass balance.
+Here there are some functions to make this easier. First, a generic reader for excel data based on
+<a class="reference internal" href="experiment-reader.html#micropyro.ReadExperimentTable" title="micropyro.ReadExperimentTable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">micropyro.ReadExperimentTable()</span></code></a>.
+This function takes into account that any number reported in the tables can be
+negative, thus if any is found, it will be set to 0.</p>
+<dl class="py function">
+<dt id="micropyro.read_yields_excel">
+<code class="sig-prename descclassname">micropyro.</code><code class="sig-name descname">read_yields_excel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">sheet_name</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/micropyro/read_char_gas_yields.html#read_yields_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#micropyro.read_yields_excel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the char or light gases yields from an excel file.
+Turns negative numbers to 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename: str</strong></dt><dd><p>File to read</p>
+</dd>
+<dt><strong>sheet_name: str</strong></dt><dd><p>Name of the sheet to read</p>
+</dd>
+<dt><strong>kwargs</strong></dt><dd><p>Extra arguments compliant with the read_xls of pandas.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>char_data: df</dt><dd><p>DataFrame with the char yields, the temperature and some other properties</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mp</span><span class="o">.</span><span class="n">read_yields_excel</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;Micropyrolysis.xlsx&#39;</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;char yield measurement&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">df</span>
+</pre></div>
+</div>
+</dd></dl>
 
-  
-  <div id="search-results">
-  
-  </div>
+</div>
+
 
            </div>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="generate-database.html" class="btn btn-neutral float-right" title="Generate Database" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="post-processing.html" class="btn btn-neutral float-left" title="Post processing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -224,14 +262,7 @@
   
   
     
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>

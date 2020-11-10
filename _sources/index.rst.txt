@@ -19,6 +19,7 @@ Package to analyse micropyrolysis data from GC Image software.
    compute-yields
    external-calibration
    post-processing
+   char-gas-yields
    generate-database
    utilities-docs
    release-history

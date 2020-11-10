@@ -5,8 +5,10 @@
 ./_modules/micropyro/external_calibration.html
 ./_modules/micropyro/postprocessing_tools_multiple_files.html
 ./_modules/micropyro/postprocessing_tools_single_file.html
+./_modules/micropyro/read_char_gas_yields.html
 ./_modules/micropyro/read_database.html
 ./_modules/utilities.html
+./_sources/char-gas-yields.rst.txt
 ./_sources/compute-yields.rst.txt
 ./_sources/experiment-reader.rst.txt
 ./_sources/external-calibration.rst.txt
@@ -109,6 +111,7 @@
 ./_static/style.css
 ./_static/underscore-1.3.1.js
 ./_static/underscore.js
+./char-gas-yields.html
 ./compute-yields.html
 ./experiment-reader.html
 ./external-calibration.html

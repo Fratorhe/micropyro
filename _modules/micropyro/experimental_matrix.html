@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.experimental_matrix &mdash; micropyro 0.1.post23+g941cf36 documentation</title>
+  <title>micropyro.experimental_matrix &mdash; micropyro 0.1.post25+g0210a7c documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post23+g941cf36
+                0.1.post25+g0210a7c
               </div>
             
           
@@ -98,6 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../compute-yields.html">Compute yields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../external-calibration.html">External calibration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../post-processing.html">Post processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../char-gas-yields.html">Gas and Char yields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../generate-database.html">Generate Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utilities-docs.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
@@ -207,7 +208,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">experiment_df</span>
 
         <span class="c1"># set all column headers in lower case to ensure there is no mistake</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
@@ -236,9 +241,14 @@
         <span class="n">experiment_df</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Filename&#39;</span><span class="p">)</span>
         <span class="c1"># remove the mg from the name of the column, and removed any extra spaces</span>
         <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(mg)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+        <span class="c1"># strip suffix at the right end only.</span>
+        <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;.1&#39;</span><span class="p">)</span>
 
         <span class="c1"># create a copy of the temperature T (C) column for easier access through the code.</span>
-        <span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;T (C)&quot;</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;T (C)&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="p">[</span><span class="s2">&quot;T Py&quot;</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">experiment_df</span><span class="p">,</span> <span class="n">use_is</span><span class="p">)</span>
 

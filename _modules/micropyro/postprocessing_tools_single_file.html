@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.postprocessing_tools_single_file &mdash; micropyro 0.1.post23+g941cf36 documentation</title>
+  <title>micropyro.postprocessing_tools_single_file &mdash; micropyro 0.1.post25+g0210a7c documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post23+g941cf36
+                0.1.post25+g0210a7c
               </div>
             
           
@@ -98,6 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../compute-yields.html">Compute yields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../external-calibration.html">External calibration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../post-processing.html">Post processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../char-gas-yields.html">Gas and Char yields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../generate-database.html">Generate Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utilities-docs.html">Utilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
@@ -236,7 +237,7 @@
 
     <span class="n">dict_per_atom</span> <span class="o">=</span> <span class="n">compute_elemental_composition</span><span class="p">(</span><span class="n">blob_df</span><span class="p">)</span>
 
-    <span class="n">dict_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">grouping</span><span class="p">:</span> <span class="n">sum_groups</span><span class="p">,</span> <span class="s2">&quot;total&quot;</span><span class="p">:</span> <span class="n">total</span><span class="p">,</span> <span class="s2">&quot;atoms&quot;</span><span class="p">:</span> <span class="n">dict_per_atom</span><span class="p">}</span>
+    <span class="n">dict_data</span> <span class="o">=</span> <span class="p">{</span><span class="n">grouping</span><span class="p">:</span> <span class="n">sum_groups</span><span class="p">,</span> <span class="s2">&quot;total_FID&quot;</span><span class="p">:</span> <span class="n">total</span><span class="p">,</span> <span class="s2">&quot;atoms_FID&quot;</span><span class="p">:</span> <span class="n">dict_per_atom</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">to_file</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">to_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
