@@ -39,7 +39,11 @@ class ReadExperimentTable:
         self.df = experiment_df
 
         # set all column headers in lower case to ensure there is no mistake
-        self.df.index = self.df.index.str.lower()
+        try:
+            self.df.index = self.df.index.str.lower()
+        except AttributeError:
+            self.df.index = self.df.index.map(str).str.lower()
+
         self.df.columns = self.df.columns.str.lower()
         self.df.index.name = self.df.index.name.lower()
 
@@ -68,9 +72,14 @@ class ReadExperimentTable:
         experiment_df = experiment_df.set_index('Filename')
         # remove the mg from the name of the column, and removed any extra spaces
         experiment_df.columns = [col.replace("(mg)", "").strip() for col in experiment_df.columns]
+        # strip suffix at the right end only.
+        experiment_df.columns = experiment_df.columns.str.rstrip('.1')
 
         # create a copy of the temperature T (C) column for easier access through the code.
-        experiment_df["temperature"] = experiment_df["T (C)"]
+        try:
+            experiment_df["temperature"] = experiment_df["T (C)"]
+        except KeyError:
+            experiment_df["temperature"] = experiment_df["T Py"]
 
         return cls(experiment_df, use_is)
 

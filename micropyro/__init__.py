@@ -10,6 +10,7 @@ from .external_calibration import *
 from .postprocessing_tools_single_file import *
 from .postprocessing_tools_multiple_files import *
 from .utilities import *
+from .read_char_gas_yields import *
 
 try:
     from .generate_database import *
