@@ -36,7 +36,15 @@ def read_yields_excel(filename, sheet_name=0, **kwargs):
     return data
 
 
-def add_gas_yield_to_totals_json(gas_or_char_matrix, ):
+def add_gas_yield_to_totals_json(gas_or_char_matrix):
+    """
+    Add the totals from the gas yields to the json file with the results.
+    Adds the total, the different gases, and their elemental composition.
+
+    Parameters
+    ----------
+    gas_or_char_matrix
+    """
     # we do it for each experiment
     cols_to_remove = ('t py', 'temperature')
     gas_or_char_matrix = gas_or_char_matrix.drop(cols_to_remove, errors='ignore', axis=1)
@@ -73,6 +81,20 @@ def add_gas_yield_to_totals_json(gas_or_char_matrix, ):
 
 
 def compute_elemental_composition_gases(row_experiment):
+    """
+    Compute the elemental composition of the yields from the light gases
+
+    Parameters
+    ----------
+    row_experiment: pandas.Series
+        with the different gases and their gas yield
+
+    Returns
+    -------
+    yield_atoms: dict
+        with the yields per atom
+
+    """
     data_atoms = mp.get_atom_mw_dict()
     database = mp.ReadDatabase.from_internal().df
     database_cols = database.columns
