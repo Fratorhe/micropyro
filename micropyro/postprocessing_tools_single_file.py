@@ -68,7 +68,7 @@ def get_yields_summary(blob_df, grouping=None, to_file=None):
 
     dict_per_atom = compute_elemental_composition(blob_df)
 
-    dict_data = {grouping: sum_groups, "total": total, "atoms": dict_per_atom}
+    dict_data = {grouping: sum_groups, "total_FID": total, "atoms_FID": dict_per_atom}
     if to_file:
         with open(to_file, 'w') as fp:
             json.dump(dict_data, fp, indent=4)
