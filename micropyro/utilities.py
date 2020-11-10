@@ -1,5 +1,7 @@
 import json
+import os
 import re
+import warnings
 
 import pkg_resources
 
@@ -58,3 +60,47 @@ def reader_json_totals(list_filenames):
             list_totals_dict.append(data)
 
     return list_totals_dict
+
+
+def append_json(filename, new_data):
+    """
+
+    Parameters
+    ----------
+    filename: str
+        name of the file to add the new data
+    """
+
+    with open(filename, 'r') as fp:
+        json_data = json.load(fp)
+
+    with open(filename, 'w') as fp:
+        # appending the data
+        json_data.update(new_data)
+
+        json.dump(json_data, fp, indent=4, sort_keys=True)
+
+
+def get_actual_filename(name):
+    """
+    Get the filename in a case insensitive manner.
+
+    Parameters
+    ----------
+    name: str
+        name of the file without specific case
+    Returns
+    -------
+    matching filename
+    """
+    files_in_dir = os.listdir()
+    files_in_dir_lower = [file.lower() for file in files_in_dir]
+
+    try:
+        indx_file = files_in_dir_lower.index(name)
+        actual_filename = files_in_dir[indx_file]
+    except ValueError:
+        warnings.warn(f"file {name} not found")
+        actual_filename = None
+
+    return actual_filename
