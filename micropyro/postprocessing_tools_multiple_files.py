@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import seaborn as sns
+import numpy as np
 from matplotlib import cm
 
 
@@ -100,7 +100,7 @@ def plot_ranges_MW(blob_dfs, ranges, x_axis=None, save_plot=None, filenames=None
     for i_range, range_data in enumerate(ranges):
         if i_range == 0:
             continue
-        ax.plot([], [], color=cmap(i_range)[:3], linestyle='-', label=f'{ranges[i_range-1]}$<$MW$<${range_data}')
+        ax.plot([], [], color=cmap(i_range)[:3], linestyle='-', label=f'{ranges[i_range - 1]}$<$MW$<${range_data}')
 
     if plot_total:
         ax.plot([], [], color='k', linestyle='-', label=f'Total')
@@ -141,8 +141,7 @@ def compare_quantites_totals(list_totals_dict, quantity, subgroups=None, x_axis=
     cmap = cm.get_cmap('tab10', 10)  # PiYG
 
     if not subgroups:
-        subgroups = list_totals_dict[0][quantity].keys() # if subgroup not given, guess it from the first file.
-
+        subgroups = list_totals_dict[0][quantity].keys()  # if subgroup not given, guess it from the first file.
 
     fig, ax = plt.subplots()
 
@@ -164,7 +163,8 @@ def compare_quantites_totals(list_totals_dict, quantity, subgroups=None, x_axis=
 
     return fig, ax
 
-def compare_elements_totals(list_totals_dict, elements=['c','o','h','n'], x_axis=None, save_plot=None):
+
+def compare_elements_totals(list_totals_dict, elements=['c', 'o', 'h', 'n'], x_axis=None, save_plot=None):
     """
         This utility compares the elements for given results files (repetitions, temperatures, etc).
         Basically particularizes compare_quantites_totals
@@ -196,6 +196,7 @@ def compare_elements_totals(list_totals_dict, elements=['c','o','h','n'], x_axis
 
     return fig, ax
 
+
 def compare_group_totals(list_totals_dict, group_name, x_axis=None, save_plot=None):
     """
         This utility compares the groups for given results files (repetitions, temperatures, etc).
@@ -223,6 +224,71 @@ def compare_group_totals(list_totals_dict, group_name, x_axis=None, save_plot=No
     ax.set_ylabel('Mass Yield, \\%')
     ax.set_xlabel('Temperature, C')
 
+    if save_plot:
+        fig.savefig(save_plot)
+
+    return fig, ax
+
+
+def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=False):
+    """
+    Function to wrap compare_group_totals to only plot the global totals (char, gas and FID)
+
+    Parameters
+    ----------
+    list_totals_dict: list of dfs
+        List of dicts with the totals.
+
+    Return
+    ----------
+    fig: plt.figure
+        matplolib figure for further modifications/saving
+    ax: plt.axis
+        matplotlib axis for further modifications/saving
+    """
+
+    fig, ax = plt.subplots()
+
+    yield_names = ('char_yield', 'total_FID', 'total_gases')
+    dict_totals_plot = {'char_yield': [], 'total_FID': [], 'total_gases': [], 'total_sum': []}
+    annotations = []
+
+    for dict_totals in list_totals_dict:
+        yields = []  # container to add the yields of a single measurement (gas, char, fid)
+        for yield_to_add in yield_names:
+            extracted_yield_from_json = dict_totals.get(yield_to_add, np.nan)  # get it from the json file
+            yields.append(extracted_yield_from_json)  # add it to the container
+            dict_totals_plot[yield_to_add].append(extracted_yield_from_json)  # add it to the dictionary
+
+        total = np.nansum(yields)  # adds all of them considering nans = 0
+        dict_totals_plot['total_sum'].append(total)
+        if annotate:
+            mass = f'{dict_totals["mass ug"]:.0f} ug' if not np.isnan(dict_totals["mass ug"]) else ''
+            first_react = f'{dict_totals["1st_react_temp"]:.0f} C' if not np.isnan(dict_totals["1st_react_temp"]) else ''
+            second_react = f'{dict_totals["2nd_react_temp"]:.0f} C' if not np.isnan(dict_totals["2nd_react_temp"]) else ''
+            annotations.append(f'{mass} {first_react} {second_react}')
+
+    conversion_names_label = {'char_yield': 'Char', 'total_FID': 'FID',
+                              'total_gases': 'Light Gases', 'total_sum': 'Total'}
+
+    if x_axis is None:
+        # x axis will be set to the temperature of the first reactor
+        x_axis = []
+        for dict_totals in list_totals_dict:
+            x_axis.append(dict_totals['1st_react_temp'])
+
+    for quantity_plot, values_plot in dict_totals_plot.items():
+        ax.scatter(x_axis, values_plot, label=conversion_names_label[quantity_plot])
+
+    if annotate:
+        for _, values_plot in dict_totals_plot.items():  # this iterates over char, gas, fid and total.
+            # this iterates over a temperatures, and one of the above getting a pair (T, yield)
+            for x_axis_value, value_plot, annotation in zip(x_axis, values_plot,annotations):
+                ax.annotate(annotation, (x_axis_value, value_plot), fontsize=16, alpha=0.5)
+
+    ax.legend(loc='best')
+    ax.set_ylabel('Mass Yield, \\%')
+    ax.set_xlabel('Temperature, C')
     if save_plot:
         fig.savefig(save_plot)
 
