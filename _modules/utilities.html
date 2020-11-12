@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>utilities &mdash; micropyro 0.1.post28+g5a64516 documentation</title>
+  <title>utilities &mdash; micropyro 0.1.post33+gc7acddd documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post28+g5a64516
+                0.1.post33+gc7acddd
               </div>
             
           
@@ -171,7 +171,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
 
 
@@ -216,15 +216,15 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">data</span><span class="p">[</span><span class="s1">&#39;1st_react_temp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\d+)C&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-                <span class="k">pass</span>
+                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;1st_react_temp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;2nd_react_temp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\d+)C&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;2nd_react_temp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\d+)C&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-                <span class="k">pass</span>
+                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;2nd_react_temp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">data</span><span class="p">[</span><span class="s1">&#39;mass ug&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\d+) ug&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-                <span class="k">pass</span>
+                <span class="n">data</span><span class="p">[</span><span class="s1">&#39;mass ug&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
             <span class="n">list_totals_dict</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
@@ -269,7 +269,7 @@
         <span class="n">indx_file</span> <span class="o">=</span> <span class="n">files_in_dir_lower</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">actual_filename</span> <span class="o">=</span> <span class="n">files_in_dir</span><span class="p">[</span><span class="n">indx_file</span><span class="p">]</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;file </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;file </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> not found&#39;</span><span class="p">)</span>
         <span class="n">actual_filename</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">return</span> <span class="n">actual_filename</span></div>

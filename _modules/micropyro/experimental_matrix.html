@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.experimental_matrix &mdash; micropyro 0.1.post28+g5a64516 documentation</title>
+  <title>micropyro.experimental_matrix &mdash; micropyro 0.1.post33+gc7acddd documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post28+g5a64516
+                0.1.post33+gc7acddd
               </div>
             
           
@@ -235,14 +235,14 @@
 
         <span class="c1"># reads the file</span>
         <span class="n">experiment_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sheet_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># strip suffix at the right end only.</span>
+        <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;.1&#39;</span><span class="p">)</span>
         <span class="c1"># removes the rows with nans in the filename.</span>
         <span class="n">experiment_df</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="p">[</span><span class="n">experiment_df</span><span class="p">[</span><span class="s1">&#39;Filename&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
         <span class="c1"># sets the index filename, so it is easier to refer to a specific experiment.</span>
         <span class="n">experiment_df</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Filename&#39;</span><span class="p">)</span>
         <span class="c1"># remove the mg from the name of the column, and removed any extra spaces</span>
         <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(mg)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
-        <span class="c1"># strip suffix at the right end only.</span>
-        <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">experiment_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;.1&#39;</span><span class="p">)</span>
 
         <span class="c1"># create a copy of the temperature T (C) column for easier access through the code.</span>
         <span class="k">try</span><span class="p">:</span>

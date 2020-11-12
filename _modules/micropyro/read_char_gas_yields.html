@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.read_char_gas_yields &mdash; micropyro 0.1.post28+g5a64516 documentation</title>
+  <title>micropyro.read_char_gas_yields &mdash; micropyro 0.1.post33+gc7acddd documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post28+g5a64516
+                0.1.post33+gc7acddd
               </div>
             
           
@@ -212,7 +212,7 @@
 <span class="sd">    gas_yield_matrix</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># we do it for each experiment</span>
-    <span class="n">cols_to_remove</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;t py&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">]</span>
+    <span class="n">cols_to_remove</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;t py&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;t (c)&#39;</span><span class="p">]</span>
     <span class="n">gas_yield_matrix</span> <span class="o">=</span> <span class="n">gas_yield_matrix</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">cols_to_remove</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># get all the json files</span>
@@ -229,23 +229,6 @@
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">mp</span><span class="o">.</span><span class="n">append_json</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">dict_data_yields</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Added data to </span><span class="si">{</span><span class="n">experiment</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-
-<span class="c1"># def add_char_yield_to_totals_json(gas_yield_matrix):</span>
-<span class="c1">#     cols_to_add = &#39;% char&#39;</span>
-<span class="c1">#     add_yields_to_totals_json(gas_yield_matrix, cols_to_add)</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1"># def add_gas_yield_to_totals_json(gas_yield_matrix, extra_cols_to_remove=()):</span>
-<span class="c1">#     col_names = gas_yield_matrix.columns</span>
-<span class="c1">#</span>
-<span class="c1">#     cols_to_remove = (&#39;t py&#39;, &#39;temperature&#39;) + extra_cols_to_remove</span>
-<span class="c1">#</span>
-<span class="c1">#     cols_to_add = set(col_names) - set(cols_to_remove)</span>
-<span class="c1">#     print(cols_to_add)</span>
-<span class="c1">#</span>
-<span class="c1">#     add_yields_to_totals_json(gas_yield_matrix, cols_to_add)</span>
-
 
 <span class="k">def</span> <span class="nf">compute_elemental_composition_gases</span><span class="p">(</span><span class="n">row_experiment</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -282,6 +265,35 @@
             <span class="n">yield_atoms</span><span class="p">[</span><span class="n">atom</span><span class="p">]</span> <span class="o">=</span> <span class="n">yield_atom</span>
 
     <span class="k">return</span> <span class="n">yield_atoms</span>
+
+<span class="k">def</span> <span class="nf">add_char_yield_to_totals_json</span><span class="p">(</span><span class="n">char_yield_matrix</span><span class="p">,</span> <span class="n">in_percent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add the char yield to the json file with the results.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    char_yield_matrix: pandas.df</span>
+<span class="sd">            Char matrix read using the class :meth:`micropyro.ReadExperimentTable`</span>
+<span class="sd">    in_percent</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># we do it for each experiment</span>
+    <span class="n">cols_to_remove</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;t py&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;t (c)&#39;</span><span class="p">]</span>
+    <span class="n">char_yield_matrix</span> <span class="o">=</span> <span class="n">char_yield_matrix</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">cols_to_remove</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># check if to mutiply it by 100 to have it in %</span>
+    <span class="k">if</span> <span class="n">in_percent</span><span class="p">:</span>
+        <span class="n">to_percent</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">to_percent</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># get all the json files</span>
+    <span class="k">for</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">char_yield_matrix</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">dict_data_yields</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;char_yield&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">% c</span><span class="s1">har&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">to_percent</span><span class="p">}</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">get_actual_filename</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">experiment</span><span class="si">}</span><span class="s1">.totals.json&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mp</span><span class="o">.</span><span class="n">append_json</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">dict_data_yields</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Added data to </span><span class="si">{</span><span class="n">experiment</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
            </div>
