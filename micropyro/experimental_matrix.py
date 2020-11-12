@@ -66,14 +66,14 @@ class ReadExperimentTable:
 
         # reads the file
         experiment_df = pd.read_excel(filename, sheet_name, **kwargs)
+        # strip suffix at the right end only.
+        experiment_df.columns = experiment_df.columns.str.rstrip('.1')
         # removes the rows with nans in the filename.
         experiment_df = experiment_df[experiment_df['Filename'].notna()]
         # sets the index filename, so it is easier to refer to a specific experiment.
         experiment_df = experiment_df.set_index('Filename')
         # remove the mg from the name of the column, and removed any extra spaces
         experiment_df.columns = [col.replace("(mg)", "").strip() for col in experiment_df.columns]
-        # strip suffix at the right end only.
-        experiment_df.columns = experiment_df.columns.str.rstrip('.1')
 
         # create a copy of the temperature T (C) column for easier access through the code.
         try:
