@@ -43,7 +43,7 @@ def add_gas_yield_to_totals_json(gas_yield_matrix):
     gas_yield_matrix
     """
     # we do it for each experiment
-    cols_to_remove = ['t py', 'temperature']
+    cols_to_remove = ['t py', 'temperature', 't (c)']
     gas_yield_matrix = gas_yield_matrix.drop(cols_to_remove, errors='ignore', axis=1)
 
     # get all the json files
@@ -60,23 +60,6 @@ def add_gas_yield_to_totals_json(gas_yield_matrix):
         if filename is not None:
             mp.append_json(filename, dict_data_yields)
             print(f'Added data to {experiment}')
-
-
-# def add_char_yield_to_totals_json(gas_yield_matrix):
-#     cols_to_add = '% char'
-#     add_yields_to_totals_json(gas_yield_matrix, cols_to_add)
-#
-#
-# def add_gas_yield_to_totals_json(gas_yield_matrix, extra_cols_to_remove=()):
-#     col_names = gas_yield_matrix.columns
-#
-#     cols_to_remove = ('t py', 'temperature') + extra_cols_to_remove
-#
-#     cols_to_add = set(col_names) - set(cols_to_remove)
-#     print(cols_to_add)
-#
-#     add_yields_to_totals_json(gas_yield_matrix, cols_to_add)
-
 
 def compute_elemental_composition_gases(row_experiment):
     """
@@ -113,3 +96,32 @@ def compute_elemental_composition_gases(row_experiment):
             yield_atoms[atom] = yield_atom
 
     return yield_atoms
+
+def add_char_yield_to_totals_json(char_yield_matrix, in_percent=True):
+    """
+    Add the char yield to the json file with the results.
+
+    Parameters
+    ----------
+    char_yield_matrix: pandas.df
+            Char matrix read using the class :meth:`micropyro.ReadExperimentTable`
+    in_percent
+    """
+    # we do it for each experiment
+    cols_to_remove = ['t py', 'temperature', 't (c)']
+    char_yield_matrix = char_yield_matrix.drop(cols_to_remove, errors='ignore', axis=1)
+
+    # check if to mutiply it by 100 to have it in %
+    if in_percent:
+        to_percent = 100
+    else:
+        to_percent = 1
+
+    # get all the json files
+    for experiment, row in char_yield_matrix.iterrows():
+        dict_data_yields = {'char_yield': row['% char']*to_percent}
+        filename = mp.get_actual_filename(f'{experiment}.totals.json')
+
+        if filename is not None:
+            mp.append_json(filename, dict_data_yields)
+            print(f'Added data to {experiment}')
