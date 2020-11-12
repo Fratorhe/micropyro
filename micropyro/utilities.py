@@ -2,7 +2,7 @@ import json
 import os
 import re
 import warnings
-
+import numpy as np
 import pkg_resources
 
 
@@ -47,15 +47,15 @@ def reader_json_totals(list_filenames):
             try:
                 data['1st_react_temp'] = float(re.findall(r"(\d+)C", file)[0])
             except IndexError:
-                pass
+                data['1st_react_temp'] = np.nan
             try:
-                data['2nd_react_temp'] = float(re.findall(r"(\d+)C", file)[2])
+                data['2nd_react_temp'] = float(re.findall(r"(\d+)C", file)[1])
             except IndexError:
-                pass
+                data['2nd_react_temp'] = np.nan
             try:
                 data['mass ug'] = float(re.findall(r"(\d+) ug", file)[0])
             except IndexError:
-                pass
+                data['mass ug'] = np.nan
 
             list_totals_dict.append(data)
 
@@ -100,7 +100,7 @@ def get_actual_filename(name):
         indx_file = files_in_dir_lower.index(name)
         actual_filename = files_in_dir[indx_file]
     except ValueError:
-        warnings.warn(f"file {name} not found")
+        warnings.warn(f'file {name} not found')
         actual_filename = None
 
     return actual_filename
