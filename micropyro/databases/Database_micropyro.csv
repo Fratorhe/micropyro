@@ -1118,6 +1118,11 @@ C4H8,56.11,C4H8,0,1,,CC(=C)C
 "c2h4",28.05,"C2H4",0,1,,
 "c2h6",30.07,"C2H6",0,1,,
 "c4 hcs mw = 56",56.11,"C4H8",0,1,,CC(=C)C
+"naphthalene, 6-methoxy-2-(1-buten-3-yl)-", 212.29, "C15H16O",0,1,,CC(C=C)C1=CC2=C(C=C1)C=C(C=C2)OC
+"benzophenone, 5-isopropyl-2-methyl-",238.32, "C17H18O",0,1,,CC1=C(C=C(C=C1)C(C)C)C(=O)C2=CC=CC=C2
+"Benzil",210.23, "C14H10O2",0,1,,C1=CC=C(C=C1)C(=O)C(=O)C2=CC=CC=C2
+"benzo[b][1,8]-naphthyridin05(10h)-one, 2,4,7-trimethyl-", 238.28, "C15H14N2O",0,1,,CN1C2=CC=CC=C2C(=O)C3=C1N=CC=C3
+
 
 
 

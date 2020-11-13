@@ -24,7 +24,7 @@ def define_internal_standard(experiment_df_row, blob_df, internal_standard_name,
     try:
         internal_standard = blob_df.loc[internal_standard_name].copy()
     except KeyError:
-        raise Exception(f'Internal Standard "{internal_standard_name}" not found in this blob table')
+        raise FileNotFoundError(f'Internal Standard "{internal_standard_name}" not found in this blob table')
 
     volume_blob_is = internal_standard.volume
     if calibration_file:
@@ -94,10 +94,12 @@ def compute_yields(experiment_df_row, blob_df, internal_standard_name, calibrati
     # get the internal standard compound and drop it from the original dataframe.
     # it requires a different treatment
     internal_standard = define_internal_standard(experiment_df_row, blob_df, internal_standard_name, calibration_file)
-    try:
-        blob_df.drop(compound_drop, inplace=True)
-    except KeyError:
-        print(f'{compound_drop} not found to drop')
+
+    if compound_drop is not None:
+        try:
+            blob_df.drop(compound_drop, inplace=True)
+        except KeyError:
+            print(f'{compound_drop} not found to drop')
 
     # compute the moles using the ecn for each compound and add it in a new column
     blob_df["moles ecn"] = blob_df.apply(
@@ -118,7 +120,7 @@ def compute_yields(experiment_df_row, blob_df, internal_standard_name, calibrati
 
     # process duplicates
     all_columns = set(blob_df.columns)
-    colums_to_sum = set(['volume', 'moles ecn', 'moles mrf', 'mass mrf','yield mrf'])
+    colums_to_sum = {'volume', 'moles ecn', 'moles mrf', 'mass mrf', 'yield mrf'} # set of columns to sum if duplicates
     columns_stay_same = all_columns-colums_to_sum
 
     dict_to_sum = {key: sum for key in colums_to_sum}
@@ -146,7 +148,7 @@ def compute_yields_is(experiment_df_row, blob_df, internal_standard_name):
     return blob_df
 
 
-def compute_yields_calibration(experiment_df_row, blob_df, reference_compound, calibration_file, compound_drop):
+def compute_yields_calibration(experiment_df_row, blob_df, reference_compound, calibration_file, compound_drop=None):
     """
     Particular function to compute the yields using a calibration curve of a reference compound.
     In this case, the mass of reference compound is computed using an the auxiliary function get_mass_calibration.

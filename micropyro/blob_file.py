@@ -13,7 +13,7 @@ def read_blob_file(filename, drop_useless_columns=True, index_col=1):
             drop some columns from the dataframe which are not used. TODO: revisit if some may be useful (retention time?)
     index_col: int
             Column number to be used as index. Defaults to 1 because GC Image gives the ID as first column,
-            but for postprocessing we need the 0.
+            but for postprocessing (results) we need the 0.
 
     Returns
     ---------

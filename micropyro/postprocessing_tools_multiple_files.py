@@ -145,6 +145,7 @@ def compare_quantites_totals(list_totals_dict, quantity, subgroups=None, x_axis=
 
     fig, ax = plt.subplots()
 
+    # TODO: refurbish this: first get the data, then plot it after. like this we can implement cumulative if needed.
     for i_group, group in enumerate(subgroups):
         color = cmap(i_group)[:3]
         for i_dict_totals, dict_totals in enumerate(list_totals_dict):
