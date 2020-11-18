@@ -163,7 +163,7 @@ class ReadDatabase:
         :param n: number of nitrogen atoms
         :return: heat of combustion for the given combination of atoms.
         """
-        combust = 11.6 + 103.57 * c + 21.85 * h - 48.18 * o + 7.46 * n
+        combust = 11.06 + 103.57 * c + 21.85 * h - 48.18 * o + 7.46 * n
         return combust
 
     @staticmethod
