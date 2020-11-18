@@ -1122,6 +1122,34 @@ C4H8,56.11,C4H8,0,1,,CC(=C)C
 "benzophenone, 5-isopropyl-2-methyl-",238.32, "C17H18O",0,1,,CC1=C(C=C(C=C1)C(C)C)C(=O)C2=CC=CC=C2
 "Benzil",210.23, "C14H10O2",0,1,,C1=CC=C(C=C1)C(=O)C(=O)C2=CC=CC=C2
 "benzo[b][1,8]-naphthyridin05(10h)-one, 2,4,7-trimethyl-", 238.28, "C15H14N2O",0,1,,CN1C2=CC=CC=C2C(=O)C3=C1N=CC=C3
+"Tacrine", 198.264, "C13H14N2",0,1,,C1CCC2=NC3=CC=CC=C3C(=C2C1)N
+"C10H9N", 143.18, "C10H9N",0,1,,C1=CC=C2C(=C1)C=CC=C2N
+"benzenamine, 2-methyl-4-[(2-methylphenyl)azo]-", 225.2890, "C14H15N3",0,1,,CC1=CC=CC=C1N=NC2=CC(=C(C=C2)N)C.Cl
+"C12H12N2", 184.24, "C12H12N2",0,1,,C1=CC(=CC=C1C2=CC=C(C=C2)N)N
+"c15h11no2", 237.25, "c15h11no2",0,1,,CNC1=CC=CC2=C1C(=O)C3=CC=CC=C3C2=O
+"dibenzyl ketoxime", 225.286, "C15H15NO",0,1,,C1=CC=C(C=C1)CC(=NO)CC2=CC=CC=C2
+"9,10-anthracenedione, 1-amino-",  223.2268, "C14H9NO2",0,1,,
+"9(10h)-acridone",  195.22, "C13H9NO",0,1,,
+"c13h14n2",  198.26, "c13h14n2",0,1,,C1=CC=C(C(=C1)CC2=CC=C(C=C2)N)N
+"c15h12n2",  220.27, "c15h12n2",0,1,,C1=CC=C(C=C1)C2=C(N=CN2)C3=CC=CC=C3
+"2-fluorenamine",  181.23, "C13H11N",0,1,,C1C2=CC=CC=C2C3=C1C=C(C=C3)N
+"2-aminofluorene",  181.23, "C13H11N",0,1,,C1C2=CC=CC=C2C3=C1C=C(C=C3)N
+"3,3'-diaminobenzidine",  214.27, "C12H14N4",0,1,,C1=CC(=C(C=C1C2=CC(=C(C=C2)N)N)N)N
+"NH3", 17.031, "NH3",0,1,,
+"HCN", 27.0253, "HCN",0,1,,
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
