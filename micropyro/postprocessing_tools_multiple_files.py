@@ -188,7 +188,7 @@ def compare_elements_totals(list_totals_dict, elements=['c', 'o', 'h', 'n'], x_a
         ax: plt.axis
             matplotlib axis for further modifications/saving
         """
-    fig, ax = compare_quantites_totals(list_totals_dict, 'atoms', elements, x_axis, save_plot=False)
+    fig, ax = compare_quantites_totals(list_totals_dict, 'atoms_FID', elements, x_axis, save_plot=False)
     ax.set_ylabel('Mass Yield, \\%')
     ax.set_xlabel('Temperature, C')
 
@@ -231,7 +231,7 @@ def compare_group_totals(list_totals_dict, group_name, x_axis=None, save_plot=No
     return fig, ax
 
 
-def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=False):
+def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=False, errorbars=None):
     """
     Function to wrap compare_group_totals to only plot the global totals (char, gas and FID)
 
@@ -239,6 +239,14 @@ def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=F
     ----------
     list_totals_dict: list of dfs
         List of dicts with the totals.
+    annotate: bool
+        annotates the filenames
+    save_plot: bool or str
+        Save to a file with this name
+    x_axis: None or 1D array
+        to be used as x axis, if not given will use temperature of 1st reactor
+    errorbars: None, False or dict
+        If none or false, nothing shows. If a dict, will use it as % of the plotted quantities to create errorbars
 
     Return
     ----------
@@ -265,8 +273,10 @@ def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=F
         dict_totals_plot['total_sum'].append(total)
         if annotate:
             mass = f'{dict_totals["mass ug"]:.0f} ug' if not np.isnan(dict_totals["mass ug"]) else ''
-            first_react = f'{dict_totals["1st_react_temp"]:.0f} C' if not np.isnan(dict_totals["1st_react_temp"]) else ''
-            second_react = f'{dict_totals["2nd_react_temp"]:.0f} C' if not np.isnan(dict_totals["2nd_react_temp"]) else ''
+            first_react = f'{dict_totals["1st_react_temp"]:.0f} C' if not np.isnan(
+                dict_totals["1st_react_temp"]) else ''
+            second_react = f'{dict_totals["2nd_react_temp"]:.0f} C' if not np.isnan(
+                dict_totals["2nd_react_temp"]) else ''
             annotations.append(f'{mass} {first_react} {second_react}')
 
     conversion_names_label = {'char_yield': 'Char', 'total_FID': 'FID',
@@ -278,13 +288,24 @@ def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=F
         for dict_totals in list_totals_dict:
             x_axis.append(dict_totals['1st_react_temp'])
 
-    for quantity_plot, values_plot in dict_totals_plot.items():
-        ax.scatter(x_axis, values_plot, label=conversion_names_label[quantity_plot])
+    if not errorbars:
+        for quantity_plot, values_plot in dict_totals_plot.items():
+            ax.scatter(x_axis, values_plot, label=conversion_names_label[quantity_plot])
+
+    if errorbars:
+        error_total = []
+        for quantity_plot, values_plot in dict_totals_plot.items():
+            errors = np.array(values_plot) * errorbars[quantity_plot] / 100
+            if quantity_plot == 'total_sum':
+                errors = np.sqrt(np.sum(np.square(error_total), axis=0))
+            ax.errorbar(x_axis, values_plot, yerr=errors, fmt='o', label=conversion_names_label[quantity_plot],
+                        capsize=10)
+            error_total.append(errors)
 
     if annotate:
         for _, values_plot in dict_totals_plot.items():  # this iterates over char, gas, fid and total.
             # this iterates over a temperatures, and one of the above getting a pair (T, yield)
-            for x_axis_value, value_plot, annotation in zip(x_axis, values_plot,annotations):
+            for x_axis_value, value_plot, annotation in zip(x_axis, values_plot, annotations):
                 ax.annotate(annotation, (x_axis_value, value_plot), fontsize=16, alpha=0.5)
 
     ax.legend(loc='best')

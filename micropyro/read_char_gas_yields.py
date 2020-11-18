@@ -87,7 +87,7 @@ def compute_elemental_composition_gases(row_experiment):
             yield_atom = 0  # we set it to 0 when we start
             for gas in gases:
                 # find the gas the database
-                n_atoms = database.loc[gas, atom]
+                n_atoms = database.loc[gas, atom] # if here there are 2 results, it means there is a duplicate in the database!
                 mw_gas = float(database.loc[gas, 'mw'])
                 mw_atom = data_atoms[atom]['mw']
 
