@@ -26,6 +26,8 @@ def define_internal_standard(experiment_df_row, blob_df, internal_standard_name,
     except KeyError:
         raise FileNotFoundError(f'Internal Standard "{internal_standard_name}" not found in this blob table')
 
+
+
     volume_blob_is = internal_standard.volume
     if calibration_file:
         mass_IS = get_mass_calibration(calibration_file, volume_blob_is)
@@ -58,7 +60,7 @@ def get_mass_calibration(calibration_file, volume):
     return mass_IS
 
 
-def compute_yields(experiment_df_row, blob_df, internal_standard_name, calibration_file, compound_drop):
+def compute_yields(experiment_df_row, blob_df, internal_standard_name, calibration_file, compounds_drop):
     """
     Generic function to compute the yields of an experiment from an internal standard.
     Requires the experiment, the blob file and the name of the internal standard used.
@@ -75,6 +77,10 @@ def compute_yields(experiment_df_row, blob_df, internal_standard_name, calibrati
 
     Parameters
     ----------
+    calibration_file: str
+        Path to the calibration file
+    compounds_drop: list
+        List of compounds to drop
     experiment_df_row: row of a dataframe
                 with experiments from micropyrolysis. Created using ReadExperimentTable.
     blob_df: df
@@ -91,15 +97,27 @@ def compute_yields(experiment_df_row, blob_df, internal_standard_name, calibrati
     # extract the sample mass
     sample_mass = experiment_df_row['sample']
 
+    # process duplicates
+    all_columns = set(blob_df.columns)
+    colums_to_sum = {'volume'} # set of columns to sum if duplicates
+    columns_stay_same = all_columns-colums_to_sum
+
+    dict_to_sum = {key: sum for key in colums_to_sum}
+    dict_stay_same = {key: 'first' for key in columns_stay_same}
+    dict_aggregate = {**dict_to_sum, **dict_stay_same}
+
+    blob_df = blob_df.groupby(blob_df.index).agg(dict_aggregate)
+
     # get the internal standard compound and drop it from the original dataframe.
     # it requires a different treatment
     internal_standard = define_internal_standard(experiment_df_row, blob_df, internal_standard_name, calibration_file)
 
-    if compound_drop is not None:
-        try:
-            blob_df.drop(compound_drop, inplace=True)
-        except KeyError:
-            print(f'{compound_drop} not found to drop')
+    if compounds_drop is not None:
+        for compound in compounds_drop:
+            try:
+                blob_df.drop(compound, inplace=True)
+            except KeyError:
+                print(f'{compound} not found to drop')
 
     # compute the moles using the ecn for each compound and add it in a new column
     blob_df["moles ecn"] = blob_df.apply(
@@ -118,17 +136,6 @@ def compute_yields(experiment_df_row, blob_df, internal_standard_name, calibrati
     # compute the yield using the mrf for each compound and add it in a new column in percent
     blob_df["yield mrf"] = blob_df.apply(lambda row: row["mass mrf"] / sample_mass * 100, axis=1)
 
-    # process duplicates
-    all_columns = set(blob_df.columns)
-    colums_to_sum = {'volume', 'moles ecn', 'moles mrf', 'mass mrf', 'yield mrf'} # set of columns to sum if duplicates
-    columns_stay_same = all_columns-colums_to_sum
-
-    dict_to_sum = {key: sum for key in colums_to_sum}
-    dict_stay_same = {key: 'first' for key in columns_stay_same}
-    dict_aggregate = {**dict_to_sum, **dict_stay_same}
-
-    blob_df = blob_df.groupby(blob_df.index).agg(dict_aggregate)
-
     return blob_df
 
 
@@ -138,21 +145,23 @@ def compute_yields_is(experiment_df_row, blob_df, internal_standard_name):
     The IS will be removed from the blob_df, but the yields will be based on its mass.
     For the implementation, see compute_yields.
 
+    #TODO: this function may give problems with compounds that we need to drop (repeated in FID and special gc)
+
     Returns
     -------
     blob_df: df
         Dataframe with the blobs, with the extra column of yields
     """
     blob_df = compute_yields(experiment_df_row, blob_df, internal_standard_name, calibration_file=None,
-                             compound_drop=internal_standard_name)
+                             compounds_drop=internal_standard_name)
     return blob_df
 
 
-def compute_yields_calibration(experiment_df_row, blob_df, reference_compound, calibration_file, compound_drop=None):
+def compute_yields_calibration(experiment_df_row, blob_df, reference_compound, calibration_file, compounds_drop=None):
     """
     Particular function to compute the yields using a calibration curve of a reference compound.
     In this case, the mass of reference compound is computed using an the auxiliary function get_mass_calibration.
-    User can still define compound_drop since in many cases, one uses both an external calibration and an Internal Standard.
+    User can still define compounds_drop since in many cases, one uses both an external calibration and an Internal Standard.
     For the implementation, see compute_yields.
 
     Returns
@@ -162,7 +171,7 @@ def compute_yields_calibration(experiment_df_row, blob_df, reference_compound, c
     """
     blob_df = compute_yields(experiment_df_row, blob_df, internal_standard_name=reference_compound,
                              calibration_file=calibration_file,
-                             compound_drop=compound_drop)
+                             compounds_drop=compounds_drop)
     return blob_df
 
 
