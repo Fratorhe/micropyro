@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.compute_yields &mdash; micropyro 0.1.post37+gd34be03 documentation</title>
+  <title>micropyro.compute_yields &mdash; micropyro 0.1.post39+g98fbccc documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post37+gd34be03
+                0.1.post39+g98fbccc
               </div>
             
           
@@ -195,6 +195,8 @@
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Internal Standard &quot;</span><span class="si">{</span><span class="n">internal_standard_name</span><span class="si">}</span><span class="s1">&quot; not found in this blob table&#39;</span><span class="p">)</span>
 
+
+
     <span class="n">volume_blob_is</span> <span class="o">=</span> <span class="n">internal_standard</span><span class="o">.</span><span class="n">volume</span>
     <span class="k">if</span> <span class="n">calibration_file</span><span class="p">:</span>
         <span class="n">mass_IS</span> <span class="o">=</span> <span class="n">get_mass_calibration</span><span class="p">(</span><span class="n">calibration_file</span><span class="p">,</span> <span class="n">volume_blob_is</span><span class="p">)</span>
@@ -227,7 +229,7 @@
     <span class="k">return</span> <span class="n">mass_IS</span></div>
 
 
-<div class="viewcode-block" id="compute_yields"><a class="viewcode-back" href="../../compute-yields.html#micropyro.compute_yields">[docs]</a><span class="k">def</span> <span class="nf">compute_yields</span><span class="p">(</span><span class="n">experiment_df_row</span><span class="p">,</span> <span class="n">blob_df</span><span class="p">,</span> <span class="n">internal_standard_name</span><span class="p">,</span> <span class="n">calibration_file</span><span class="p">,</span> <span class="n">compound_drop</span><span class="p">):</span>
+<div class="viewcode-block" id="compute_yields"><a class="viewcode-back" href="../../compute-yields.html#micropyro.compute_yields">[docs]</a><span class="k">def</span> <span class="nf">compute_yields</span><span class="p">(</span><span class="n">experiment_df_row</span><span class="p">,</span> <span class="n">blob_df</span><span class="p">,</span> <span class="n">internal_standard_name</span><span class="p">,</span> <span class="n">calibration_file</span><span class="p">,</span> <span class="n">compounds_drop</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generic function to compute the yields of an experiment from an internal standard.</span>
 <span class="sd">    Requires the experiment, the blob file and the name of the internal standard used.</span>
@@ -244,6 +246,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    calibration_file: str</span>
+<span class="sd">        Path to the calibration file</span>
+<span class="sd">    compounds_drop: list</span>
+<span class="sd">        List of compounds to drop</span>
 <span class="sd">    experiment_df_row: row of a dataframe</span>
 <span class="sd">                with experiments from micropyrolysis. Created using ReadExperimentTable.</span>
 <span class="sd">    blob_df: df</span>
@@ -260,15 +266,27 @@
     <span class="c1"># extract the sample mass</span>
     <span class="n">sample_mass</span> <span class="o">=</span> <span class="n">experiment_df_row</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">]</span>
 
+    <span class="c1"># process duplicates</span>
+    <span class="n">all_columns</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">blob_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">colums_to_sum</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;volume&#39;</span><span class="p">}</span> <span class="c1"># set of columns to sum if duplicates</span>
+    <span class="n">columns_stay_same</span> <span class="o">=</span> <span class="n">all_columns</span><span class="o">-</span><span class="n">colums_to_sum</span>
+
+    <span class="n">dict_to_sum</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">sum</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">colums_to_sum</span><span class="p">}</span>
+    <span class="n">dict_stay_same</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;first&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">columns_stay_same</span><span class="p">}</span>
+    <span class="n">dict_aggregate</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">dict_to_sum</span><span class="p">,</span> <span class="o">**</span><span class="n">dict_stay_same</span><span class="p">}</span>
+
+    <span class="n">blob_df</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">blob_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">dict_aggregate</span><span class="p">)</span>
+
     <span class="c1"># get the internal standard compound and drop it from the original dataframe.</span>
     <span class="c1"># it requires a different treatment</span>
     <span class="n">internal_standard</span> <span class="o">=</span> <span class="n">define_internal_standard</span><span class="p">(</span><span class="n">experiment_df_row</span><span class="p">,</span> <span class="n">blob_df</span><span class="p">,</span> <span class="n">internal_standard_name</span><span class="p">,</span> <span class="n">calibration_file</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">compound_drop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">blob_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">compound_drop</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">compound_drop</span><span class="si">}</span><span class="s1"> not found to drop&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">compounds_drop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">compound</span> <span class="ow">in</span> <span class="n">compounds_drop</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">blob_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">compound</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">compound</span><span class="si">}</span><span class="s1"> not found to drop&#39;</span><span class="p">)</span>
 
     <span class="c1"># compute the moles using the ecn for each compound and add it in a new column</span>
     <span class="n">blob_df</span><span class="p">[</span><span class="s2">&quot;moles ecn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
@@ -287,17 +305,6 @@
     <span class="c1"># compute the yield using the mrf for each compound and add it in a new column in percent</span>
     <span class="n">blob_df</span><span class="p">[</span><span class="s2">&quot;yield mrf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mass mrf&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">sample_mass</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="c1"># process duplicates</span>
-    <span class="n">all_columns</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">blob_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-    <span class="n">colums_to_sum</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;volume&#39;</span><span class="p">,</span> <span class="s1">&#39;moles ecn&#39;</span><span class="p">,</span> <span class="s1">&#39;moles mrf&#39;</span><span class="p">,</span> <span class="s1">&#39;mass mrf&#39;</span><span class="p">,</span> <span class="s1">&#39;yield mrf&#39;</span><span class="p">}</span> <span class="c1"># set of columns to sum if duplicates</span>
-    <span class="n">columns_stay_same</span> <span class="o">=</span> <span class="n">all_columns</span><span class="o">-</span><span class="n">colums_to_sum</span>
-
-    <span class="n">dict_to_sum</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">sum</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">colums_to_sum</span><span class="p">}</span>
-    <span class="n">dict_stay_same</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;first&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">columns_stay_same</span><span class="p">}</span>
-    <span class="n">dict_aggregate</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">dict_to_sum</span><span class="p">,</span> <span class="o">**</span><span class="n">dict_stay_same</span><span class="p">}</span>
-
-    <span class="n">blob_df</span> <span class="o">=</span> <span class="n">blob_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">blob_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">dict_aggregate</span><span class="p">)</span>
-
     <span class="k">return</span> <span class="n">blob_df</span></div>
 
 
@@ -307,21 +314,23 @@
 <span class="sd">    The IS will be removed from the blob_df, but the yields will be based on its mass.</span>
 <span class="sd">    For the implementation, see compute_yields.</span>
 
+<span class="sd">    #TODO: this function may give problems with compounds that we need to drop (repeated in FID and special gc)</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    blob_df: df</span>
 <span class="sd">        Dataframe with the blobs, with the extra column of yields</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">blob_df</span> <span class="o">=</span> <span class="n">compute_yields</span><span class="p">(</span><span class="n">experiment_df_row</span><span class="p">,</span> <span class="n">blob_df</span><span class="p">,</span> <span class="n">internal_standard_name</span><span class="p">,</span> <span class="n">calibration_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">compound_drop</span><span class="o">=</span><span class="n">internal_standard_name</span><span class="p">)</span>
+                             <span class="n">compounds_drop</span><span class="o">=</span><span class="n">internal_standard_name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">blob_df</span></div>
 
 
-<div class="viewcode-block" id="compute_yields_calibration"><a class="viewcode-back" href="../../compute-yields.html#micropyro.compute_yields_calibration">[docs]</a><span class="k">def</span> <span class="nf">compute_yields_calibration</span><span class="p">(</span><span class="n">experiment_df_row</span><span class="p">,</span> <span class="n">blob_df</span><span class="p">,</span> <span class="n">reference_compound</span><span class="p">,</span> <span class="n">calibration_file</span><span class="p">,</span> <span class="n">compound_drop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="compute_yields_calibration"><a class="viewcode-back" href="../../compute-yields.html#micropyro.compute_yields_calibration">[docs]</a><span class="k">def</span> <span class="nf">compute_yields_calibration</span><span class="p">(</span><span class="n">experiment_df_row</span><span class="p">,</span> <span class="n">blob_df</span><span class="p">,</span> <span class="n">reference_compound</span><span class="p">,</span> <span class="n">calibration_file</span><span class="p">,</span> <span class="n">compounds_drop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Particular function to compute the yields using a calibration curve of a reference compound.</span>
 <span class="sd">    In this case, the mass of reference compound is computed using an the auxiliary function get_mass_calibration.</span>
-<span class="sd">    User can still define compound_drop since in many cases, one uses both an external calibration and an Internal Standard.</span>
+<span class="sd">    User can still define compounds_drop since in many cases, one uses both an external calibration and an Internal Standard.</span>
 <span class="sd">    For the implementation, see compute_yields.</span>
 
 <span class="sd">    Returns</span>
@@ -331,7 +340,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">blob_df</span> <span class="o">=</span> <span class="n">compute_yields</span><span class="p">(</span><span class="n">experiment_df_row</span><span class="p">,</span> <span class="n">blob_df</span><span class="p">,</span> <span class="n">internal_standard_name</span><span class="o">=</span><span class="n">reference_compound</span><span class="p">,</span>
                              <span class="n">calibration_file</span><span class="o">=</span><span class="n">calibration_file</span><span class="p">,</span>
-                             <span class="n">compound_drop</span><span class="o">=</span><span class="n">compound_drop</span><span class="p">)</span>
+                             <span class="n">compounds_drop</span><span class="o">=</span><span class="n">compounds_drop</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">blob_df</span></div>
 
 

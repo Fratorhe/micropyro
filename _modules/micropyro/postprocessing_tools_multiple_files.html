@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.postprocessing_tools_multiple_files &mdash; micropyro 0.1.post37+gd34be03 documentation</title>
+  <title>micropyro.postprocessing_tools_multiple_files &mdash; micropyro 0.1.post39+g98fbccc documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post37+gd34be03
+                0.1.post39+g98fbccc
               </div>
             
           
@@ -227,7 +227,7 @@
 <span class="sd">    blob_dfs: list of dfs</span>
 <span class="sd">            List of Dataframes with the results</span>
 <span class="sd">    ranges: list of floats</span>
-<span class="sd">            Each number defines the upper bound for the range</span>
+<span class="sd">            Each pair of numbers define the range</span>
 <span class="sd">    x_axis: list</span>
 <span class="sd">            what to plot in the x axis, could be temperature, or whatever.</span>
 <span class="sd">    save_plot: str</span>
@@ -244,7 +244,7 @@
 <span class="sd">    ax: plt.axis</span>
 <span class="sd">        matplotlib axis for further modifications/saving</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ranges</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">ranges</span>
+
     <span class="n">cmap</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;tab10&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># PiYG</span>
 
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
@@ -260,7 +260,7 @@
             <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">[</span><span class="n">i_df</span><span class="p">],</span> <span class="n">yield_mrf</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">plot_total</span><span class="p">:</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">[</span><span class="n">i_df</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;yield mrf&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">[</span><span class="n">i_df</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;yield mrf&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">i_range</span><span class="o">+</span><span class="mi">1</span><span class="p">)[:</span><span class="mi">3</span><span class="p">])</span>
 
             <span class="c1"># if provided plot the filenames, mostly for debugging</span>
             <span class="k">if</span> <span class="n">filenames</span><span class="p">:</span>
@@ -272,7 +272,7 @@
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">i_range</span><span class="p">)[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ranges</span><span class="p">[</span><span class="n">i_range</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">$&lt;$MW$&lt;$</span><span class="si">{</span><span class="n">range_data</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">plot_total</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Total&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">i_range</span><span class="o">+</span><span class="mi">1</span><span class="p">)[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Total&#39;</span><span class="p">)</span>
 
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">save_plot</span><span class="p">:</span>
@@ -400,7 +400,8 @@
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
 
 
-<span class="k">def</span> <span class="nf">plot_total_globals</span><span class="p">(</span><span class="n">list_totals_dict</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">annotate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">errorbars</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">plot_total_globals</span><span class="p">(</span><span class="n">list_totals_dict</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">annotate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                       <span class="n">errorbars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to wrap compare_group_totals to only plot the global totals (char, gas and FID)</span>
 
@@ -424,8 +425,10 @@
 <span class="sd">    ax: plt.axis</span>
 <span class="sd">        matplotlib axis for further modifications/saving</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_prop_cycle</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
     <span class="n">yield_names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;char_yield&#39;</span><span class="p">,</span> <span class="s1">&#39;total_FID&#39;</span><span class="p">,</span> <span class="s1">&#39;total_gases&#39;</span><span class="p">)</span>
     <span class="n">dict_totals_plot</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;char_yield&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;total_FID&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;total_gases&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;total_sum&#39;</span><span class="p">:</span> <span class="p">[]}</span>
@@ -459,7 +462,7 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">errorbars</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">quantity_plot</span><span class="p">,</span> <span class="n">values_plot</span> <span class="ow">in</span> <span class="n">dict_totals_plot</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">values_plot</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">conversion_names_label</span><span class="p">[</span><span class="n">quantity_plot</span><span class="p">])</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">values_plot</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">conversion_names_label</span><span class="p">[</span><span class="n">quantity_plot</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">errorbars</span><span class="p">:</span>
         <span class="n">error_total</span> <span class="o">=</span> <span class="p">[]</span>
@@ -468,7 +471,7 @@
             <span class="k">if</span> <span class="n">quantity_plot</span> <span class="o">==</span> <span class="s1">&#39;total_sum&#39;</span><span class="p">:</span>
                 <span class="n">errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">error_total</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">values_plot</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">conversion_names_label</span><span class="p">[</span><span class="n">quantity_plot</span><span class="p">],</span>
-                        <span class="n">capsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+                        <span class="n">capsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">error_total</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">annotate</span><span class="p">:</span>
@@ -476,8 +479,9 @@
             <span class="c1"># this iterates over a temperatures, and one of the above getting a pair (T, yield)</span>
             <span class="k">for</span> <span class="n">x_axis_value</span><span class="p">,</span> <span class="n">value_plot</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">values_plot</span><span class="p">,</span> <span class="n">annotations</span><span class="p">):</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="p">(</span><span class="n">x_axis_value</span><span class="p">,</span> <span class="n">value_plot</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">legend</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
 
-    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Mass Yield, </span><span class="se">\\</span><span class="s1">%&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Temperature, C&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">save_plot</span><span class="p">:</span>
