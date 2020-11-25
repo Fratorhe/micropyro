@@ -25,17 +25,18 @@ def plot_n_highest_yields(blob_df, ncompounds, save_plot=None):
 
     ax = sns.barplot(x="index", y="yield mrf", data=n_largest.reset_index())
 
-    max_width = 16
+    max_width = 12
     ax.set_xticklabels(textwrap.fill(x.get_text(), max_width) for x in ax.get_xticklabels())
-
+    plt.setp(ax.get_xticklabels(), fontsize=22)
     ax.set(xlabel='compound', ylabel='yield mrf, \\%')
 
     # if you save in a file, I won't show it.
     if save_plot:
-        ax.savefig(save_plot)
+        plt.savefig(save_plot)
     else:
         plt.show()
 
+    return ax
 
 def get_yields_summary(blob_df, grouping=None, to_file=None):
     """

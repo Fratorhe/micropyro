@@ -210,11 +210,11 @@ class ExternalCalibration:
                         alpha=0.3)
 
         # write the equation in the graph
-        ax.annotate(f'vol = {self.regression.params[0]:.2f} mass', xy=(0.02, 0.65), xycoords='axes fraction')
-        ax.annotate(f'R$^2$ = {self.regression.rsquared:.4f}', xy=(0.02, 0.55), xycoords='axes fraction')
+        ax.annotate(f'vol = {self.regression.params[0]:.2f} mass', xy=(0.02, 0.95), xycoords='axes fraction')
+        ax.annotate(f'R$^2$ = {self.regression.rsquared:.4f}', xy=(0.02, 0.85), xycoords='axes fraction')
 
         # put the legend and axis.
-        ax.legend(loc="upper left")
+        ax.legend(loc="lower right")
         ax.set_xlabel('Mass, mg')
         ax.set_ylabel('Blob volume, -')
 

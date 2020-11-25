@@ -58,7 +58,7 @@ def plot_ranges_MW(blob_dfs, ranges, x_axis=None, save_plot=None, filenames=None
     blob_dfs: list of dfs
             List of Dataframes with the results
     ranges: list of floats
-            Each number defines the upper bound for the range
+            Each pair of numbers define the range
     x_axis: list
             what to plot in the x axis, could be temperature, or whatever.
     save_plot: str
@@ -75,7 +75,7 @@ def plot_ranges_MW(blob_dfs, ranges, x_axis=None, save_plot=None, filenames=None
     ax: plt.axis
         matplotlib axis for further modifications/saving
     """
-    ranges = [0] + ranges
+
     cmap = cm.get_cmap('tab10', 10)  # PiYG
 
     fig, ax = plt.subplots()
@@ -91,7 +91,7 @@ def plot_ranges_MW(blob_dfs, ranges, x_axis=None, save_plot=None, filenames=None
             ax.plot(x_axis[i_df], yield_mrf, 'o', color=color)
 
             if plot_total:
-                ax.plot(x_axis[i_df], df["yield mrf"].sum(), 'o', color='k')
+                ax.plot(x_axis[i_df], df["yield mrf"].sum(), 'o', color=cmap(i_range+1)[:3])
 
             # if provided plot the filenames, mostly for debugging
             if filenames:
@@ -103,7 +103,7 @@ def plot_ranges_MW(blob_dfs, ranges, x_axis=None, save_plot=None, filenames=None
         ax.plot([], [], color=cmap(i_range)[:3], linestyle='-', label=f'{ranges[i_range - 1]}$<$MW$<${range_data}')
 
     if plot_total:
-        ax.plot([], [], color='k', linestyle='-', label=f'Total')
+        ax.plot([], [], color=cmap(i_range+1)[:3], linestyle='-', label=f'Total')
 
     ax.legend(loc='best')
     if save_plot:
@@ -231,7 +231,8 @@ def compare_group_totals(list_totals_dict, group_name, x_axis=None, save_plot=No
     return fig, ax
 
 
-def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=False, errorbars=None):
+def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=False,
+                       errorbars=None, ax=None, fig=None, legend=True, **kwargs):
     """
     Function to wrap compare_group_totals to only plot the global totals (char, gas and FID)
 
@@ -255,8 +256,10 @@ def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=F
     ax: plt.axis
         matplotlib axis for further modifications/saving
     """
+    plt.gca().set_prop_cycle(None)
 
-    fig, ax = plt.subplots()
+    if ax is None:
+        fig, ax = plt.subplots()
 
     yield_names = ('char_yield', 'total_FID', 'total_gases')
     dict_totals_plot = {'char_yield': [], 'total_FID': [], 'total_gases': [], 'total_sum': []}
@@ -290,7 +293,7 @@ def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=F
 
     if not errorbars:
         for quantity_plot, values_plot in dict_totals_plot.items():
-            ax.scatter(x_axis, values_plot, label=conversion_names_label[quantity_plot])
+            ax.scatter(x_axis, values_plot, label=conversion_names_label[quantity_plot], **kwargs)
 
     if errorbars:
         error_total = []
@@ -299,7 +302,7 @@ def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=F
             if quantity_plot == 'total_sum':
                 errors = np.sqrt(np.sum(np.square(error_total), axis=0))
             ax.errorbar(x_axis, values_plot, yerr=errors, fmt='o', label=conversion_names_label[quantity_plot],
-                        capsize=10)
+                        capsize=10, **kwargs)
             error_total.append(errors)
 
     if annotate:
@@ -307,8 +310,9 @@ def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=F
             # this iterates over a temperatures, and one of the above getting a pair (T, yield)
             for x_axis_value, value_plot, annotation in zip(x_axis, values_plot, annotations):
                 ax.annotate(annotation, (x_axis_value, value_plot), fontsize=16, alpha=0.5)
+    if legend:
+        ax.legend(loc='best')
 
-    ax.legend(loc='best')
     ax.set_ylabel('Mass Yield, \\%')
     ax.set_xlabel('Temperature, C')
     if save_plot:
