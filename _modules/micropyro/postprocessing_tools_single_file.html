@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>micropyro.postprocessing_tools_single_file &mdash; micropyro 0.1.post39+g98fbccc documentation</title>
+  <title>micropyro.postprocessing_tools_single_file &mdash; micropyro 0.1.post40+gacce1ef documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.1.post39+g98fbccc
+                0.1.post40+gacce1ef
               </div>
             
           
@@ -196,14 +196,12 @@
 
     <span class="n">max_width</span> <span class="o">=</span> <span class="mi">12</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">get_text</span><span class="p">(),</span> <span class="n">max_width</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">())</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;compound&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;yield mrf, </span><span class="se">\\</span><span class="s1">%&#39;</span><span class="p">)</span>
 
     <span class="c1"># if you save in a file, I won&#39;t show it.</span>
     <span class="k">if</span> <span class="n">save_plot</span><span class="p">:</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_plot</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">ax</span></div>
 
