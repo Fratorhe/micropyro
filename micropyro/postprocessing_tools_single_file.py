@@ -27,14 +27,12 @@ def plot_n_highest_yields(blob_df, ncompounds, save_plot=None):
 
     max_width = 12
     ax.set_xticklabels(textwrap.fill(x.get_text(), max_width) for x in ax.get_xticklabels())
-    plt.setp(ax.get_xticklabels(), fontsize=22)
+    plt.setp(ax.get_xticklabels(), fontsize=15)
     ax.set(xlabel='compound', ylabel='yield mrf, \\%')
 
     # if you save in a file, I won't show it.
     if save_plot:
         plt.savefig(save_plot)
-    else:
-        plt.show()
 
     return ax
 

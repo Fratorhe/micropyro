@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import cm
-
+from micropyro import get_markers, get_linestyles
 
 def compare_yields(blob_dfs, compounds, x_axis=None, save_plot=None):
     """
@@ -49,7 +49,8 @@ def compare_yields(blob_dfs, compounds, x_axis=None, save_plot=None):
     return fig, ax
 
 
-def plot_ranges_MW(blob_dfs, ranges, x_axis=None, save_plot=None, filenames=None, plot_total=False):
+def plot_ranges_MW(blob_dfs, ranges, x_axis=None, save_plot=None, lines=True,
+                   plot_total=False, ax=None, fig=None, legend=True, **kwargs):
     """
     This utility plots the yields based on ranges of MW.
 
@@ -77,42 +78,50 @@ def plot_ranges_MW(blob_dfs, ranges, x_axis=None, save_plot=None, filenames=None
     """
 
     cmap = cm.get_cmap('tab10', 10)  # PiYG
+    plt.gca().set_prop_cycle(None)
 
-    fig, ax = plt.subplots()
+    if not ax:
+        fig, ax = plt.subplots()
+
+    markers = get_markers()
+    if lines:
+        linestyle = get_linestyles()
+    else:
+        linestyle = len(ranges)*[""]
+
+    dict_ranges_data = {k: [] for k in ranges[1:]}
 
     for i_range, range_data in enumerate(ranges):
         # skip the first since it is forced to be 0
         if i_range == 0:
             continue
-        color = cmap(i_range)[:3]
         for i_df, df in enumerate(blob_dfs):
             aux_df = df[(df.mw > ranges[i_range - 1]) & (df.mw < ranges[i_range])]
             yield_mrf = aux_df["yield mrf"].sum()
-            ax.plot(x_axis[i_df], yield_mrf, 'o', color=color)
+            dict_ranges_data[range_data].append(yield_mrf)
 
-            if plot_total:
-                ax.plot(x_axis[i_df], df["yield mrf"].sum(), 'o', color=cmap(i_range+1)[:3])
-
-            # if provided plot the filenames, mostly for debugging
-            if filenames:
-                ax.annotate(filenames[i_df], (x_axis[i_df], yield_mrf))
-
-    for i_range, range_data in enumerate(ranges):
-        if i_range == 0:
-            continue
-        ax.plot([], [], color=cmap(i_range)[:3], linestyle='-', label=f'{ranges[i_range - 1]}$<$MW$<${range_data}')
+    for i_range, range_data in enumerate(dict_ranges_data.keys()):
+        if legend:
+            label = f'{ranges[i_range]}$<$MW$<${range_data}'
+        else:
+            label = None
+        ax.plot(x_axis, dict_ranges_data[range_data], 'o', color=cmap(i_range + 1)[:3],
+                label=label, marker=markers[i_range], linestyle=linestyle[i_range], **kwargs)
 
     if plot_total:
-        ax.plot([], [], color=cmap(i_range+1)[:3], linestyle='-', label=f'Total')
+        ax.plot([], [], color=cmap(i_range + 1)[:3], linestyle='-', label=f'Total', **kwargs)
 
-    ax.legend(loc='best')
+    if legend:
+        ax.legend(loc='best')
+
     if save_plot:
         fig.savefig(save_plot)
 
     return fig, ax
 
 
-def compare_quantites_totals(list_totals_dict, quantity, subgroups=None, x_axis=None, save_plot=None):
+def compare_quantites_totals(list_totals_dict, quantity, subgroups=None, x_axis=None, save_plot=None, ax=None, fig=None,
+                             legend=True, **kwargs):
     """
     This utility compares the a given quantity from the total files for different files (repetitions, temperatures, etc).
 
@@ -140,10 +149,11 @@ def compare_quantites_totals(list_totals_dict, quantity, subgroups=None, x_axis=
 
     cmap = cm.get_cmap('tab10', 10)  # PiYG
 
+    if not ax:
+        fig, ax = plt.subplots()
+
     if not subgroups:
         subgroups = list_totals_dict[0][quantity].keys()  # if subgroup not given, guess it from the first file.
-
-    fig, ax = plt.subplots()
 
     # TODO: refurbish this: first get the data, then plot it after. like this we can implement cumulative if needed.
     for i_group, group in enumerate(subgroups):
@@ -151,12 +161,15 @@ def compare_quantites_totals(list_totals_dict, quantity, subgroups=None, x_axis=
         for i_dict_totals, dict_totals in enumerate(list_totals_dict):
             try:
                 quantity_group = dict_totals[quantity][group]
-                ax.plot(x_axis[i_dict_totals], quantity_group, 'o', color=color)
+                ax.plot(x_axis[i_dict_totals], quantity_group, 'o', color=color, **kwargs)
             except KeyError:
                 print(f'{group} not found in {i_dict_totals}-th dictionary')
 
-    for i_group, group in enumerate(subgroups):
-        ax.plot([], [], color=cmap(i_group)[:3], linestyle='-', label=group)
+    if legend:
+        for i_group, group in enumerate(subgroups):
+            if len(group) == 1:
+                group = group.upper()  # basically if it's an element
+            ax.plot([], [], color=cmap(i_group)[:3], linestyle='-', label=group)
 
     ax.legend(loc='best')
     if save_plot:
@@ -190,7 +203,7 @@ def compare_elements_totals(list_totals_dict, elements=['c', 'o', 'h', 'n'], x_a
         """
     fig, ax = compare_quantites_totals(list_totals_dict, 'atoms_FID', elements, x_axis, save_plot=False)
     ax.set_ylabel('Mass Yield, \\%')
-    ax.set_xlabel('Temperature, C')
+    ax.set_xlabel('Temperature, \N{DEGREE SIGN}C')
 
     if save_plot:
         fig.savefig(save_plot)
@@ -223,7 +236,7 @@ def compare_group_totals(list_totals_dict, group_name, x_axis=None, save_plot=No
         """
     fig, ax = compare_quantites_totals(list_totals_dict, quantity=group_name, x_axis=x_axis, save_plot=False)
     ax.set_ylabel('Mass Yield, \\%')
-    ax.set_xlabel('Temperature, C')
+    ax.set_xlabel('Temperature, \N{DEGREE SIGN}C')
 
     if save_plot:
         fig.savefig(save_plot)
@@ -257,6 +270,8 @@ def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=F
         matplotlib axis for further modifications/saving
     """
     plt.gca().set_prop_cycle(None)
+
+    markers = get_markers()
 
     if ax is None:
         fig, ax = plt.subplots()
@@ -292,16 +307,16 @@ def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=F
             x_axis.append(dict_totals['1st_react_temp'])
 
     if not errorbars:
-        for quantity_plot, values_plot in dict_totals_plot.items():
-            ax.scatter(x_axis, values_plot, label=conversion_names_label[quantity_plot], **kwargs)
+        for idx, (quantity_plot, values_plot) in enumerate(dict_totals_plot.items()):
+            ax.scatter(x_axis, values_plot, label=conversion_names_label[quantity_plot], marker=markers[idx], **kwargs)
 
     if errorbars:
         error_total = []
-        for quantity_plot, values_plot in dict_totals_plot.items():
+        for idx, (quantity_plot, values_plot) in enumerate(dict_totals_plot.items()):
             errors = np.array(values_plot) * errorbars[quantity_plot] / 100
             if quantity_plot == 'total_sum':
                 errors = np.sqrt(np.sum(np.square(error_total), axis=0))
-            ax.errorbar(x_axis, values_plot, yerr=errors, fmt='o', label=conversion_names_label[quantity_plot],
+            ax.errorbar(x_axis, values_plot, yerr=errors, fmt='o', marker=markers[idx], label=conversion_names_label[quantity_plot],
                         capsize=10, **kwargs)
             error_total.append(errors)
 
@@ -314,7 +329,7 @@ def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=F
         ax.legend(loc='best')
 
     ax.set_ylabel('Mass Yield, \\%')
-    ax.set_xlabel('Temperature, C')
+    ax.set_xlabel('Temperature, \N{DEGREE SIGN}C')
     if save_plot:
         fig.savefig(save_plot)
 

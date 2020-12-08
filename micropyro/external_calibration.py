@@ -193,7 +193,7 @@ class ExternalCalibration:
         y = np.array(self.calibration_df["volume"].values)
 
         # create a new space for plotting
-        xnew = np.linspace(min(x)*0.99, max(x)*1.01, 1000)
+        xnew = np.linspace(0, max(x)*1.01, 1000)
         # use the regression to predict (y = a*x)
         ynew = self.regression.predict(xnew)
 
@@ -217,7 +217,7 @@ class ExternalCalibration:
         ax.legend(loc="lower right")
         ax.set_xlabel('Mass, mg')
         ax.set_ylabel('Blob volume, -')
-
+        ax.set_xlim(0, None)
         # if you save in a file, I won't show it.
         if save_plot:
             fig.savefig(save_plot)
