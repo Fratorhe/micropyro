@@ -297,7 +297,7 @@ def plot_total_globals(list_totals_dict, x_axis=None, save_plot=None, annotate=F
                 dict_totals["2nd_react_temp"]) else ''
             annotations.append(f'{mass} {first_react} {second_react}')
 
-    conversion_names_label = {'char_yield': 'Char', 'total_FID': 'FID',
+    conversion_names_label = {'char_yield': 'Char', 'total_FID': 'Vapors',
                               'total_gases': 'Light Gases', 'total_sum': 'Total'}
 
     if x_axis is None:
