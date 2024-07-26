@@ -4,7 +4,7 @@ import pandas as pd
 import pubchempy
 from openbabel import openbabel
 from tqdm import tqdm
-
+from .pubChem_scrapper import PubchemGetBoilingPoint
 
 class GenerateDatabase:
     """
@@ -142,6 +142,26 @@ class GenerateDatabase:
 
             self.df.loc[compound, 'n_benz'] = n_Benz
 
+    def get_boiling_points(self):
+        """
+        Tries to get the boiling point for each compound
+
+        """
+        for compound, row in tqdm(self.df.iterrows(), total=self.df.shape[0]):
+            ## get the compound from pubchempy
+            smiles = row['smiles']
+            try:
+                boiling_point = self._get_boiling_point(smiles)
+            except:
+                boiling_point = -1
+
+            try:
+                boiling_point = float(boiling_point)
+            except:
+                boiling_point = -1
+
+            self.df.loc[compound, 'boiling_point'] = boiling_point
+
     @staticmethod
     def _obtain_n_benz(compound_smiles):
         """
@@ -181,3 +201,16 @@ class GenerateDatabase:
 
     def _create_backup(self):
         copyfile(self.filename, f'{self.filename}.bak')
+
+    @staticmethod
+    def _get_boiling_point(smiles):
+        data_boil = PubchemGetBoilingPoint(smiles)
+        boiling_point = data_boil.avg_boil_temp
+        print(f'boiling point: {boiling_point}')
+        return boiling_point
+
+    def add_grouping(self, file_data, grouping_name, **kwargs):
+        database = pd.read_csv(file_data, index_col=0, **kwargs)  # reads the file and sets the first column as index
+
+        for compound, _ in tqdm(database.iterrows(), total=database.shape[0]):
+            self.df.loc[compound, grouping_name] = database.loc[compound, grouping_name]

@@ -62,8 +62,14 @@ def get_yields_summary(blob_df, grouping=None, to_file=None):
     else:
         sum_groups = {}
 
+    grouping_sum = sum_groups.sum() # get the total from groups
     total = blob_df['yield mrf'].sum()
     sum_groups = sum_groups.to_dict()
+
+    group_unidentified = total - grouping_sum # get quantity of non-labelled compounds
+
+    if group_unidentified > 0.0001:
+        sum_groups['unlabelled'] = group_unidentified
 
     dict_per_atom = compute_elemental_composition(blob_df)
 
